@@ -1,0 +1,25 @@
+#retroBoard {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 70px;
+}
+
+.plus-card,
+.delta-card {
+  width: 190px;
+  color: white;
+  height: 150px;
+  overflow-y: auto;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 4px;
+  background: $delta;
+}
+
+.delta-card {
+
+}
+
+.plus-card {
+
+}

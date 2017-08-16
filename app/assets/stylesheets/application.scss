@@ -1,0 +1,38 @@
+$bg: #ebebeb;
+$delta: #4f1271;
+
+$body-bg: $bg;
+
+// Custom bootstrap variables must be set or import before bootstrap itself.
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome";
+@import "retro";
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:200,400,700');
+
+ body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+ }
+
+ .control-panel {
+  font-weight: 200;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-size: 32px;
+  color: darken($bg, 15%);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  background: rgba(82, 82, 82, 0.88);
+  width: 100%;
+
+  .input-group {
+    width: 80%;
+  }
+ }

@@ -1,0 +1,50 @@
+<div id="retroBoard"></div>
+
+<%= render partial: 'templates' %>
+
+<script>
+var addPlusToBoard = function (data) {
+  $('#retroBoard').append(
+    plusTemplate(data)
+  );
+};
+var addDeltaToBoard = function (data) {
+  $('#retroBoard').append(
+    deltaTemplate(data)
+  );
+};
+connectToRetro('<%= @retro.key %>', function (data) {
+  if (data.type === 'plus') {
+    addPlusToBoard(data);
+  }
+  if (data.type === 'delta') {
+    addDeltaToBoard(data);
+  }
+});
+
+var cards = [
+  <% @retro.pluses.each do |plus| %>
+    {type: 'plus', content: '<%= plus.content %>'},
+  <% end %>
+  <% @retro.deltas.each do |delta| %>
+    {type: 'delta', content: '<%= delta.content %>'},
+  <% end %>
+];
+_.forEach(cards, function (card) {
+  if (card.type === 'plus') {
+    addPlusToBoard(card);
+  }
+  if (card.type === 'delta') {
+    addDeltaToBoard(card);
+  }
+});
+
+$('#sendPlusBtn').click(function () {
+  sendPlus($('#content').val().trim());
+  $('#content').val('');
+});
+$('#sendDeltaBtn').click(function () {
+  sendDelta($('#content').val().trim());
+  $('#content').val('');
+});
+</script>
