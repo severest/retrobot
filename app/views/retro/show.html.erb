@@ -20,6 +20,9 @@ connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'delta') {
     addDeltaToBoard(data);
   }
+  if (data.type === 'time') {
+    updateClock(data.minutes, data.seconds);
+  }
 });
 
 var cards = [

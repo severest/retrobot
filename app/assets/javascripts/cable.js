@@ -25,3 +25,7 @@ sendPlus = function(content) {
 sendDelta = function(content) {
   App.retroChannel.send({ type: 'delta', content: content });
 };
+
+sendTime = function(minutes, seconds) {
+  App.retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds });
+}
