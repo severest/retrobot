@@ -3,25 +3,45 @@
 <%= render partial: 'templates' %>
 
 <script>
-var addPlusToBoard = function (data) {
-  $('#retroBoard').append(
-    plusTemplate(data)
-  );
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  )
+}
+var myID = uuidv4();
+
+$('.create-items').removeClass('hide');
+$('.start-timer').removeClass('hide');
+
+$('#startTimerBtn').click(function () {
+    startTimer();
+});
+
+
+var addPlusToBoard = function (data, show) {
+  var html = $('<div/>').addClass('item').html(plusTemplate(data));
+  $('#retroBoard').append(html);
+  if (!show) html.addClass('hide');
 };
-var addDeltaToBoard = function (data) {
-  $('#retroBoard').append(
-    deltaTemplate(data)
-  );
+var addDeltaToBoard = function (data, show) {
+  var html = $('<div/>').addClass('item').html(deltaTemplate(data));
+  $('#retroBoard').append(html);
+  if (!show) html.addClass('hide');
 };
 connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'plus') {
-    addPlusToBoard(data);
+    addPlusToBoard(data, (data.id === myID || $('.timer:visible').length === 0));
   }
   if (data.type === 'delta') {
-    addDeltaToBoard(data);
+    addDeltaToBoard(data, (data.id === myID || $('.timer:visible').length === 0));
   }
   if (data.type === 'time') {
-    updateClock(data.minutes, data.seconds);
+    $('.start-timer').addClass('hide')
+    $('.timer').removeClass('hide');
+    updateClock(data.minutes, data.seconds, data.clock);
+    if (data.minutes === 0 && data.seconds === 0) {
+        $('.item').removeClass('hide');
+    }
   }
 });
 
@@ -35,19 +55,19 @@ var cards = [
 ];
 _.forEach(cards, function (card) {
   if (card.type === 'plus') {
-    addPlusToBoard(card);
+    addPlusToBoard(card, true);
   }
   if (card.type === 'delta') {
-    addDeltaToBoard(card);
+    addDeltaToBoard(card, true);
   }
 });
 
 $('#sendPlusBtn').click(function () {
-  sendPlus($('#content').val().trim());
+  sendPlus($('#content').val().trim(), myID);
   $('#content').val('');
 });
 $('#sendDeltaBtn').click(function () {
-  sendDelta($('#content').val().trim());
+  sendDelta($('#content').val().trim(), myID);
   $('#content').val('');
 });
 </script>

@@ -18,14 +18,14 @@ connectToRetro = function(room, receivedCallback) {
   });
 };
 
-sendPlus = function(content) {
-  App.retroChannel.send({ type: 'plus', content: content });
+sendPlus = function(content, id) {
+  App.retroChannel.send({ type: 'plus', content: content, id: id });
 };
 
-sendDelta = function(content) {
-  App.retroChannel.send({ type: 'delta', content: content });
+sendDelta = function(content, id) {
+  App.retroChannel.send({ type: 'delta', content: content, id: id });
 };
 
-sendTime = function(minutes, seconds) {
-  App.retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds });
+sendTime = function(minutes, seconds, clock) {
+  App.retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds, clock: clock });
 }

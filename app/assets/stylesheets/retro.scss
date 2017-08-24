@@ -7,6 +7,7 @@
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 70px;
+  justify-content: space-evenly;
 }
 
 .plus-card,
@@ -18,13 +19,16 @@
   padding: 5px;
   margin: 5px;
   border-radius: 4px;
-  background: $delta;
+
+  &__content {
+    word-break: break-word;
+  }
 }
 
 .delta-card {
-
+  background: $delta;
 }
 
 .plus-card {
-
+  background: $plus;
 }

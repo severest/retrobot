@@ -1,5 +1,5 @@
 var timer;
-var timerLengthMinutes = 5;
+var timerLengthMinutes = 1;
 
 var startTimer = function (callback) {
   var minutes = timerLengthMinutes;
@@ -16,12 +16,16 @@ var startTimer = function (callback) {
     } else {
       seconds = seconds - 1;
     }
-    updateClock(minutes, seconds < 10 ? '0' + seconds : seconds);
-    sendTime(minutes, seconds < 10 ? '0' + seconds : seconds);
+    var clock = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    updateClock(minutes, seconds, clock);
+    sendTime(minutes, seconds, clock);
   }, 1000);
 };
 
-var updateClock = function (minutes, seconds) {
-  $('.timer .minute').html(minutes);
-  $('.timer .second').html(seconds);
+var updateClock = function (minutes, seconds, clock) {
+  if (minutes === 0 && seconds === 0) {
+      $('.timer').addClass('hide');
+      return
+  }
+  $('.timer').html(clock);
 }
