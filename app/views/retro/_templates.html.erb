@@ -1,19 +1,25 @@
 <template id="plusTemplate">
-  <div class="plus-card">
+  <a href="#" data-id="${ id }" class="plus-card">
     <div class="plus-card__icon"><%= fa_icon "plus" %></div>
     <div class="plus-card__content">
       ${ content }
     </div>
-  </div>
+    <div class="plus-card__votes">
+      ${ votes }
+    </div>
+  </a>
 </template>
 
 <template id="deltaTemplate">
-  <div class="delta-card">
+  <a href="#" data-id="${ id }" class="delta-card">
     <div class="delta-card__icon"><%= fa_icon "exclamation-triangle" %></div>
     <div class="delta-card__content">
       ${ content }
     </div>
-  </div>
+    <div class="delta-card__votes">
+      ${ votes }
+    </div>
+  </a>
 </template>
 
 <script>

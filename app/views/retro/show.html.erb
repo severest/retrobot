@@ -17,16 +17,21 @@ $('#startTimerBtn').click(function () {
     startTimer();
 });
 
-
+var sendVote = function (evt) {
+  var itemId = $(evt.target).data('id');
+  console.log('sending vote for ' + itemId);
+};
 var addPlusToBoard = function (data, show) {
   var html = $('<div/>').addClass('item').html(plusTemplate(data));
   $('#retroBoard').append(html);
   if (!show) html.addClass('hide');
+  html.find('a').click(sendVote);
 };
 var addDeltaToBoard = function (data, show) {
   var html = $('<div/>').addClass('item').html(deltaTemplate(data));
   $('#retroBoard').append(html);
   if (!show) html.addClass('hide');
+  html.find('a').click(sendVote);
 };
 connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'plus') {
@@ -47,10 +52,10 @@ connectToRetro('<%= @retro.key %>', function (data) {
 
 var cards = [
   <% @retro.pluses.each do |plus| %>
-    {type: 'plus', content: '<%= plus.content %>'},
+    {type: 'plus', content: '<%= plus.content %>', votes: '<%= plus.votes %>', id: <%= plus.id %>},
   <% end %>
   <% @retro.deltas.each do |delta| %>
-    {type: 'delta', content: '<%= delta.content %>'},
+    {type: 'delta', content: '<%= delta.content %>', votes: '<%= delta.votes %>', id: <%= delta.id %>},
   <% end %>
 ];
 _.forEach(cards, function (card) {

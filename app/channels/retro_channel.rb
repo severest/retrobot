@@ -8,9 +8,11 @@ class RetroChannel < ApplicationCable::Channel
     if data['type'] == 'plus'
       plus = Plus.create(retro: retro, content: data['content'])
       data['id'] = plus.id
+      data['votes'] = 0
     elsif data['type'] == 'delta'
       delta = Delta.create(retro: retro, content: data['content'])
       data['id'] = delta.id
+      data['votes'] = 0
     end
     ActionCable.server.broadcast("retro_#{params[:room]}", data)
   end

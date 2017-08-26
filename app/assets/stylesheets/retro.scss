@@ -19,16 +19,40 @@
   padding: 5px;
   margin: 5px;
   border-radius: 4px;
+  display: block;
+  position: relative;
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
 
   &__content {
     word-break: break-word;
+  }
+
+  &__votes {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    padding: 2px 14px;
+    background: red;
+    border-radius: 20px;
   }
 }
 
 .delta-card {
   background: $delta;
+
+  &:hover {
+    background: darken($delta, 10%);
+  }
 }
 
 .plus-card {
   background: $plus;
+
+  &:hover {
+    background: darken($plus, 10%);
+  }
 }
