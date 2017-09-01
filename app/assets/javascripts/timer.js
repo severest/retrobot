@@ -1,5 +1,5 @@
 var timer;
-var timerLengthMinutes = 1;
+var timerLengthMinutes = 5;
 
 var startTimer = function (callback) {
   var minutes = timerLengthMinutes;
