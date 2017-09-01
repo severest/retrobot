@@ -18,7 +18,7 @@ var startTimer = function (callback) {
     }
     var clock = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
     updateClock(minutes, seconds, clock);
-    sendTime(minutes, seconds, clock);
+    WS.sendTime(minutes, seconds, clock);
   }, 1000);
 };
 

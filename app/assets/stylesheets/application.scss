@@ -1,6 +1,6 @@
 $bg: #ebebeb;
-$delta: #4C935B;
-$plus: #CC2936;
+$plus: #4C935B;
+$delta: #CC2936;
 
 $body-bg: $bg;
 
@@ -32,6 +32,7 @@ $body-bg: $bg;
   padding: 10px;
   background: rgba(82, 82, 82, 0.88);
   width: 100%;
+  z-index: 10;
 
   .create-items {
     width: 60%;

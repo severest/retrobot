@@ -18,7 +18,13 @@ $('#startTimerBtn').click(function () {
 });
 
 var sendVote = function (evt) {
+  evt.preventDefault();
   var itemId = $(evt.target).data('id');
+  var key = $(evt.target).attr('class') + '-' + itemId;
+  var voted = sessionStorage.getItem(key);
+  if (voted === null) {
+    sendWSVote()
+  }
   console.log('sending vote for ' + itemId);
 };
 var addPlusToBoard = function (data, show) {
@@ -33,12 +39,12 @@ var addDeltaToBoard = function (data, show) {
   if (!show) html.addClass('hide');
   html.find('a').click(sendVote);
 };
-connectToRetro('<%= @retro.key %>', function (data) {
+WS.connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'plus') {
-    addPlusToBoard(data, (data.id === myID || $('.timer:visible').length === 0));
+    addPlusToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
   }
   if (data.type === 'delta') {
-    addDeltaToBoard(data, (data.id === myID || $('.timer:visible').length === 0));
+    addDeltaToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
   }
   if (data.type === 'time') {
     $('.start-timer').addClass('hide')
@@ -68,11 +74,13 @@ _.forEach(cards, function (card) {
 });
 
 $('#sendPlusBtn').click(function () {
-  sendPlus($('#content').val().trim(), myID);
+  if ($('#content').val().trim() === '') return;
+  WS.sendPlus($('#content').val().trim(), myID);
   $('#content').val('');
 });
 $('#sendDeltaBtn').click(function () {
-  sendDelta($('#content').val().trim(), myID);
+  if ($('#content').val().trim() === '') return;
+  WS.sendDelta($('#content').val().trim(), myID);
   $('#content').val('');
 });
 </script>
