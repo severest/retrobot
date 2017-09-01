@@ -1,13 +1,10 @@
 <template id="plusTemplate">
-  <a href="#" data-id="${ id }" class="plus-card">
+  <div class="plus-card">
     <div class="plus-card__icon"><%= fa_icon "plus" %></div>
     <div class="plus-card__content">
       ${ content }
     </div>
-    <div class="plus-card__votes">
-      ${ votes }
-    </div>
-  </a>
+  </div>
 </template>
 
 <template id="deltaTemplate">
@@ -16,7 +13,7 @@
     <div class="delta-card__content">
       ${ content }
     </div>
-    <div class="delta-card__votes">
+    <div class="delta-card__votes delta-${ id } votes">
       ${ votes }
     </div>
   </a>

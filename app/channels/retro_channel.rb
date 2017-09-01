@@ -13,6 +13,16 @@ class RetroChannel < ApplicationCable::Channel
       delta = Delta.create(retro: retro, content: data['content'])
       data['id'] = delta.id
       data['votes'] = 0
+    elsif data['type'] == 'upvote' and data['itemType'] == 'delta'
+      delta = Delta.find(data['itemId'])
+      delta.votes = delta.votes + 1
+      delta.save()
+      data['votes'] = delta.votes
+    elsif data['type'] == 'downvote' and data['itemType'] == 'delta'
+      delta = Delta.find(data['itemId'])
+      delta.votes = delta.votes - 1
+      delta.save()
+      data['votes'] = delta.votes
     end
     ActionCable.server.broadcast("retro_#{params[:room]}", data)
   end

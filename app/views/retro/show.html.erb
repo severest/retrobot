@@ -17,27 +17,33 @@ $('#startTimerBtn').click(function () {
     startTimer();
 });
 
-var sendVote = function (evt) {
+var sendDeltaVote = function (evt) {
   evt.preventDefault();
-  var itemId = $(evt.target).data('id');
-  var key = $(evt.target).attr('class') + '-' + itemId;
+  var itemId = $(evt.currentTarget).data('id');
+  var key = 'delta-' + itemId;
   var voted = sessionStorage.getItem(key);
   if (voted === null) {
-    sendWSVote()
+    WS.sendUpVote('delta', itemId);
+    sessionStorage.setItem(key, true);
+    $('.' + key + '.votes').addClass('mine');
+  } else {
+    WS.sendDownVote('delta', itemId);
+    sessionStorage.removeItem(key);
+    $('.' + key + '.votes').removeClass('mine');
   }
-  console.log('sending vote for ' + itemId);
 };
+
+
 var addPlusToBoard = function (data, show) {
   var html = $('<div/>').addClass('item').html(plusTemplate(data));
-  $('#retroBoard').append(html);
+  $('#retroBoard').prepend(html);
   if (!show) html.addClass('hide');
-  html.find('a').click(sendVote);
 };
 var addDeltaToBoard = function (data, show) {
   var html = $('<div/>').addClass('item').html(deltaTemplate(data));
   $('#retroBoard').append(html);
   if (!show) html.addClass('hide');
-  html.find('a').click(sendVote);
+  html.find('a').click(sendDeltaVote);
 };
 WS.connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'plus') {
@@ -53,6 +59,10 @@ WS.connectToRetro('<%= @retro.key %>', function (data) {
     if (data.minutes === 0 && data.seconds === 0) {
         $('.item').removeClass('hide');
     }
+  }
+
+  if (data.type === 'upvote' || data.type === 'downvote') {
+    $('.' + data.itemType + '-' + data.itemId + '.votes').html(data.votes);
   }
 });
 

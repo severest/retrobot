@@ -19,15 +19,23 @@ WS = {
     });
   },
 
-  sendPlus: function(content, id) {
-    App.retroChannel.send({ type: 'plus', content: content, userId: id });
+  sendPlus: function(content, userId) {
+    App.retroChannel.send({ type: 'plus', content: content, userId: userId });
   },
 
-  sendDelta: function(content, id) {
-    App.retroChannel.send({ type: 'delta', content: content, userId: id });
+  sendDelta: function(content, userId) {
+    App.retroChannel.send({ type: 'delta', content: content, userId: userId });
   },
 
   sendTime: function(minutes, seconds, clock) {
     App.retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds, clock: clock });
-  }
+  },
+
+  sendUpVote: function(itemType, itemId) {
+    App.retroChannel.send({ type: 'upvote', itemType: itemType, itemId: itemId });
+  },
+
+  sendDownVote: function(itemType, itemId) {
+    App.retroChannel.send({ type: 'downvote', itemType: itemType, itemId: itemId });
+  },
 };

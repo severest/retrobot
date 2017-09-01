@@ -1,8 +1,13 @@
 $bg: #ebebeb;
+$body-bg: $bg;
+
+$brand-primary: #f168cd;
+
 $plus: #4C935B;
 $delta: #CC2936;
+$vote-tally: #3c2105;
+$my-vote-tally: $brand-primary;
 
-$body-bg: $bg;
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
 @import "bootstrap-sprockets";
