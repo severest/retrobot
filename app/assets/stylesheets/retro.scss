@@ -22,8 +22,11 @@
   display: block;
   position: relative;
 
-  .fa {
+  .item-type-icon {
     font-size: 24px;
+    top: 5px;
+    position: relative;
+    margin-right: 9px;
   }
 
   &__content {
@@ -50,17 +53,6 @@
 
 .delta-card {
   background: $delta;
-
-  &:hover,
-  &:active,
-  &:focus {
-    color: white;
-    text-decoration: none;
-  }
-
-  &:hover {
-    background: darken($delta, 10%);
-  }
 }
 
 .plus-card {

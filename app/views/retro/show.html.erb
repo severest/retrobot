@@ -10,6 +10,11 @@ function uuidv4() {
 }
 var myID = uuidv4();
 
+var maximumVotes = 2;
+if (!sessionStorage.getItem('totalVotes')) {
+  sessionStorage.setItem('totalVotes', 0);
+}
+
 $('.create-items').removeClass('hide');
 $('.start-timer').removeClass('hide');
 
@@ -17,20 +22,46 @@ $('#startTimerBtn').click(function () {
     startTimer();
 });
 
-var sendDeltaVote = function (evt) {
+var sendDeltaUpVote = function (evt) {
+  evt.preventDefault();
+  var itemId = $(evt.currentTarget).data('id');
+  var key = 'delta-' + itemId;
+  var voted = sessionStorage.getItem(key);
+  var totalVotes = parseInt(sessionStorage.getItem('totalVotes'));
+  if (totalVotes === maximumVotes) {
+    alert('You have reached your vote maximum');
+    return;
+  }
+
+  WS.sendUpVote('delta', itemId);
+  if (voted === null) {
+    sessionStorage.setItem(key, 1);
+  } else {
+    sessionStorage.setItem(key, parseInt(voted) + 1);
+  }
+  $('.' + key + '.votes').addClass('mine');
+  sessionStorage.setItem('totalVotes', totalVotes + 1);
+};
+var sendDeltaDownVote = function (evt) {
   evt.preventDefault();
   var itemId = $(evt.currentTarget).data('id');
   var key = 'delta-' + itemId;
   var voted = sessionStorage.getItem(key);
   if (voted === null) {
-    WS.sendUpVote('delta', itemId);
-    sessionStorage.setItem(key, true);
-    $('.' + key + '.votes').addClass('mine');
-  } else {
-    WS.sendDownVote('delta', itemId);
-    sessionStorage.removeItem(key);
-    $('.' + key + '.votes').removeClass('mine');
+    alert("You can't down vote something you haven't voted for yet");
+    return;
   }
+
+  WS.sendDownVote('delta', itemId);
+  voted = parseInt(voted);
+  if ((voted - 1) === 0) {
+    $('.' + key + '.votes').removeClass('mine');
+    sessionStorage.removeItem(key);
+  } else {
+    sessionStorage.setItem(key, voted - 1);
+  }
+  var totalVotes = parseInt(sessionStorage.getItem('totalVotes'));
+  sessionStorage.setItem('totalVotes', totalVotes - 1);
 };
 
 
@@ -43,7 +74,8 @@ var addDeltaToBoard = function (data, show) {
   var html = $('<div/>').addClass('item').html(deltaTemplate(data));
   $('#retroBoard').append(html);
   if (!show) html.addClass('hide');
-  html.find('a').click(sendDeltaVote);
+  html.find('.upvote').click(sendDeltaUpVote);
+  html.find('.downvote').click(sendDeltaDownVote);
 };
 WS.connectToRetro('<%= @retro.key %>', function (data) {
   if (data.type === 'plus') {

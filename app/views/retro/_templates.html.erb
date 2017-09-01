@@ -1,6 +1,6 @@
 <template id="plusTemplate">
   <div class="plus-card">
-    <div class="plus-card__icon"><%= fa_icon "plus" %></div>
+    <div class="plus-card__icon"><%= fa_icon "plus", class: "item-type-icon" %></div>
     <div class="plus-card__content">
       ${ content }
     </div>
@@ -8,15 +8,23 @@
 </template>
 
 <template id="deltaTemplate">
-  <a href="#" data-id="${ id }" class="delta-card">
-    <div class="delta-card__icon"><%= fa_icon "exclamation-triangle" %></div>
+  <div class="delta-card">
+    <div class="delta-card__icon">
+      <%= fa_icon "exclamation-triangle", class: "item-type-icon" %>
+      <button data-id="${ id }" class="btn btn-primary btn-sm upvote">
+        <%= fa_icon "arrow-up fa-inverse" %>
+      </button>
+      <button data-id="${ id }" class="btn btn-primary btn-sm downvote">
+        <%= fa_icon "arrow-down fa-inverse" %>
+      </button>
+    </div>
     <div class="delta-card__content">
       ${ content }
     </div>
     <div class="delta-card__votes delta-${ id } votes">
       ${ votes }
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
