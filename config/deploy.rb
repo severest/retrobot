@@ -27,10 +27,10 @@ set :deploy_to, '/apps/retrobot'
 append :linked_files, 'config/database.yml', 'config/secrets.yml'
 
 # Default value for linked_dirs is []
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'node_modules'
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/usr/local/src/nvm/versions/node/v6.9.1/bin:/usr/local/bin:$PATH" }
 
 # Default value for keep_releases is 5
 set :keep_releases, 3
