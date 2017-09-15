@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import Plus from './Plus.jsx';
 
@@ -10,15 +11,20 @@ class PlusBoard extends React.Component {
 
   render() {
     return (
-      <div className="retro-container--plus">
+      <TransitionGroup className="retro-container--plus">
         {this.props.pluses.map((p, i) =>
-          <Plus
+          <CSSTransition
             key={p.id}
-            index={i}
-            {...p}
-          />
+            timeout={200}
+            classNames="fade"
+          >
+            <Plus
+              index={i}
+              {...p}
+            />
+          </CSSTransition>
         )}
-      </div>
+      </TransitionGroup>
     );
   }
 }

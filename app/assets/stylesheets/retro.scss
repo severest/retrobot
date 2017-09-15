@@ -15,10 +15,9 @@
     flex-wrap: wrap;
     width: 50%;
     justify-content: space-around;
+    align-content: flex-start;
   }
 }
-
-
 
 .card {
   color: white;
@@ -133,4 +132,22 @@
       left: 8px;
     }
   }
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
 }
