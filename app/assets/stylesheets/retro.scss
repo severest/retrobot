@@ -3,58 +3,134 @@
   text-align: center;
 }
 
-#retroBoard {
+.retro-container {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 70px;
   justify-content: space-around;
+
+  &--plus,
+  &--delta {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    justify-content: space-around;
+  }
 }
 
-.plus-card,
-.delta-card {
-  width: 190px;
+
+
+.card {
   color: white;
-  height: 150px;
-  overflow: visible;
-  padding: 5px;
   margin: 5px;
-  border-radius: 4px;
   display: block;
   position: relative;
 
-  .item-type-icon {
-    font-size: 24px;
-    top: 5px;
+  &__left,
+  &__content,
+  &__right {
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  &__left,
+  &__right {
+    width: 35px;
+    height: 150px;
     position: relative;
-    margin-right: 9px;
+  }
+
+  &__left {
+    border-radius: 4px 0 0 4px;
+
+    i {
+      font-size: 24px;
+      top: 54px;
+      position: relative;
+      left: 6px;
+    }
+  }
+
+  &__right {
+    border-radius: 0 4px 4px 0;
+
+    .btn {
+      width: 35px;
+      padding: 10px;
+    }
+
+    .btn:hover {
+      i {
+        color: gray;
+      }
+    }
   }
 
   &__content {
     word-break: break-word;
     overflow-y: auto;
-    height: 80%;
+    height: 150px;
+    width: 190px;
+    padding: 10px;
   }
 
   &__votes {
     position: absolute;
     font-size: 15px;
-    padding: 5px 18px;
-    right: -7px;
-    top: -2px;
+    width: 35px;
+    text-align: center;
+    bottom: 0;
+    left: 0;
     background: $vote-tally;
-    border-radius: 20px;
-    box-shadow: 0 0 10px black;
+    padding: 10px 0;
+    border-bottom-left-radius: 4px;
 
     &.mine {
       background: $my-vote-tally;
     }
   }
+
+  &__delete {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    i {
+      color: red;
+    }
+
+    &.btn:hover {
+      i {
+        color: darken(red, 20%);
+      }
+    }
+  }
 }
 
 .delta-card {
-  background: $delta;
+  .card__content {
+    background: $delta;
+  }
+
+  .card__left,
+  .card__right {
+    background: darken($delta, 20%);
+  }
 }
 
 .plus-card {
-  background: $plus;
+  .card__content {
+    background: $plus;
+  }
+
+  .card__left,
+  .card__right {
+    background: darken($plus, 20%);
+  }
+
+  .card__left {
+    i {
+      left: 8px;
+    }
+  }
 }

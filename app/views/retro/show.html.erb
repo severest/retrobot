@@ -1,128 +1,59 @@
 <div id="retroBoard"></div>
 
-<%= render partial: 'templates' %>
-
 <script>
-function uuidv4() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  )
-}
-var myID = uuidv4();
-
-var maximumVotes = 2;
-if (!sessionStorage.getItem('totalVotes')) {
-  sessionStorage.setItem('totalVotes', 0);
-}
-
-$('.create-items').removeClass('hide');
-$('.start-timer').removeClass('hide');
-
-$('#startTimerBtn').click(function () {
-    startTimer();
-});
-
-var sendDeltaUpVote = function (evt) {
-  evt.preventDefault();
-  var itemId = $(evt.currentTarget).data('id');
-  var key = 'delta-' + itemId;
-  var voted = sessionStorage.getItem(key);
-  var totalVotes = parseInt(sessionStorage.getItem('totalVotes'));
-  if (totalVotes === maximumVotes) {
-    alert('You have reached your vote maximum');
-    return;
-  }
-
-  WS.sendUpVote('delta', itemId);
-  if (voted === null) {
-    sessionStorage.setItem(key, 1);
-  } else {
-    sessionStorage.setItem(key, parseInt(voted) + 1);
-  }
-  $('.' + key + '.votes').addClass('mine');
-  sessionStorage.setItem('totalVotes', totalVotes + 1);
-};
-var sendDeltaDownVote = function (evt) {
-  evt.preventDefault();
-  var itemId = $(evt.currentTarget).data('id');
-  var key = 'delta-' + itemId;
-  var voted = sessionStorage.getItem(key);
-  if (voted === null) {
-    alert("You can't down vote something you haven't voted for yet");
-    return;
-  }
-
-  WS.sendDownVote('delta', itemId);
-  voted = parseInt(voted);
-  if ((voted - 1) === 0) {
-    $('.' + key + '.votes').removeClass('mine');
-    sessionStorage.removeItem(key);
-  } else {
-    sessionStorage.setItem(key, voted - 1);
-  }
-  var totalVotes = parseInt(sessionStorage.getItem('totalVotes'));
-  sessionStorage.setItem('totalVotes', totalVotes - 1);
-};
 
 
-var addPlusToBoard = function (data, show) {
-  var html = $('<div/>').addClass('item').html(plusTemplate(data));
-  $('#retroBoard').prepend(html);
-  if (!show) html.addClass('hide');
-};
-var addDeltaToBoard = function (data, show) {
-  var html = $('<div/>').addClass('item').html(deltaTemplate(data));
-  $('#retroBoard').append(html);
-  if (!show) html.addClass('hide');
-  html.find('.upvote').click(sendDeltaUpVote);
-  html.find('.downvote').click(sendDeltaDownVote);
-};
-WS.connectToRetro('<%= @retro.key %>', function (data) {
-  if (data.type === 'plus') {
-    addPlusToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
-  }
-  if (data.type === 'delta') {
-    addDeltaToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
-  }
-  if (data.type === 'time') {
-    $('.start-timer').addClass('hide')
-    $('.timer').removeClass('hide');
-    updateClock(data.minutes, data.seconds, data.clock);
-    if (data.minutes === 0 && data.seconds === 0) {
-        $('.item').removeClass('hide');
-    }
-  }
+// var addPlusToBoard = function (data, show) {
+//   var html = $('<div/>').addClass('item').html(plusTemplate(data));
+//   $('#retroBoard').prepend(html);
+//   if (!show) html.addClass('hide');
+// };
+// var addDeltaToBoard = function (data, show) {
+//   var html = $('<div/>').addClass('item').html(deltaTemplate(data));
+//   $('#retroBoard').append(html);
+//   if (!show) html.addClass('hide');
+//   html.find('.upvote').click(sendDeltaUpVote);
+//   html.find('.downvote').click(sendDeltaDownVote);
+// };
 
-  if (data.type === 'upvote' || data.type === 'downvote') {
-    $('.' + data.itemType + '-' + data.itemId + '.votes').html(data.votes);
-  }
-});
+// WS.connectToRetro('<%= @retro.key %>', function (data) {
+//   if (data.type === 'plus') {
+//     addPlusToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
+//   }
+//   if (data.type === 'delta') {
+//     addDeltaToBoard(data, (data.userId === myID || $('.timer:visible').length === 0));
+//   }
+//   if (data.type === 'time') {
+//     $('.start-timer').addClass('hide')
+//     $('.timer').removeClass('hide');
+//     updateClock(data.minutes, data.seconds, data.clock);
+//     if (data.minutes === 0 && data.seconds === 0) {
+//         $('.item').removeClass('hide');
+//     }
+//   }
+//
+//   if (data.type === 'upvote' || data.type === 'downvote') {
+//     $('.' + data.itemType + '-' + data.itemId + '.votes').html(data.votes);
+//   }
+// });
 
-var cards = [
+App.retroKey = '<%= @retro.key %>';
+App.cards = [
   <% @retro.pluses.each do |plus| %>
-    {type: 'plus', content: '<%= plus.content %>', votes: '<%= plus.votes %>', id: <%= plus.id %>},
+    {type: 'plus', content: '<%= plus.content %>', id: <%= plus.id %>},
   <% end %>
   <% @retro.deltas.each do |delta| %>
-    {type: 'delta', content: '<%= delta.content %>', votes: '<%= delta.votes %>', id: <%= delta.id %>},
+    {type: 'delta', content: '<%= delta.content %>', votes: <%= delta.votes %>, id: <%= delta.id %>},
   <% end %>
 ];
-_.forEach(cards, function (card) {
-  if (card.type === 'plus') {
-    addPlusToBoard(card, true);
-  }
-  if (card.type === 'delta') {
-    addDeltaToBoard(card, true);
-  }
-});
+// _.forEach(cards, function (card) {
+//   if (card.type === 'plus') {
+//     addPlusToBoard(card, true);
+//   }
+//   if (card.type === 'delta') {
+//     addDeltaToBoard(card, true);
+//   }
+// });
 
-$('#sendPlusBtn').click(function () {
-  if ($('#content').val().trim() === '') return;
-  WS.sendPlus($('#content').val().trim(), myID);
-  $('#content').val('');
-});
-$('#sendDeltaBtn').click(function () {
-  if ($('#content').val().trim() === '') return;
-  WS.sendDelta($('#content').val().trim(), myID);
-  $('#content').val('');
-});
+
 </script>

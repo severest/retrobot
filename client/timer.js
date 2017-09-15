@@ -1,8 +1,9 @@
-var timer;
-var timerLengthMinutes = 5;
+import { TIMER_LENGTH } from './utils/constants.js';
 
-var startTimer = function (callback) {
-  var minutes = timerLengthMinutes;
+let timer;
+
+export const startTimer = (callback) => {
+  var minutes = TIMER_LENGTH;
   var seconds = 0;
   timer = setInterval(function () {
     if (minutes === 0 && seconds === 0) {
@@ -22,7 +23,7 @@ var startTimer = function (callback) {
   }, 1000);
 };
 
-var updateClock = function (minutes, seconds, clock) {
+export const updateClock = (minutes, seconds, clock) => {
   if (minutes === 0 && seconds === 0) {
       $('.timer').addClass('hide');
       return

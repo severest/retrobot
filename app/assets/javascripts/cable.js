@@ -23,8 +23,16 @@ WS = {
     App.retroChannel.send({ type: 'plus', content: content, userId: userId });
   },
 
+  deletePlus: function(id) {
+    App.retroChannel.send({ type: 'delete', itemType: 'plus', itemId: id });
+  },
+
   sendDelta: function(content, userId) {
     App.retroChannel.send({ type: 'delta', content: content, userId: userId });
+  },
+
+  deleteDelta: function(id) {
+    App.retroChannel.send({ type: 'delete', itemType: 'delta', itemId: id });
   },
 
   sendTime: function(minutes, seconds, clock) {

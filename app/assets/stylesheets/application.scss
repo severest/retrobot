@@ -24,6 +24,13 @@ $my-vote-tally: $brand-primary;
   font-family: 'Open Sans', sans-serif;
  }
 
+ .btn-link {
+   &:active,
+   &:focus {
+     outline: none;
+   }
+ }
+
  .control-panel {
   font-weight: 200;
   position: fixed;
