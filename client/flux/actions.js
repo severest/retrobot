@@ -29,3 +29,8 @@ export const updateVotes = actionDispatcher((payload) => ({
 export const unhideAll = actionDispatcher(() => ({
   type: 'UNHIDE_ALL',
 }));
+
+export const updateOrder = actionDispatcher((payload) => ({
+  type: 'UPDATE_ORDER',
+  payload,
+}));

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-import Plus from './Plus.jsx';
-import Delta from './Delta.jsx';
+import DeltaBoard from './DeltaBoard.jsx';
+import PlusBoard from './PlusBoard.jsx';
 
 class RetroBoardApp extends React.Component {
   static propTypes = {
@@ -13,25 +15,11 @@ class RetroBoardApp extends React.Component {
   render() {
     return (
       <div className="retro-container">
-        <div className="retro-container--plus">
-          {this.props.pluses.map((p) =>
-            <Plus
-              key={p.id}
-              {...p}
-            />
-          )}
-        </div>
-        <div className="retro-container--delta">
-          {this.props.deltas.map((d) =>
-            <Delta
-              key={d.id}
-              {...d}
-            />
-          )}
-        </div>
+        <PlusBoard pluses={this.props.pluses} />
+        <DeltaBoard deltas={this.props.deltas} />
       </div>
     );
   }
 }
 
-export default RetroBoardApp;
+export default DragDropContext(HTML5Backend)(RetroBoardApp);

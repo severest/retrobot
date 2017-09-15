@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { DragSource, DropTarget } from 'react-dnd';
 
+import { cardTarget, cardSource, ItemTypes } from './utils/drag-drop.js';
 import { MAX_VOTES } from './utils/constants.js';
+
 
 class Delta extends React.Component {
   static propTypes = {
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
     content: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     userId: PropTypes.string,
     id: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired,
     votes: PropTypes.number.isRequired,
     hide: PropTypes.bool,
   }
@@ -88,7 +95,7 @@ class Delta extends React.Component {
       },
     );
 
-    return (
+    return this.props.connectDragSource(this.props.connectDropTarget(
       <div className={topClass}>
         <div className="card__left">
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -120,8 +127,13 @@ class Delta extends React.Component {
           </button>
         </div>
       </div>
-    );
+    ));
   }
 }
 
-export default Delta;
+export default DropTarget(ItemTypes.DELTA, cardTarget, connect => ({
+  connectDropTarget: connect.dropTarget(),
+}))(DragSource(ItemTypes.DELTA, cardSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging(),
+}))(Delta));

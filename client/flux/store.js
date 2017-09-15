@@ -11,11 +11,14 @@ const initState = {
 // Redux reducer
 const reducer = (state, action) => {
   switch(action.type) {
-    case 'ADD_PLUS':
+    case 'ADD_PLUS': {
+      const plus = action.payload;
+      plus.order = state.pluses.length;
       return {
         ...state,
-        pluses: state.pluses.concat(action.payload),
+        pluses: state.pluses.concat(plus),
       };
+    }
     case 'REMOVE_PLUS':
       return {
         ...state,
@@ -26,11 +29,14 @@ const reducer = (state, action) => {
           return arr.concat(plus);
         }, []),
       };
-    case 'ADD_DELTA':
+    case 'ADD_DELTA': {
+      const delta = action.payload;
+      delta.order = state.deltas.length;
       return {
         ...state,
-        deltas: state.deltas.concat(action.payload),
+        deltas: state.deltas.concat(delta),
       };
+    }
     case 'REMOVE_DELTA':
       return {
         ...state,
@@ -41,6 +47,20 @@ const reducer = (state, action) => {
           return arr.concat(delta);
         }, []),
       };
+    case 'UPDATE_ORDER': {
+      if (action.payload.type === 'delta') {
+        const deltas = state.deltas.move(action.payload.dragIndex, action.payload.hoverIndex);
+        return {
+          ...state,
+          deltas,
+        };
+      }
+      const pluses = state.pluses.move(action.payload.dragIndex, action.payload.hoverIndex);
+      return {
+        ...state,
+        pluses,
+      };
+    }
     case 'UPDATE_VOTES':
       return {
         ...state,
