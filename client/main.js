@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './styles/application.scss';
+
 import store$ from './flux/store.js';
 import {
   addPlus,
