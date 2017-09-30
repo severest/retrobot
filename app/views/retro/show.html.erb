@@ -5,10 +5,10 @@
 App.retroKey = '<%= @retro.key %>';
 App.cards = [
   <% @retro.pluses.each do |plus| %>
-    {type: 'plus', content: "<%= plus.content.gsub('"', '\"').html_safe %>", id: <%= plus.id %>},
+    {type: 'plus', content: "<%= plus.content.gsub('\\', '').gsub('"', '\"').html_safe %>", id: <%= plus.id %>},
   <% end %>
   <% @retro.deltas.each do |delta| %>
-    {type: 'delta', content: "<%= delta.content.gsub('"', '\"').html_safe %>", votes: <%= delta.votes %>, id: <%= delta.id %>},
+    {type: 'delta', content: "<%= delta.content.gsub('\\', '').gsub('"', '\"').html_safe %>", votes: <%= delta.votes %>, id: <%= delta.id %>},
   <% end %>
 ];
 
