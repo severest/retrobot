@@ -1,6 +1,7 @@
 class RetroController < ApplicationController
   def show
     @retro = Retro.find_by_key!(params[:key])
+    render 'retro/show.json.jbuilder'
   end
 
   def new
