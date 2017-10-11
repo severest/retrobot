@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --hide-modules"
   },
   "dependencies": {
+    "actioncable": "^5.1.4",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
     "debug": "^3.1.0",
@@ -21,13 +22,14 @@
     "react-dnd": "^2.5.3",
     "react-dnd-html5-backend": "^2.5.3",
     "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.0",
     "rxjs": "^5.4.3",
     "tough-cookie": "^2.3.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -38,11 +40,11 @@
     "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "^7.3.0",
     "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^0.11.2",
+    "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.18.2",
+    "style-loader": "^0.19.0",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   }
