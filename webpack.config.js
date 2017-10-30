@@ -12,7 +12,8 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: './client/main.js',
   output: {
-    filename: 'build.js'
+    filename: 'build.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -47,10 +48,15 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      '/api': "http://localhost:3000"
+      '/api': "http://localhost:3000",
+      '/cable': {
+        target: "ws://localhost:3000",
+        ws: true
+      }
     },
+    historyApiFallback: true
   },
-  devtool: '#eval-source-map',
+  devtool: 'cheap-module-source-map',
   plugins: [
     new webpack.ProvidePlugin({
       _: 'lodash',
@@ -64,7 +70,7 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map';
+  module.exports.devtool = 'source-map';
   module.exports.output.path = path.resolve(__dirname, './public/dist');
   module.exports.output.publicPath = '/public/dist/';
   // http://vue-loader.vuejs.org/en/workflow/production.html
