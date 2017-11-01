@@ -34,3 +34,26 @@ export const updateOrder = actionDispatcher((payload) => ({
   type: 'UPDATE_ORDER',
   payload,
 }));
+
+export const updateTimer = actionDispatcher((payload) => ({
+  type: 'UPDATE_TIMER',
+  payload,
+}));
+
+export const retroBoardInit = (retroKey) => {
+  fetch(`/api/retro/${retroKey}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(function(res) {
+    return res.json();
+  })
+  .then(function (retro) {
+    retro.deltas.forEach((delta) => addDelta(delta));
+    retro.pluses.forEach((plus) => addPlus(plus));
+  });
+}

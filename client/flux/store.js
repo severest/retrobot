@@ -6,6 +6,11 @@ import 'rxjs/add/operator/startWith';
 const initState = {
   pluses: [],
   deltas: [],
+  timer: {
+    show: false,
+    minutes: 0,
+    seconds: 0,
+  },
 };
 
 // Redux reducer
@@ -73,6 +78,15 @@ const reducer = (state, action) => {
           }
           return d;
         }),
+      };
+    case 'UPDATE_TIMER':
+      return {
+        ...state,
+        timer: {
+          show: action.payload.minutes > 0 || action.payload.seconds > 0,
+          minutes: action.payload.minutes,
+          seconds: action.payload.seconds,
+        }
       };
     case 'UNHIDE_ALL':
       return {

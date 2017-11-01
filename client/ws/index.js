@@ -7,10 +7,8 @@ import {
   removeDelta,
   unhideAll,
   updateVotes,
+  updateTimer,
 } from '../flux/actions.js';
-import {
-  updateClock,
-} from '../timer.js';
 
 let retroChannel;
 const cable = ActionCable.createConsumer();
@@ -39,8 +37,8 @@ export const deleteDelta = (id) => {
   retroChannel.send({ type: 'delete', itemType: 'delta', itemId: id });
 };
 
-export const sendTime = (minutes, seconds, clock) => {
-  retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds, clock: clock });
+export const sendTime = (minutes, seconds) => {
+  retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds });
 };
 
 export const sendUpVote = (itemType, itemId) => {
@@ -61,9 +59,10 @@ export default (room) => {
       addDelta(data);
     }
     if (data.type === 'time') {
-      $('.start-timer').addClass('hide')
-      $('.timer').removeClass('hide');
-      updateClock(data.minutes, data.seconds, data.clock);
+      updateTimer({
+        minutes: data.minutes,
+        seconds: data.seconds,
+      });
       if (data.minutes === 0 && data.seconds === 0) {
           unhideAll();
       }

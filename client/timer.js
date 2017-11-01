@@ -1,5 +1,12 @@
 import { TIMER_LENGTH } from './utils/constants.js';
 
+import {
+  sendTime,
+} from './ws/index.js';
+import {
+  updateTimer,
+} from './flux/actions.js';
+
 let timer;
 
 export const startTimer = (callback) => {
@@ -17,16 +24,7 @@ export const startTimer = (callback) => {
     } else {
       seconds = seconds - 1;
     }
-    var clock = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
-    updateClock(minutes, seconds, clock);
-    WS.sendTime(minutes, seconds, clock);
+    updateTimer({minutes, seconds});
+    sendTime(minutes, seconds);
   }, 1000);
 };
-
-export const updateClock = (minutes, seconds, clock) => {
-  if (minutes === 0 && seconds === 0) {
-      $('.timer').addClass('hide');
-      return
-  }
-  $('.timer').html(clock);
-}
