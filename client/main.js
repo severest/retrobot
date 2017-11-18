@@ -22,9 +22,6 @@ Array.prototype.move = function (old_index, new_index) {
 window.myID = uuid();
 
 
-
-
-
 const StartRetroApp = ({ history }) => {
   const startRetroClick = () => {
     fetch('/api/retro/new', {
@@ -61,7 +58,6 @@ const StartRetroApp = ({ history }) => {
 };
 
 
-
 const NoMatch = () => (
   <div>404</div>
 );
@@ -75,73 +71,3 @@ ReactDOM.render((
     </Switch>
   </BrowserRouter>
 ), document.getElementById('app'));
-
-
-
-// window.addEventListener("load", () => {
-//   const retroBoard = document.getElementById('retroBoard');
-//   if (retroBoard) {
-    // if (!sessionStorage.getItem(`totalVotes-${App.retroKey}`)) {
-    //   sessionStorage.setItem(`totalVotes-${App.retroKey}`, 0);
-    // }
-//
-//     $('.create-items').removeClass('hide');
-//     $('.start-timer').removeClass('hide');
-//
-//     $('#startTimerBtn').click(function () {
-//         startTimer();
-//     });
-//
-//     $('#sendPlusBtn').click(function () {
-      // if ($('#content').val().trim() === '') return;
-      // WS.sendPlus($('#content').val().trim(), window.myID);
-      // $('#content').val('');
-//     });
-//     $('#sendDeltaBtn').click(function () {
-//       if ($('#content').val().trim() === '') return;
-//       WS.sendDelta($('#content').val().trim(), window.myID);
-//       $('#content').val('');
-//     });
-//
-    // store$.subscribe((state) => {
-    //   ReactDOM.render(<RetroBoard {...state} />, retroBoard);
-    // });
-//
-    // WS.connectToRetro(App.retroKey, (data) => {
-    //   data.hide = !(data.userId === window.myID || $('.timer:visible').length === 0);
-    //   if (data.type === 'plus') {
-    //     addPlus(data);
-    //   }
-    //   if (data.type === 'delta') {
-    //     addDelta(data);
-    //   }
-    //   if (data.type === 'time') {
-    //     $('.start-timer').addClass('hide')
-    //     $('.timer').removeClass('hide');
-    //     updateClock(data.minutes, data.seconds, data.clock);
-    //     if (data.minutes === 0 && data.seconds === 0) {
-    //         unhideAll();
-    //     }
-    //   }
-    //
-    //   if (data.type === 'upvote' || data.type === 'downvote') {
-    //     updateVotes(data);
-    //   }
-    //   if (data.type === 'delete' && data.itemType === 'delta') {
-    //     removeDelta(data);
-    //   }
-    //   if (data.type === 'delete' && data.itemType === 'plus') {
-    //     removePlus(data);
-    //   }
-    // });
-//
-//     _.forEach(App.cards, (card) => {
-//       if (card.type === 'plus') {
-//         addPlus(card);
-//       }
-//       if (card.type === 'delta') {
-//         addDelta(card);
-//       }
-//     });
-//   }
-//

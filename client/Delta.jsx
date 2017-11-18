@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DragSource, DropTarget } from 'react-dnd';
 
+import {
+  sendUpVote,
+  sendDownVote,
+  deleteDelta,
+} from './ws/index.js';
 import { cardTarget, cardSource, ItemTypes } from './utils/drag-drop.js';
 import { MAX_VOTES } from './utils/constants.js';
 
@@ -18,6 +23,7 @@ class Delta extends React.Component {
     index: PropTypes.number.isRequired,
     votes: PropTypes.number.isRequired,
     hide: PropTypes.bool,
+    retroKey: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -32,20 +38,20 @@ class Delta extends React.Component {
   handleUpVote = () => {
     const key = `delta-${this.props.id}`;
     const voted = sessionStorage.getItem(key);
-    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${App.retroKey}`));
+    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
     if (totalVotes === MAX_VOTES) {
       alert('You have reached your vote maximum');
       return;
     }
 
-    WS.sendUpVote('delta', this.props.id);
+    sendUpVote('delta', this.props.id);
     if (voted === null) {
       sessionStorage.setItem(key, 1);
     } else {
       sessionStorage.setItem(key, parseInt(voted) + 1);
     }
     this.setState({ IVoted: true });
-    sessionStorage.setItem(`totalVotes-${App.retroKey}`, totalVotes + 1);
+    sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes + 1);
   }
 
   handleDownVote = () => {
@@ -56,7 +62,7 @@ class Delta extends React.Component {
       return;
     }
 
-    WS.sendDownVote('delta', this.props.id);
+    sendDownVote('delta', this.props.id);
     voted = parseInt(voted);
     if ((voted - 1) === 0) {
       this.setState({ IVoted: false });
@@ -64,12 +70,12 @@ class Delta extends React.Component {
     } else {
       sessionStorage.setItem(key, voted - 1);
     }
-    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${App.retroKey}`));
-    sessionStorage.setItem(`totalVotes-${App.retroKey}`, totalVotes - 1);
+    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
+    sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes - 1);
   }
 
   handleDelete = () => {
-    WS.deleteDelta(this.props.id);
+    deleteDelta(this.props.id);
   }
 
   render() {

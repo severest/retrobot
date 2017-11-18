@@ -49,7 +49,7 @@ class RetroBoardApp extends React.Component {
     return (
       <div>
         <ControlPanel {...this.state.retro} />
-        <RetroBoard {...this.state.retro} />
+        <RetroBoard retroKey={this.retroKey} {...this.state.retro} />
       </div>
     );
   }

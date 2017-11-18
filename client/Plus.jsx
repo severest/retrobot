@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DragSource, DropTarget } from 'react-dnd';
 
+import {
+  deletePlus,
+} from './ws/index.js';
 import { cardTarget, cardSource, ItemTypes } from './utils/drag-drop.js';
 
 class Plus extends React.Component {
@@ -23,7 +26,7 @@ class Plus extends React.Component {
   }
 
   handleDelete = () => {
-    WS.deletePlus(this.props.id);
+    deletePlus(this.props.id);
   }
 
   render() {

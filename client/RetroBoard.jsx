@@ -11,6 +11,7 @@ class RetroBoard extends React.Component {
   static propTypes = {
     pluses: PropTypes.array.isRequired,
     deltas: PropTypes.array.isRequired,
+    retroKey: PropTypes.string.isRequired,
   }
 
   render() {
@@ -40,6 +41,7 @@ class RetroBoard extends React.Component {
             >
               <Delta
                 index={i}
+                retroKey={this.props.retroKey}
                 {...d}
               />
             </CSSTransition>
