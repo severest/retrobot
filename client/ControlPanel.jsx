@@ -34,6 +34,16 @@ class ControlPanel extends React.Component {
     startTimer();
   }
 
+  handleInputKeyPress = (evt) => {
+    if (evt.key === 'Enter') {
+      if (evt.shiftKey) {
+        this.handleSendDelta();
+      } else {
+        this.handleSendPlus();
+      }
+    }
+  }
+
   render() {
     return (
       <div className="control-panel">
@@ -48,10 +58,27 @@ class ControlPanel extends React.Component {
           </div>
         )}
         <div className="input-group create-items">
-          <input type="text" ref={c => this.inputBox = c} className="form-control" />
+          <input
+            type="text"
+            ref={c => this.inputBox = c}
+            className="form-control"
+            onKeyPress={this.handleInputKeyPress}
+          />
           <span className="input-group-btn">
-            <button className="btn btn-default" onClick={this.handleSendPlus} type="button">Plus</button>
-            <button className="btn btn-default" onClick={this.handleSendDelta} type="button">Delta</button>
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleSendPlus}
+            >
+              Plus
+            </button>
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleSendDelta}
+            >
+              Delta
+            </button>
           </span>
         </div>
       </div>
