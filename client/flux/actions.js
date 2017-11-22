@@ -40,6 +40,10 @@ export const updateTimer = actionDispatcher((payload) => ({
   payload,
 }));
 
+export const sortDeltas = actionDispatcher(() => ({
+  type: 'SORT_DELTAS',
+}));
+
 export const retroBoardInit = (retroKey) => {
   fetch(`/api/retro/${retroKey}`, {
     method: 'GET',

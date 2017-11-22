@@ -104,6 +104,12 @@ const reducer = (state, action) => {
           };
         }),
       };
+    case 'SORT_DELTAS': {
+      return {
+        ...state,
+        deltas: _.reverse(_.sortBy(state.deltas, ['votes', 'id'])),
+      };
+    }
     default:
       return state;
   }

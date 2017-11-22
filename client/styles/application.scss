@@ -37,7 +37,6 @@ $fa-font-path: "~font-awesome/fonts";
   position: fixed;
   bottom: 0;
   left: 0;
-  font-size: 32px;
   color: darken($bg, 15%);
   display: flex;
   align-items: center;
@@ -47,8 +46,33 @@ $fa-font-path: "~font-awesome/fonts";
   width: 100%;
   z-index: 10;
 
-  .create-items {
+  .title {
+    font-size: 19px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+
+    .start-timer,
+    .timer {
+      margin-right: 20px;
+    }
+  }
+
+  .inputs {
     width: 60%;
+    font-size: 12px;
+    position: relative;
+    top: 7px;
+
+    .btn {
+      padding-top: 7px;
+    }
+  }
+
+  .create-items {
     position: relative;
     top: 2px;
   }
