@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
     filename: "[name].css",
@@ -64,6 +65,21 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './client/index.ejs',
+    }),
+    new FaviconsWebpackPlugin({
+      logo: path.resolve(__dirname, './logo.png'),
+      icons: {
+        android: false,
+        appleIcon: false,
+        appleStartup: false,
+        coast: false,
+        favicons: true,
+        firefox: false,
+        opengraph: false,
+        twitter: false,
+        yandex: false,
+        windows: false
+      }
     }),
     extractSass
   ],

@@ -13,6 +13,7 @@
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
     "debug": "^3.1.0",
+    "favicons-webpack-plugin": "^0.0.7",
     "font-awesome": "^4.7.0",
     "fresh": "^0.5.2",
     "jquery": "^3.2.1",
