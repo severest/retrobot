@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
+    filename: "[name].css",
     disable: process.env.NODE_ENV === "development"
 });
 
@@ -73,7 +73,6 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = 'source-map';
   module.exports.output.path = path.resolve(__dirname, './public/dist');
   module.exports.output.publicPath = '/public/dist/';
-  // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
