@@ -1,4 +1,4 @@
-after 'deploy:compile_assets', :build_js do
+after 'bundler:install', :build_js do
   on roles(:web) do |host|
     within release_path do
       info "Host #{host} installing packages"
