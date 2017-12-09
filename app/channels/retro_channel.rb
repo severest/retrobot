@@ -6,11 +6,11 @@ class RetroChannel < ApplicationCable::Channel
   def receive(data)
     retro = Retro.find_by_key(params[:room])
     if data['type'] == 'plus'
-      plus = Plus.create(retro: retro, content: data['content'])
+      plus = Plus.create(retro: retro, content: data['content'], user: data['user'])
       data['id'] = plus.id
       data['votes'] = 0
     elsif data['type'] == 'delta'
-      delta = Delta.create(retro: retro, content: data['content'])
+      delta = Delta.create(retro: retro, content: data['content'], user: data['user'])
       data['id'] = delta.id
       data['votes'] = 0
     elsif data['type'] == 'upvote' and data['itemType'] == 'delta'

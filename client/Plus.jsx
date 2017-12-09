@@ -12,7 +12,7 @@ class Plus extends React.Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
-    userId: PropTypes.string,
+    user: PropTypes.string,
     content: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     hide: PropTypes.bool,
@@ -22,7 +22,7 @@ class Plus extends React.Component {
 
   static defaultProps = {
     hide: false,
-    userId: '',
+    user: '',
   }
 
   handleDelete = () => {
@@ -42,7 +42,7 @@ class Plus extends React.Component {
       'btn-link',
       'card__delete',
       {
-        'hidden': window.myID !== this.props.userId,
+        'hidden': window.myID !== this.props.user,
       },
     );
 

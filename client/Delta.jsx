@@ -18,7 +18,7 @@ class Delta extends React.Component {
     connectDropTarget: PropTypes.func.isRequired,
     content: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    userId: PropTypes.string,
+    user: PropTypes.string,
     id: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
     votes: PropTypes.number.isRequired,
@@ -28,7 +28,7 @@ class Delta extends React.Component {
 
   static defaultProps = {
     hide: false,
-    userId: '',
+    user: '',
   }
 
   state = {
@@ -97,7 +97,7 @@ class Delta extends React.Component {
       'btn-link',
       'card__delete',
       {
-        'hidden': window.myID !== this.props.userId,
+        'hidden': window.myID !== this.props.user,
       },
     );
 

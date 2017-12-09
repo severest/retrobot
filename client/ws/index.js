@@ -21,16 +21,16 @@ export const connectToRetro = (room, receivedCallback) => {
   });
 };
 
-export const sendPlus = (content, userId) => {
-  retroChannel.send({ type: 'plus', content: content, userId: userId });
+export const sendPlus = (content) => {
+  retroChannel.send({ type: 'plus', content: content, user: window.myID });
 };
 
 export const deletePlus = (id) => {
   retroChannel.send({ type: 'delete', itemType: 'plus', itemId: id });
 };
 
-export const sendDelta = (content, userId) => {
-  retroChannel.send({ type: 'delta', content: content, userId: userId });
+export const sendDelta = (content) => {
+  retroChannel.send({ type: 'delta', content: content, user: window.myID });
 };
 
 export const deleteDelta = (id) => {
@@ -51,7 +51,7 @@ export const sendDownVote = (itemType, itemId) => {
 
 export default (room) => {
   connectToRetro(room, (data) => {
-    data.hide = !(data.userId === window.myID || $('.timer:visible').length === 0);
+    data.hide = !(data.user === window.myID || $('.timer:visible').length === 0);
     if (data.type === 'plus') {
       addPlus(data);
     }

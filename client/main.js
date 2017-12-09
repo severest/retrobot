@@ -19,7 +19,12 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
-window.myID = uuid();
+let userId = localStorage.getItem('retrobotID');
+if (!userId) {
+  userId = uuid();
+  localStorage.setItem('retrobotID', userId);
+}
+window.myID = userId;
 
 
 const StartRetroApp = ({ history }) => {

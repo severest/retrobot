@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818230736) do
+ActiveRecord::Schema.define(version: 20171209054525) do
 
   create_table "deltas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.text "content"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170818230736) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "votes", default: 0
+    t.string "user"
     t.index ["retro_id"], name: "index_deltas_on_retro_id"
   end
 
@@ -27,6 +28,7 @@ ActiveRecord::Schema.define(version: 20170818230736) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "votes", default: 0
+    t.string "user"
     t.index ["retro_id"], name: "index_pluses_on_retro_id"
   end
 
