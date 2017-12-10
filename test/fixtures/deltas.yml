@@ -2,8 +2,8 @@
 
 one:
   content: MyText
-  retro: one
+  retro_id: 1
 
 two:
   content: MyText
-  retro: two
+  retro_id: 1
