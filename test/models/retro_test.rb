@@ -7,6 +7,14 @@ class RetroTest < ActiveSupport::TestCase
     end
   end
 
+  test "create a retro with team" do
+    assert_difference 'Retro.count', 1 do
+      t = teams(:one)
+      r = Retro.create(key: '123456', team: t)
+      assert_equal r.team.name, t.name
+    end
+  end
+
   test "create a retro with a short key" do
     assert_no_difference 'Retro.count' do
       Retro.create(key: '123')

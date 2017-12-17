@@ -3,7 +3,7 @@ development:
   encoding: utf8mb4
   database: retrobot
   username: root
-  password:
+  password: wiked
   host: 127.0.0.1
 
 # Warning: The database defined as "test" will be erased and

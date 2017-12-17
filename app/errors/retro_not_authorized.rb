@@ -1,0 +1,2 @@
+class RetroNotAuthorized < StandardError
+end
