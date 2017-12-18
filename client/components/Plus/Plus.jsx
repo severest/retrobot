@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import {
   deletePlus,
-} from './ws/index.js';
+} from '../../ws/index.js';
 
 class Plus extends React.Component {
   static propTypes = {

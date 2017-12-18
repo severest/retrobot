@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 
 import Plus from './Plus.jsx';
-import { cardTarget, cardSource, ItemTypes } from './utils/drag-drop.js';
+import { cardTarget, cardSource, ItemTypes } from '../../utils/drag-drop.js';
 
 class PlusDragAndDrop extends React.Component {
   static propTypes = {

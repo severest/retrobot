@@ -62,12 +62,6 @@ class StartRetroApp extends React.Component {
     )
     return (
       <div>
-        <div className="control-panel">
-          <div>
-            Retrobot
-          </div>
-        </div>
-
         <div className="create-retro">
           <div className="form-group">
             <input

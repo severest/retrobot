@@ -8,8 +8,9 @@ import uuid from './utils/uuid.js';
 
 import StartRetroApp from './StartRetroApp.jsx';
 import RetroBoardApp from './RetroBoardApp.jsx';
+import Particles from './components/Particles/Particles.jsx';
 
-Array.prototype.move = function (old_index, new_index) {
+Array.prototype.move = (old_index, new_index) => {
     if (new_index >= this.length) {
         var k = new_index - this.length;
         while ((k--) + 1) {
@@ -29,7 +30,7 @@ window.myID = userId;
 
 
 const NoMatch = () => (
-  <div>404</div>
+  <Particles code="404" />
 );
 
 ReactDOM.render((

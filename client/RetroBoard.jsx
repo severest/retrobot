@@ -4,8 +4,8 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
-import Delta from './Delta-DragAndDrop.jsx';
-import Plus from './Plus-DragAndDrop.jsx';
+import Delta from './components/Delta/Delta-DragAndDrop.jsx';
+import Plus from './components/Plus/Plus-DragAndDrop.jsx';
 
 class RetroBoard extends React.Component {
   static propTypes = {

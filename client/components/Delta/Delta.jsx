@@ -6,8 +6,8 @@ import {
   sendUpVote,
   sendDownVote,
   deleteDelta,
-} from './ws/index.js';
-import { MAX_VOTES } from './utils/constants.js';
+} from '../../ws/index.js';
+import { MAX_VOTES } from '../../utils/constants.js';
 
 
 class Delta extends React.Component {

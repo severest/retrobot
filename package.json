@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "actioncable": "^5.1.4",
+    "aphrodite": "1.2.5",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
     "debug": "^3.1.0",
@@ -19,6 +20,7 @@
     "fresh": "^0.5.2",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
+    "particlesjs": "2.1.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dnd": "^2.5.3",
