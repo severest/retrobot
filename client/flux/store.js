@@ -11,6 +11,7 @@ const initState = {
     minutes: 0,
     seconds: 0,
   },
+  createRetroError: '',
 };
 
 // Redux reducer
@@ -108,6 +109,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         deltas: _.reverse(_.sortBy(state.deltas, ['votes', 'id'])),
+      };
+    }
+    case 'CREATE_RETRO_ERROR': {
+      return {
+        ...state,
+        createRetroError: action.payload,
       };
     }
     default:

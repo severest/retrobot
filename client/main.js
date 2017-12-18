@@ -6,6 +6,7 @@ import './styles/application.scss';
 
 import uuid from './utils/uuid.js';
 
+import StartRetroApp from './StartRetroApp.jsx';
 import RetroBoardApp from './RetroBoardApp.jsx';
 
 Array.prototype.move = function (old_index, new_index) {
@@ -25,42 +26,6 @@ if (!userId) {
   localStorage.setItem('retrobotID', userId);
 }
 window.myID = userId;
-
-
-const StartRetroApp = ({ history }) => {
-  const startRetroClick = () => {
-    fetch('/api/retro/new', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify({}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(function(res) {
-      return res.json();
-    })
-    .then(function (retro) {
-      history.push(`/retro/${retro.key}`);
-    });
-  }
-  return (
-    <div>
-      <div className="control-panel">
-        <div>
-          Retrobot
-        </div>
-      </div>
-
-      <div className="create-retro">
-        <button className="btn btn-primary create-retro-btn" onClick={startRetroClick}>
-          <i className="fa fa-play" aria-hidden="true"></i> Start retro
-        </button>
-      </div>
-    </div>
-  );
-};
 
 
 const NoMatch = () => (

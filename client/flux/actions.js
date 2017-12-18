@@ -53,11 +53,16 @@ export const retroBoardInit = (retroKey) => {
       'Content-Type': 'application/json',
     },
   })
-  .then(function(res) {
+  .then((res) => {
     return res.json();
   })
-  .then(function (retro) {
+  .then((retro) => {
     retro.deltas.forEach((delta) => addDelta(delta));
     retro.pluses.forEach((plus) => addPlus(plus));
   });
-}
+};
+
+export const createRetroError = actionDispatcher((payload) => ({
+  type: 'CREATE_RETRO_ERROR',
+  payload,
+}));

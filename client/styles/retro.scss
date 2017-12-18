@@ -1,6 +1,10 @@
 .create-retro {
-  margin: 70px 0;
+  margin: 70px auto;
   text-align: center;
+  width: 400px;
+  background: darken($bg, 10%);
+  padding: 30px;
+  border-radius: 4px;
 }
 
 .retro-container {
