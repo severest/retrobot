@@ -12,11 +12,24 @@ const initState = {
     seconds: 0,
   },
   createRetroError: '',
+  isLoading: false,
 };
 
 // Redux reducer
 const reducer = (state, action) => {
   switch(action.type) {
+    case 'LOADING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'DONE_LOADING': {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    }
     case 'ADD_PLUS': {
       const plus = action.payload;
       plus.order = state.pluses.length;

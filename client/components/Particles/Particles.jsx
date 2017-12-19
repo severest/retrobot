@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     color: '#475841',
     background: '#ebebeb',
     textAlign: 'center',
-    fontFamily: 'OpenSans',
+    fontFamily: 'Open Sans',
   },
   fixed: {
     position: 'fixed',

@@ -48,6 +48,14 @@ $fa-font-path: "~font-awesome/fonts";
 
   .title {
     font-size: 19px;
+    a {
+      color: darken($bg, 15%);
+
+      &:hover {
+        text-decoration: none;
+        color: darken($bg, 20%);
+      }
+    }
   }
 
   .actions {

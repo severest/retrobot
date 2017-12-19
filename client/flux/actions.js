@@ -44,7 +44,8 @@ export const sortDeltas = actionDispatcher(() => ({
   type: 'SORT_DELTAS',
 }));
 
-export const retroBoardInit = (retroKey) => {
+export const retroBoardInit = (retroKey, history) => {
+  isLoading();
   fetch(`/api/retro/${retroKey}`, {
     method: 'GET',
     credentials: 'include',
@@ -54,7 +55,14 @@ export const retroBoardInit = (retroKey) => {
     },
   })
   .then((res) => {
-    return res.json();
+    doneLoading();
+    if (res.ok) {
+      return res.json();
+    } else if (res.status === 404) {
+      history.push(`/notfound`);
+    } else {
+      throw new Error(`fetch error ${res.status}`);
+    }
   })
   .then((retro) => {
     retro.deltas.forEach((delta) => addDelta(delta));
@@ -65,4 +73,11 @@ export const retroBoardInit = (retroKey) => {
 export const createRetroError = actionDispatcher((payload) => ({
   type: 'CREATE_RETRO_ERROR',
   payload,
+}));
+
+export const isLoading = actionDispatcher(() => ({
+  type: 'LOADING',
+}));
+export const doneLoading = actionDispatcher(() => ({
+  type: 'DONE_LOADING',
 }));

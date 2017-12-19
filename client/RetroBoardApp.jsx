@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import RetroBoard from './RetroBoard.jsx';
 import ControlPanel from './ControlPanel.jsx';
+import Loader from './components/Loader/Loader.jsx';
 
 import {
   retroBoardInit,
@@ -13,6 +14,7 @@ import store$ from './flux/store.js';
 
 class RetroBoardApp extends React.Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   }
 
@@ -20,6 +22,7 @@ class RetroBoardApp extends React.Component {
     super(props);
     this.retroKey = props.match.params.key;
     this.state = {
+      isLoading: false,
       retro: {
         pluses: [],
         deltas: [],
@@ -37,15 +40,30 @@ class RetroBoardApp extends React.Component {
       sessionStorage.setItem(`totalVotes-${this.retroKey}`, 0);
     }
 
-    store$.subscribe((state) => {
-      this.setState({retro: state});
+    this.storeSubscription = store$.subscribe((state) => {
+      this.setState({
+        isLoading: state.isLoading,
+        retro: {
+          pluses: state.pluses,
+          deltas: state.deltas,
+          timer: state.timer,
+        },
+      });
     });
 
     socketInit(this.retroKey);
-    retroBoardInit(this.retroKey);
+    retroBoardInit(this.retroKey, this.props.history);
+  }
+
+  componentWillUnmount() {
+    this.storeSubscription.unsubscribe();
   }
 
   render() {
+    if (this.state.isLoading) {
+      return <Loader />;
+    }
+
     return (
       <div>
         <ControlPanel {...this.state.retro} />

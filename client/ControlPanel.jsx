@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import {
   sendPlus,
@@ -55,7 +56,7 @@ class ControlPanel extends React.Component {
     return (
       <div className="control-panel">
         <div className="title">
-          Retrobot
+          <Link to="/" className="jojos">Retrobot</Link>
         </div>
         <div className="actions">
           {this.props.timer.show ? (

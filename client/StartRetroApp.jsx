@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 import {
   createRetroError,
+  isLoading,
+  doneLoading,
 } from './flux/actions.js';
 
 import store$ from './flux/store.js';
@@ -14,13 +16,21 @@ class StartRetroApp extends React.Component {
   }
 
   state = {
+    isLoading: false,
     error: '',
   }
 
   componentDidMount() {
-    store$.subscribe((state) => {
-      this.setState({error: state.createRetroError});
+    this.storeSubscription = store$.subscribe((state) => {
+      this.setState({
+        isLoading: state.isLoading,
+        error: state.createRetroError,
+      });
     });
+  }
+
+  componentWillUnmount() {
+    this.storeSubscription.unsubscribe();
   }
 
   startRetroClick = () => {
@@ -31,6 +41,7 @@ class StartRetroApp extends React.Component {
     if ($(this.password).val().trim() !== '') {
       retro.password = $(this.password).val().trim();
     }
+    isLoading();
     fetch('/api/retro/new', {
       method: 'POST',
       credentials: 'include',
@@ -45,6 +56,7 @@ class StartRetroApp extends React.Component {
     })
     .then((retro) => {
       if (retro.error) {
+        doneLoading();
         createRetroError(retro.error);
       } else {
         this.props.history.push(`/retro/${retro.key}`);
@@ -79,13 +91,14 @@ class StartRetroApp extends React.Component {
               placeholder="Password (optional)"
             />
             {this.state.error !== '' && (
-              <span className="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
-            )}
-            {this.state.error !== '' && (
               <p className="help-block">{this.state.error}</p>
             )}
           </div>
-          <button className="btn btn-primary create-retro-btn" onClick={this.startRetroClick}>
+          <button
+            className="btn btn-primary create-retro-btn"
+            onClick={this.startRetroClick}
+            disabled={this.state.isLoading}
+          >
             <i className="fa fa-play" aria-hidden="true"></i> Start retro
           </button>
         </div>
