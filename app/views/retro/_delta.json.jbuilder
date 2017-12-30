@@ -1,2 +1,3 @@
 json.type 'delta'
-json.(delta, :id, :content, :votes, :user)
+json.(delta, :id, :content, :votes, :notes)
+json.userId delta.user

@@ -7,13 +7,16 @@ import {
   sendDownVote,
   deleteDelta,
 } from '../../ws/index.js';
+import {
+  openNotesModal,
+} from '../../flux/actions.js';
 import { MAX_VOTES } from '../../utils/constants.js';
 
 
 class Delta extends React.Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
-    user: PropTypes.string,
+    userId: PropTypes.string,
     id: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
     votes: PropTypes.number.isRequired,
@@ -23,7 +26,7 @@ class Delta extends React.Component {
 
   static defaultProps = {
     hide: false,
-    user: '',
+    userId: '',
   }
 
   state = {
@@ -73,6 +76,8 @@ class Delta extends React.Component {
     deleteDelta(this.props.id);
   }
 
+  handleOpenNotes = () => openNotesModal(this.props.id)
+
   render() {
     const topClass = classNames(
       'card',
@@ -92,7 +97,7 @@ class Delta extends React.Component {
       'btn-link',
       'card__delete',
       {
-        'hidden': window.myID !== this.props.user,
+        'hidden': window.myID !== this.props.userId,
       },
     );
 
@@ -119,6 +124,12 @@ class Delta extends React.Component {
             className="btn btn-link downvote"
           >
             <i className="fa fa-arrow-down fa-inverse" aria-hidden="true"></i>
+          </button>
+          <button
+            onClick={this.handleOpenNotes}
+            className="btn btn-link notes"
+          >
+            <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
           </button>
           <button
             className={deleteClass}

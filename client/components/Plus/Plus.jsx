@@ -8,7 +8,7 @@ import {
 
 class Plus extends React.Component {
   static propTypes = {
-    user: PropTypes.string,
+    userId: PropTypes.string,
     content: PropTypes.string.isRequired,
     hide: PropTypes.bool,
     id: PropTypes.number.isRequired,
@@ -17,7 +17,7 @@ class Plus extends React.Component {
 
   static defaultProps = {
     hide: false,
-    user: '',
+    userId: '',
   }
 
   handleDelete = () => {
@@ -37,7 +37,7 @@ class Plus extends React.Component {
       'btn-link',
       'card__delete',
       {
-        'hidden': window.myID !== this.props.user,
+        'hidden': window.myID !== this.props.userId,
       },
     );
 

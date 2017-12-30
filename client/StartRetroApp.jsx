@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
+
 import {
   createRetroError,
   isLoading,
@@ -18,6 +20,7 @@ class StartRetroApp extends React.Component {
   state = {
     isLoading: false,
     error: '',
+    isOffline: false,
   }
 
   componentDidMount() {
@@ -25,6 +28,7 @@ class StartRetroApp extends React.Component {
       this.setState({
         isLoading: state.isLoading,
         error: state.createRetroError,
+        isOffline: state.isOffline,
       });
     });
   }
@@ -74,6 +78,7 @@ class StartRetroApp extends React.Component {
     )
     return (
       <div>
+        {this.state.isOffline && <OfflineIndicatorModal />}
         <div className="create-retro">
           <div className="form-group">
             <input

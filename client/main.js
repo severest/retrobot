@@ -6,20 +6,15 @@ import './styles/application.scss';
 
 import uuid from './utils/uuid.js';
 
+import {
+  isOnline,
+  isOffline,
+} from './flux/actions.js';
+
 import StartRetroApp from './StartRetroApp.jsx';
 import RetroBoardApp from './RetroBoardApp.jsx';
 import Particles from './components/Particles/Particles.jsx';
 
-Array.prototype.move = (old_index, new_index) => {
-    if (new_index >= this.length) {
-        var k = new_index - this.length;
-        while ((k--) + 1) {
-            this.push(undefined);
-        }
-    }
-    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-    return this; // for testing purposes
-};
 
 let userId = localStorage.getItem('retrobotID');
 if (!userId) {
@@ -27,6 +22,9 @@ if (!userId) {
   localStorage.setItem('retrobotID', userId);
 }
 window.myID = userId;
+
+window.addEventListener('online', () => isOnline());
+window.addEventListener('offline', () => isOffline());
 
 
 const NoMatch = () => (

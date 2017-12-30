@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 import RetroBoard from './RetroBoard.jsx';
 import ControlPanel from './ControlPanel.jsx';
+import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
 import Loader from './components/Loader/Loader.jsx';
+import NotesModal from './components/NotesModal/NotesModal.jsx';
 
 import {
   retroBoardInit,
+  closeNotesModal,
 } from './flux/actions.js';
 
 import socketInit from './ws/index.js';
@@ -32,6 +35,8 @@ class RetroBoardApp extends React.Component {
           seconds: 0,
         }
       },
+      isOffline: false,
+      notes: null,
     };
   }
 
@@ -48,6 +53,8 @@ class RetroBoardApp extends React.Component {
           deltas: state.deltas,
           timer: state.timer,
         },
+        isOffline: state.isOffline,
+        notes: state.notes,
       });
     });
 
@@ -66,6 +73,14 @@ class RetroBoardApp extends React.Component {
 
     return (
       <div>
+        {this.state.isOffline && <OfflineIndicatorModal />}
+        {this.state.notes && (
+          <NotesModal
+            itemId={this.state.notes}
+            notes={this.state.retro.deltas.find(d => d.id === this.state.notes).notes ? this.state.retro.deltas.find(d => d.id === this.state.notes).notes : ''}
+            onClose={() => closeNotesModal()}
+          />
+        )}
         <ControlPanel {...this.state.retro} />
         <RetroBoard retroKey={this.retroKey} {...this.state.retro} />
       </div>

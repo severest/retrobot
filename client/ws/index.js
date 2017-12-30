@@ -8,6 +8,8 @@ import {
   unhideAll,
   updateVotes,
   updateTimer,
+  addUser,
+  removeUser,
 } from '../flux/actions.js';
 
 let retroChannel;
@@ -15,6 +17,9 @@ const cable = ActionCable.createConsumer();
 
 export const connectToRetro = (room, receivedCallback) => {
   retroChannel = cable.subscriptions.create({ channel: "RetroChannel", room: room }, {
+    connected: function() {
+      this.perform('appear', {userId: window.myID});
+    },
     received: (data) => {
       receivedCallback(data);
     },
@@ -22,7 +27,7 @@ export const connectToRetro = (room, receivedCallback) => {
 };
 
 export const sendPlus = (content) => {
-  retroChannel.send({ type: 'plus', content: content, user: window.myID });
+  retroChannel.send({ type: 'plus', content: content, userId: window.myID });
 };
 
 export const deletePlus = (id) => {
@@ -30,7 +35,7 @@ export const deletePlus = (id) => {
 };
 
 export const sendDelta = (content) => {
-  retroChannel.send({ type: 'delta', content: content, user: window.myID });
+  retroChannel.send({ type: 'delta', content: content, userId: window.myID });
 };
 
 export const deleteDelta = (id) => {
@@ -52,11 +57,17 @@ export const sendDownVote = (itemType, itemId) => {
 export default (room) => {
   connectToRetro(room, (data) => {
     data.hide = !(data.user === window.myID || $('.timer:visible').length === 0);
+    if (data.type === 'connect') {
+      return addUser(data.userId);
+    }
+    if (data.type === 'disconnect') {
+      return removeUser(data.userId);
+    }
     if (data.type === 'plus') {
-      addPlus(data);
+      return addPlus(data);
     }
     if (data.type === 'delta') {
-      addDelta(data);
+      return addDelta(data);
     }
     if (data.type === 'time') {
       updateTimer({
@@ -66,16 +77,17 @@ export default (room) => {
       if (data.minutes === 0 && data.seconds === 0) {
           unhideAll();
       }
+      return;
     }
 
     if (data.type === 'upvote' || data.type === 'downvote') {
-      updateVotes(data);
+      return updateVotes(data);
     }
     if (data.type === 'delete' && data.itemType === 'delta') {
-      removeDelta(data);
+      return removeDelta(data);
     }
     if (data.type === 'delete' && data.itemType === 'plus') {
-      removePlus(data);
+      return removePlus(data);
     }
   });
 }

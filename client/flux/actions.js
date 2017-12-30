@@ -1,47 +1,48 @@
 import action$ from './stream.js';
+import * as actionTypes from './action-types.js';
 
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));
 
 export const addPlus = actionDispatcher((payload) => ({
-  type: 'ADD_PLUS',
+  type: actionTypes.addPlus,
   payload
 }));
 export const removePlus = actionDispatcher((payload) => ({
-  type: 'REMOVE_PLUS',
+  type: actionTypes.removePlus,
   payload
 }));
 
 export const addDelta = actionDispatcher((payload) => ({
-  type: 'ADD_DELTA',
+  type: actionTypes.addDelta,
   payload
 }));
 export const removeDelta = actionDispatcher((payload) => ({
-  type: 'REMOVE_DELTA',
+  type: actionTypes.removeDelta,
   payload
 }));
 
 export const updateVotes = actionDispatcher((payload) => ({
-  type: 'UPDATE_VOTES',
+  type: actionTypes.updateVotes,
   payload
 }));
 
 export const unhideAll = actionDispatcher(() => ({
-  type: 'UNHIDE_ALL',
+  type: actionTypes.unhideAll,
 }));
 
 export const updateOrder = actionDispatcher((payload) => ({
-  type: 'UPDATE_ORDER',
+  type: actionTypes.updateOrder,
   payload,
 }));
 
 export const updateTimer = actionDispatcher((payload) => ({
-  type: 'UPDATE_TIMER',
+  type: actionTypes.updateTimer,
   payload,
 }));
 
 export const sortDeltas = actionDispatcher(() => ({
-  type: 'SORT_DELTAS',
+  type: actionTypes.sortDeltas,
 }));
 
 export const retroBoardInit = (retroKey, history) => {
@@ -71,13 +72,44 @@ export const retroBoardInit = (retroKey, history) => {
 };
 
 export const createRetroError = actionDispatcher((payload) => ({
-  type: 'CREATE_RETRO_ERROR',
+  type: actionTypes.errorWhenCreatingRetro,
   payload,
 }));
 
 export const isLoading = actionDispatcher(() => ({
-  type: 'LOADING',
+  type: actionTypes.loading,
 }));
 export const doneLoading = actionDispatcher(() => ({
-  type: 'DONE_LOADING',
+  type: actionTypes.doneLoading,
+}));
+
+export const addUser = actionDispatcher((payload) => ({
+  type: actionTypes.addUser,
+  payload
+}));
+export const removeUser = actionDispatcher((payload) => ({
+  type: actionTypes.removeUser,
+  payload
+}));
+
+export const isOnline = actionDispatcher(() => ({
+  type: actionTypes.updateOfflineStatus,
+  payload: false,
+}));
+export const isOffline = actionDispatcher(() => ({
+  type: actionTypes.updateOfflineStatus,
+  payload: true,
+}));
+
+export const openNotesModal = actionDispatcher((payload) => ({
+  type: actionTypes.openNotesModal,
+  payload,
+}));
+export const closeNotesModal = actionDispatcher(() => ({
+  type: actionTypes.closeNotesModal,
+}));
+
+export const updateDeltaNotes = actionDispatcher((payload) => ({
+  type: actionTypes.updateDeltaNotes,
+  payload,
 }));

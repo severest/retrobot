@@ -1,2 +1,3 @@
 json.type 'plus'
-json.(plus, :id, :content, :user)
+json.(plus, :id, :content)
+json.userId plus.user
