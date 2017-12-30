@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
       outline: 'none',
     }
   },
+  title: {
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  },
 });
 
 import {
@@ -23,12 +27,17 @@ import {
 class NotesModal extends React.Component {
   static propTypes = {
     itemId: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
     notes: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
-  handleTextareaChange = (ev) => {
-    updateDeltaNotes({id: this.props.itemId, notes: ev.target.value});
+  handleTextareaChange = (evt) => {
+    updateDeltaNotes({
+      id: this.props.itemId,
+      notes: evt.target.value,
+      fireRequest: true
+    });
   }
 
   render() {
@@ -37,9 +46,12 @@ class NotesModal extends React.Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-body">
+              <div className={css(styles.title)}>
+                {this.props.title}
+              </div>
               <textarea
                 className={css(styles.input)}
-                placeholder="Delta notes, action items..."
+                placeholder="Enter notes, action items..."
                 value={this.props.notes}
                 onChange={this.handleTextareaChange}
               />

@@ -20,6 +20,7 @@ export const initState = {
   users: [],
   isOffline: false,
   notes: null,
+  notesLock: null,
 };
 
 // Redux reducer
@@ -46,6 +47,7 @@ const actionMap = {
     return {
       ...state,
       users: state.users.filter(u => u !== action.payload),
+      notesLock: state.notesLock === action.payload ? null : state.notesLock,
     };
   },
   [actionTypes.addPlus]: (state, action) => {
@@ -193,6 +195,18 @@ const actionMap = {
     return {
       ...state,
       deltas: newDeltas,
+    };
+  },
+  [actionTypes.lockNotes]: (state, action) => {
+    return {
+      ...state,
+      notesLock: action.payload,
+    };
+  },
+  [actionTypes.unlockNotes]: (state) => {
+    return {
+      ...state,
+      notesLock: null,
     };
   },
 };

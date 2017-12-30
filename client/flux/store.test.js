@@ -213,6 +213,34 @@ describe('the store', () => {
     expect(newState.users.length).toBe(2);
   });
 
+  it('removes notes lock when user leaves', () => {
+    const init = {
+      ...initState,
+      users: ['123','456','1234'],
+      notesLock: '123',
+    };
+    const action = {
+      type: actionTypes.removeUser,
+      payload: '123',
+    };
+    const newState = reducer(init, action);
+    expect(newState.notesLock).toBe(null);
+  });
+
+  it('doesnt remove notes lock when diff user leaves', () => {
+    const init = {
+      ...initState,
+      users: ['123','456','1234'],
+      notesLock: '456',
+    };
+    const action = {
+      type: actionTypes.removeUser,
+      payload: '123',
+    };
+    const newState = reducer(init, action);
+    expect(newState.notesLock).toBe('456');
+  });
+
   it('updates order', () => {
     const init = {
       ...initState,
@@ -287,6 +315,27 @@ describe('the store', () => {
     };
     let newState = reducer(init, action);
     expect(newState.deltas).toEqual([{id: 1, notes: 'new notes there'}, {id: 2}, {id: 3, notes: 'hi there'}]);
+  });
+
+  it('locks notes', () => {
+    let action = {
+      type: actionTypes.lockNotes,
+      payload: 'jhonny',
+    };
+    let newState = reducer(initState, action);
+    expect(newState.notesLock).toBe('jhonny');
+  });
+
+  it('unlocks notes', () => {
+    const init = {
+      ...initState,
+      notesLock: 'hi',
+    }
+    let action = {
+      type: actionTypes.unlockNotes,
+    };
+    let newState = reducer(init, action);
+    expect(newState.notesLock).toBe(null);
   });
 
 });

@@ -37,6 +37,7 @@ class RetroBoardApp extends React.Component {
       },
       isOffline: false,
       notes: null,
+      notesLock: null,
     };
   }
 
@@ -55,6 +56,7 @@ class RetroBoardApp extends React.Component {
         },
         isOffline: state.isOffline,
         notes: state.notes,
+        notesLock: state.notesLock,
       });
     });
 
@@ -71,18 +73,24 @@ class RetroBoardApp extends React.Component {
       return <Loader />;
     }
 
+    let deltaForNotes;
+    if (this.state.notes && this.state.notesLock === window.myID) {
+      deltaForNotes = this.state.retro.deltas.find(d => d.id === this.state.notes);
+    }
+
     return (
       <div>
         {this.state.isOffline && <OfflineIndicatorModal />}
-        {this.state.notes && (
+        {deltaForNotes && (
           <NotesModal
             itemId={this.state.notes}
-            notes={this.state.retro.deltas.find(d => d.id === this.state.notes).notes ? this.state.retro.deltas.find(d => d.id === this.state.notes).notes : ''}
+            title={deltaForNotes.content}
+            notes={deltaForNotes.notes ? deltaForNotes.notes : ''}
             onClose={() => closeNotesModal()}
           />
         )}
         <ControlPanel {...this.state.retro} />
-        <RetroBoard retroKey={this.retroKey} {...this.state.retro} />
+        <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
       </div>
     );
   }

@@ -22,6 +22,7 @@ class Delta extends React.Component {
     votes: PropTypes.number.isRequired,
     hide: PropTypes.bool,
     retroKey: PropTypes.string.isRequired,
+    showOpenNotesBtn: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -125,12 +126,14 @@ class Delta extends React.Component {
           >
             <i className="fa fa-arrow-down fa-inverse" aria-hidden="true"></i>
           </button>
-          <button
-            onClick={this.handleOpenNotes}
-            className="btn btn-link notes"
-          >
-            <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
-          </button>
+          {this.props.showOpenNotesBtn && (
+            <button
+              onClick={this.handleOpenNotes}
+              className="btn btn-link notes"
+            >
+              <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
+            </button>
+          )}
           <button
             className={deleteClass}
             onClick={this.handleDelete}

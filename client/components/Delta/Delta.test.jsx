@@ -9,6 +9,7 @@ const PROPS = {
   index: 1,
   votes: 0,
   retroKey: '123456',
+  showOpenNotesBtn: true,
 };
 
 it('renders without crashing', () => {

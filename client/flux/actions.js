@@ -1,5 +1,10 @@
 import action$ from './stream.js';
 import * as actionTypes from './action-types.js';
+import {
+  sendNotesLock,
+  sendNotesUnlock,
+  sendNotes,
+} from '../ws/index.js';
 
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));
@@ -101,15 +106,37 @@ export const isOffline = actionDispatcher(() => ({
   payload: true,
 }));
 
-export const openNotesModal = actionDispatcher((payload) => ({
-  type: actionTypes.openNotesModal,
-  payload,
-}));
-export const closeNotesModal = actionDispatcher(() => ({
-  type: actionTypes.closeNotesModal,
-}));
+export const openNotesModal = actionDispatcher((payload) => {
+  sendNotesLock('delta');
+  return {
+    type: actionTypes.openNotesModal,
+    payload,
+  };
+});
+export const closeNotesModal = actionDispatcher(() => {
+  sendNotesUnlock('delta');
+  return {
+    type: actionTypes.closeNotesModal,
+  };
+});
 
-export const updateDeltaNotes = actionDispatcher((payload) => ({
-  type: actionTypes.updateDeltaNotes,
+const debouncedSendNotes = _.debounce((payload) => {
+  sendNotes('delta', payload.id, payload.notes);
+}, 500);
+export const updateDeltaNotes = actionDispatcher((payload) => {
+  if (payload.fireRequest) {
+    debouncedSendNotes(payload);
+  }
+  return {
+    type: actionTypes.updateDeltaNotes,
+    payload,
+  };
+});
+
+export const lockNotes = actionDispatcher((payload) => ({
+  type: actionTypes.lockNotes,
   payload,
+}));
+export const unlockNotes = actionDispatcher(() => ({
+  type: actionTypes.unlockNotes,
 }));

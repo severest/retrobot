@@ -10,6 +10,9 @@ import {
   updateTimer,
   addUser,
   removeUser,
+  lockNotes,
+  unlockNotes,
+  updateDeltaNotes,
 } from '../flux/actions.js';
 
 let retroChannel;
@@ -27,7 +30,7 @@ export const connectToRetro = (room, receivedCallback) => {
 };
 
 export const sendPlus = (content) => {
-  retroChannel.send({ type: 'plus', content: content, userId: window.myID });
+  retroChannel.send({ type: 'plus', content, userId: window.myID });
 };
 
 export const deletePlus = (id) => {
@@ -35,7 +38,7 @@ export const deletePlus = (id) => {
 };
 
 export const sendDelta = (content) => {
-  retroChannel.send({ type: 'delta', content: content, userId: window.myID });
+  retroChannel.send({ type: 'delta', content, userId: window.myID });
 };
 
 export const deleteDelta = (id) => {
@@ -43,15 +46,26 @@ export const deleteDelta = (id) => {
 };
 
 export const sendTime = (minutes, seconds) => {
-  retroChannel.send({ type: 'time', minutes: minutes, seconds: seconds });
+  retroChannel.send({ type: 'time', minutes, seconds });
 };
 
 export const sendUpVote = (itemType, itemId) => {
-  retroChannel.send({ type: 'upvote', itemType: itemType, itemId: itemId });
+  retroChannel.send({ type: 'upvote', itemType, itemId });
 };
 
 export const sendDownVote = (itemType, itemId) => {
-  retroChannel.send({ type: 'downvote', itemType: itemType, itemId: itemId });
+  retroChannel.send({ type: 'downvote', itemType, itemId });
+};
+
+export const sendNotesLock = (itemType) => {
+  retroChannel.send({ type: 'noteslock', itemType, userId: window.myID });
+};
+export const sendNotesUnlock = (itemType) => {
+  retroChannel.send({ type: 'notesunlock', itemType, userId: window.myID });
+};
+
+export const sendNotes = (itemType, itemId, notes) => {
+  retroChannel.send({ type: 'notes', itemType, itemId, notes });
 };
 
 export default (room) => {
@@ -88,6 +102,16 @@ export default (room) => {
     }
     if (data.type === 'delete' && data.itemType === 'plus') {
       return removePlus(data);
+    }
+
+    if (data.type === 'noteslock' && data.itemType === 'delta') {
+      return lockNotes(data.userId);
+    }
+    if (data.type === 'notesunlock' && data.itemType === 'delta') {
+      return unlockNotes();
+    }
+    if (data.type === 'notes' && data.itemType === 'delta') {
+      return updateDeltaNotes({id: data.itemId, notes: data.notes});
     }
   });
 }

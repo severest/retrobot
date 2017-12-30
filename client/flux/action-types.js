@@ -16,3 +16,5 @@ export const updateOfflineStatus = 'UPDATE_OFFLINE_STATUS';
 export const openNotesModal = 'OPEN_NOTES_MODAL';
 export const closeNotesModal = 'CLOSE_NOTES_MODAL';
 export const updateDeltaNotes = 'UPDATE_DELTA_NOTES';
+export const lockNotes = 'LOCK_NOTES';
+export const unlockNotes = 'UNLOCK_NOTES';
