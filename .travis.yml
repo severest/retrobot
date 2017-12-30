@@ -5,10 +5,13 @@ script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
   - bundle exec rake
+  - yarn run test
 after_success:
   - bundle exec codeclimate-test-reporter
 dist: trusty
-cache: bundler
+cache:
+  - bundler
+  - yarn
 addons:
   code_climate:
     repo_token: c600f26a98720a78cc3b5d8340e1141cf6c0ec6860882c9a7a296f42c721d386
