@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "build": "cross-env NODE_ENV=production webpack --hide-modules",
-    "test": "jest -o --watch"
+    "test": "jest -o --watch",
+    "test:ci": "jest"
   },
   "dependencies": {
     "actioncable": "^5.1.4",
@@ -59,6 +60,9 @@
   "jest": {
     "setupFiles": [
       "./setupJest.js"
+    ],
+    "roots": [
+      "./client"
     ]
   }
 }

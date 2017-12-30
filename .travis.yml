@@ -6,7 +6,7 @@ script:
   - bundle exec rake db:test:prepare
   - bundle exec rake
   - yarn install --pure-lockfile
-  - yarn run test
+  - yarn run test:ci
 after_success:
   - bundle exec codeclimate-test-reporter
 dist: trusty
