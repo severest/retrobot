@@ -140,3 +140,36 @@ export const lockNotes = actionDispatcher((payload) => ({
 export const unlockNotes = actionDispatcher(() => ({
   type: actionTypes.unlockNotes,
 }));
+
+export const getTeamSummary = (team) => {
+  isLoading();
+  fetch(`/api/team/summary`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({team}),
+  })
+  .then((res) => {
+    doneLoading();
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw new Error();
+    }
+  })
+  .then((team) => {
+    receiveTeamSummary(team);
+  })
+  .catch(() => getTeamSummaryError());
+};
+
+export const getTeamSummaryError = actionDispatcher(() => ({
+  type: actionTypes.getTeamSummaryError,
+}));
+export const receiveTeamSummary = actionDispatcher((payload) => ({
+  type: actionTypes.receiveTeamSummary,
+  payload,
+}));

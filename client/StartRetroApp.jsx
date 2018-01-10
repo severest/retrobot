@@ -42,8 +42,8 @@ class StartRetroApp extends React.Component {
     if ($(this.team).val().trim() !== '') {
       retro.team = $(this.team).val().trim();
     }
-    if ($(this.password).val().trim() !== '') {
-      retro.password = $(this.password).val().trim();
+    if ($(this.password).val() !== '') {
+      retro.password = $(this.password).val();
     }
     isLoading();
     fetch('/api/retro/new', {

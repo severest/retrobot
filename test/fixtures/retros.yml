@@ -3,7 +3,9 @@
 one:
   id: 1
   key: abc123
+  team: one
 
 two:
   id: 2
   key: jjj222
+  team: one

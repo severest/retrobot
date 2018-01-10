@@ -18,3 +18,5 @@ export const closeNotesModal = 'CLOSE_NOTES_MODAL';
 export const updateDeltaNotes = 'UPDATE_DELTA_NOTES';
 export const lockNotes = 'LOCK_NOTES';
 export const unlockNotes = 'UNLOCK_NOTES';
+export const getTeamSummaryError = 'GET_TEAM_SUMMARY_ERROR';
+export const receiveTeamSummary = 'RECEIVE_TEAM_SUMMARY';

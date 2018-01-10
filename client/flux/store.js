@@ -16,11 +16,13 @@ export const initState = {
     seconds: 0,
   },
   createRetroError: '',
+  getTeamSummaryError: '',
   isLoading: false,
   users: [],
   isOffline: false,
   notes: null,
   notesLock: null,
+  teamSummary: null,
 };
 
 // Redux reducer
@@ -207,6 +209,18 @@ const actionMap = {
     return {
       ...state,
       notesLock: null,
+    };
+  },
+  [actionTypes.receiveTeamSummary]: (state, action) => {
+    return {
+      ...state,
+      teamSummary: action.payload,
+    };
+  },
+  [actionTypes.getTeamSummaryError]: (state) => {
+    return {
+      ...state,
+      getTeamSummaryError: 'No access to team',
     };
   },
 };

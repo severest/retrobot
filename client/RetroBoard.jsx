@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import Delta from './components/Delta/Delta-DragAndDrop.jsx';
 import Plus from './components/Plus/Plus-DragAndDrop.jsx';

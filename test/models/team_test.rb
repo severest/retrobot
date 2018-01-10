@@ -56,4 +56,35 @@ class TeamTest < ActiveSupport::TestCase
     t = Team.find_or_create(name: password_protected_team.name, password: 'testpassword')
     assert_not_nil t
   end
+
+  test "find_with_password team with just name" do
+    t = Team.find_with_password(name: "  TEAM ONE")
+    assert_equal t.id, teams(:one).id
+  end
+
+  test "find_with_password team that doesnt exist" do
+    assert_raises(TeamNotFound) do
+      Team.find_with_password(name: "nonexistant team")
+    end
+  end
+
+  test "find_with_password team without password" do
+    assert_raises(RetroNotAuthorized) do
+      password_protected_team = teams(:password_protected)
+      Team.find_with_password(name: password_protected_team.name)
+    end
+  end
+
+  test "find_with_password team with bad password" do
+    assert_raises(RetroNotAuthorized) do
+      password_protected_team = teams(:password_protected)
+      Team.find_with_password(name: password_protected_team.name, password: 'jojo')
+    end
+  end
+
+  test "find_with_password team with correct password" do
+    password_protected_team = teams(:password_protected)
+    t = Team.find_with_password(name: password_protected_team.name, password: 'testpassword')
+    assert_equal t.id, password_protected_team.id
+  end
 end

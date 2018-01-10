@@ -13,6 +13,7 @@ import {
 
 import StartRetroApp from './StartRetroApp.jsx';
 import RetroBoardApp from './RetroBoardApp.jsx';
+import TeamSummaryApp from './TeamSummaryApp.jsx';
 import Particles from './components/Particles/Particles.jsx';
 
 
@@ -36,6 +37,7 @@ ReactDOM.render((
     <Switch>
       <Route exact path="/" component={StartRetroApp}/>
       <Route path="/retro/:key" component={RetroBoardApp}/>
+      <Route path="/summary/:team" component={TeamSummaryApp}/>
       <Route component={NoMatch}/>
     </Switch>
   </BrowserRouter>
