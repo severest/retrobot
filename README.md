@@ -1,3 +1,5 @@
+![build status](https://travis-ci.org/severest/retrobot.svg?branch=master)
+
 ## Installation
 
 1. Install ruby 2.4.1
