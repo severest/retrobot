@@ -79,21 +79,27 @@ class Delta extends React.Component {
 
   handleOpenNotes = () => openNotesModal(this.props.id)
 
-  render() {
-    const topClass = classNames(
+  get topClass() {
+    return classNames(
       'card',
       'delta-card',
       {
         'hidden': this.props.hide,
       },
     );
-    const voteClass = classNames(
+  }
+
+  get voteClass() {
+    return classNames(
       'card__votes',
       {
         'mine': this.state.IVoted,
       },
     );
-    const deleteClass = classNames(
+  }
+
+  get deleteClass() {
+    return classNames(
       'btn',
       'btn-link',
       'card__delete',
@@ -101,12 +107,14 @@ class Delta extends React.Component {
         'hidden': window.myID !== this.props.userId,
       },
     );
+  }
 
+  render() {
     return (
-      <div className={topClass}>
+      <div className={this.topClass}>
         <div className="card__left">
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          <div className={voteClass}>
+          <div className={this.voteClass}>
             {this.props.votes}
           </div>
         </div>
@@ -135,7 +143,7 @@ class Delta extends React.Component {
             </button>
           )}
           <button
-            className={deleteClass}
+            className={this.deleteClass}
             onClick={this.handleDelete}
           >
             <i className="fa fa-trash" aria-hidden="true"></i>
