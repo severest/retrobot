@@ -37,7 +37,8 @@ class StartRetroApp extends React.Component {
     this.storeSubscription.unsubscribe();
   }
 
-  startRetroClick = () => {
+  startRetroClick = (evt) => {
+    evt.preventDefault();
     const retro = {};
     if ($(this.team).val().trim() !== '') {
       retro.team = $(this.team).val().trim();
@@ -80,32 +81,34 @@ class StartRetroApp extends React.Component {
       <div>
         {this.state.isOffline && <OfflineIndicatorModal />}
         <div className="create-retro">
-          <div className="form-group">
-            <input
-              type="text"
-              ref={c => this.team = c}
-              className="form-control"
-              placeholder="Team name (optional)"
-            />
-          </div>
-          <div className={passwordClasses}>
-            <input
-              type="password"
-              ref={c => this.password = c}
-              className="form-control"
-              placeholder="Password (optional)"
-            />
-            {this.state.error !== '' && (
-              <p className="help-block">{this.state.error}</p>
-            )}
-          </div>
-          <button
-            className="btn btn-primary create-retro-btn"
-            onClick={this.startRetroClick}
-            disabled={this.state.isLoading}
-          >
-            <i className="fa fa-play" aria-hidden="true"></i> Start retro
-          </button>
+          <form role="form" onSubmit={this.startRetroClick}>
+            <div className="form-group">
+              <input
+                type="text"
+                ref={c => this.team = c}
+                className="form-control"
+                placeholder="Team name (optional)"
+              />
+            </div>
+            <div className={passwordClasses}>
+              <input
+                type="password"
+                ref={c => this.password = c}
+                className="form-control"
+                placeholder="Password (optional)"
+              />
+              {this.state.error !== '' && (
+                <p className="help-block">{this.state.error}</p>
+              )}
+            </div>
+            <button
+              className="btn btn-primary create-retro-btn"
+              type="submit"
+              disabled={this.state.isLoading}
+            >
+              <i className="fa fa-play" aria-hidden="true"></i> Start retro
+            </button>
+          </form>
         </div>
       </div>
     );

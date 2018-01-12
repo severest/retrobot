@@ -44,7 +44,8 @@ class TeamSummaryApp extends React.Component {
     this.storeSubscription.unsubscribe();
   }
 
-  getTeamSummary = () => {
+  getTeamSummary = (evt) => {
+    evt.preventDefault();
     if ($(this.password).val() !== '') {
       getTeamSummary({
         name: this.teamName,
@@ -70,24 +71,26 @@ class TeamSummaryApp extends React.Component {
         {this.state.isOffline && <OfflineIndicatorModal />}
         {this.state.teamSummary === null ? (
           <div className="create-retro">
-            <div className={passwordClasses}>
-              <input
-                type="password"
-                ref={c => this.password = c}
-                className="form-control"
-                placeholder="Password"
-              />
-              {this.state.error !== '' && (
-                <p className="help-block">{this.state.error}</p>
-              )}
-            </div>
-            <button
-              className="btn btn-primary create-retro-btn"
-              onClick={this.getTeamSummary}
-              disabled={this.state.isLoading}
-            >
-              Get summary
-            </button>
+            <form role="form" onSubmit={this.getTeamSummary}>
+              <div className={passwordClasses}>
+                <input
+                  type="password"
+                  ref={c => this.password = c}
+                  className="form-control"
+                  placeholder="Password"
+                />
+                {this.state.error !== '' && (
+                  <p className="help-block">{this.state.error}</p>
+                )}
+              </div>
+              <button
+                className="btn btn-primary create-retro-btn"
+                type="submit"
+                disabled={this.state.isLoading}
+              >
+                Get summary
+              </button>
+            </form>
           </div>
         ) : (
           <TeamSummary {...this.state.teamSummary} />
