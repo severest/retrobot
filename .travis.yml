@@ -1,12 +1,21 @@
 language: ruby
 rvm:
   - 2.4.1
+install:
+  - wget -N http://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - rm ~/chromedriver_linux64.zip
+  - sudo mv -f ~/chromedriver /usr/local/share/
+  - sudo chmod +x /usr/local/share/chromedriver
+  - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
   - bundle exec rake
   - yarn install --pure-lockfile
   - yarn run test:ci
+  - yarn run build
+  - bundle exec rails test:system
 after_success:
   - bundle exec codeclimate-test-reporter
 dist: trusty
@@ -17,3 +26,4 @@ cache:
 addons:
   code_climate:
     repo_token: c600f26a98720a78cc3b5d8340e1141cf6c0ec6860882c9a7a296f42c721d386
+  chrome: stable

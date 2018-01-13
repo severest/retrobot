@@ -83,6 +83,7 @@ class Delta extends React.Component {
     return classNames(
       'card',
       'delta-card',
+      'js-test-delta',
       {
         'hidden': this.props.hide,
       },

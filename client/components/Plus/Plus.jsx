@@ -28,6 +28,7 @@ class Plus extends React.Component {
     const topClass = classNames(
       'card',
       'plus-card',
+      'js-test-plus',
       {
         'hidden': this.props.hide,
       },

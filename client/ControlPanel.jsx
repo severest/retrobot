@@ -60,7 +60,7 @@ class ControlPanel extends React.Component {
         </div>
         <div className="actions">
           {this.props.timer.show ? (
-            <div className="timer">{`${this.props.timer.minutes}:${this.props.timer.seconds < 10 ? '0' + this.props.timer.seconds : this.props.timer.seconds}`}</div>
+            <div className="timer js-test-timer">{`${this.props.timer.minutes}:${this.props.timer.seconds < 10 ? '0' + this.props.timer.seconds : this.props.timer.seconds}`}</div>
           ) : (
             <div className="start-timer">
               <button className="btn btn-primary" onClick={this.handleStartTimer}>Start timer</button>
@@ -89,7 +89,7 @@ class ControlPanel extends React.Component {
                 Plus
               </button>
               <button
-                className="btn btn-default"
+                className="btn btn-default js-test-send-delta-btn"
                 type="button"
                 onClick={this.handleSendDelta}
               >
