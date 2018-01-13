@@ -70,7 +70,7 @@ export const sendNotes = (itemType, itemId, notes) => {
 
 export default (room) => {
   connectToRetro(room, (data) => {
-    data.hide = !(data.user === window.myID || $('.timer:visible').length === 0);
+    data.hide = !(data.userId === window.myID || $('.timer:visible').length === 0);
     if (data.type === 'connect') {
       return addUser(data.userId);
     }
