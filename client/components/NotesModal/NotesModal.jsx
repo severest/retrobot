@@ -32,7 +32,20 @@ class NotesModal extends React.Component {
     onClose: PropTypes.func.isRequired,
   }
 
+  state = {
+    notes: '',
+  }
+
+  componentDidMount() {
+    this.setState({
+      notes: this.props.notes,
+    });
+  }
+
   handleTextareaChange = (evt) => {
+    this.setState({
+      notes: evt.target.value,
+    });
     updateDeltaNotes({
       id: this.props.itemId,
       notes: evt.target.value,
@@ -52,7 +65,7 @@ class NotesModal extends React.Component {
               <textarea
                 className={css(styles.input)}
                 placeholder="Enter notes, action items..."
-                value={this.props.notes}
+                value={this.state.notes}
                 onChange={this.handleTextareaChange}
               />
             </div>
