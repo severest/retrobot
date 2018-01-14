@@ -24,4 +24,4 @@
 
 /config/deploy/**
 
-public/dist
+public/*
