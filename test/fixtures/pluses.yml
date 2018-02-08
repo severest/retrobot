@@ -11,3 +11,9 @@ two:
   retro_id: 1
   created_at: <%= 5.day.ago.to_s(:db) %>
   updated_at: <%= 5.day.ago.to_s(:db) %>
+
+two:
+  content: MyText
+  retro_id: 5
+  created_at: <%= 11.day.ago.to_s(:db) %>
+  updated_at: <%= 11.day.ago.to_s(:db) %>

@@ -40,3 +40,4 @@ group :development do
 end
 
 gem 'codeclimate-test-reporter'
+gem 'whenever', require: false

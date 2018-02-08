@@ -4,8 +4,24 @@ one:
   id: 1
   key: abc123
   team: one
+  created_at: <%= 5.day.ago.to_s(:db) %>
+  updated_at: <%= 5.day.ago.to_s(:db) %>
 
-two:
+empty:
   id: 2
   key: jjj222
   team: one
+  created_at: <%= 5.day.ago.to_s(:db) %>
+  updated_at: <%= 5.day.ago.to_s(:db) %>
+
+empty_and_old:
+  id: 4
+  key: jjj224
+  created_at: <%= 11.day.ago.to_s(:db) %>
+  updated_at: <%= 11.day.ago.to_s(:db) %>
+
+old:
+  id: 5
+  key: jjj225
+  created_at: <%= 11.day.ago.to_s(:db) %>
+  updated_at: <%= 11.day.ago.to_s(:db) %>

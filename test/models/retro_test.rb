@@ -32,4 +32,10 @@ class RetroTest < ActiveSupport::TestCase
       Retro.create(key: '123?56')
     end
   end
+
+  test "prune old retros" do
+    assert_difference 'Retro.count', -1 do
+      Retro.prune_old_retros
+    end
+  end
 end
