@@ -14,13 +14,13 @@ class RetroController < ApplicationController
       end
     end
     key = SecureRandom.hex(3)
-    @retro = Retro.create(key: key, team: team)
+    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator])
     return render json: { key: @retro.key }
   end
 
   private
 
   def retro_params
-    params.fetch(:retro, {}).permit(:team, :password)
+    params.fetch(:retro, {}).permit(:team, :password, :creator)
   end
 end

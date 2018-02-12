@@ -13,6 +13,7 @@ import {
   lockNotes,
   unlockNotes,
   updateDeltaNotes,
+  setRetroStatus,
 } from '../flux/actions.js';
 
 let retroChannel;
@@ -68,9 +69,16 @@ export const sendNotes = (itemType, itemId, notes) => {
   retroChannel.send({ type: 'notes', itemType, itemId, notes });
 };
 
+export const lockRetro = () => {
+  retroChannel.send({ type: 'lock' });
+};
+
+export const unlockRetro = () => {
+  retroChannel.send({ type: 'unlock' });
+};
+
 export default (room) => {
   connectToRetro(room, (data) => {
-    data.hide = !(data.userId === window.myID || $('.timer:visible').length === 0);
     if (data.type === 'connect') {
       return addUser(data.userId);
     }
@@ -112,6 +120,9 @@ export default (room) => {
     }
     if (data.type === 'notes' && data.itemType === 'delta') {
       return updateDeltaNotes({id: data.itemId, notes: data.notes});
+    }
+    if (data.type === 'status') {
+      return setRetroStatus(data.status)
     }
   });
 }

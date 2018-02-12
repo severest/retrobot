@@ -6,6 +6,7 @@ import ControlPanel from './ControlPanel.jsx';
 import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
 import Loader from './components/Loader/Loader.jsx';
 import NotesModal from './components/NotesModal/NotesModal.jsx';
+import { RETRO_STATUS } from './utils/constants.js';
 
 import {
   retroBoardInit,
@@ -33,7 +34,9 @@ class RetroBoardApp extends React.Component {
           show: false,
           minutes: 0,
           seconds: 0,
-        }
+        },
+        state: RETRO_STATUS.IN_PROGRESS,
+        creator: false,
       },
       isOffline: false,
       notes: null,
@@ -53,6 +56,8 @@ class RetroBoardApp extends React.Component {
           pluses: state.pluses,
           deltas: state.deltas,
           timer: state.timer,
+          state: state.retroStatus,
+          creator: state.creator,
         },
         isOffline: state.isOffline,
         notes: state.notes,
@@ -89,7 +94,9 @@ class RetroBoardApp extends React.Component {
             onClose={() => closeNotesModal()}
           />
         )}
-        <ControlPanel {...this.state.retro} />
+        <ControlPanel
+          {...this.state.retro}
+        />
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
       </div>
     );

@@ -13,6 +13,7 @@ class RetroBoard extends React.Component {
     deltas: PropTypes.array.isRequired,
     retroKey: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
+    state: PropTypes.string.isRequired,
   }
 
   render() {
@@ -27,6 +28,7 @@ class RetroBoard extends React.Component {
             >
               <Plus
                 index={i}
+                retroState={this.props.state}
                 {...p}
               />
             </CSSTransition>
@@ -44,6 +46,7 @@ class RetroBoard extends React.Component {
                 index={i}
                 retroKey={this.props.retroKey}
                 showOpenNotesBtn={this.props.showOpenNotesBtn}
+                retroState={this.props.state}
                 {...d}
               />
             </CSSTransition>

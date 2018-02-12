@@ -60,6 +60,10 @@
     .btn {
       width: 35px;
       padding: 10px;
+
+      &.mine {
+        background: $my-vote-tally;
+      }
     }
 
     .btn:hover {
@@ -87,10 +91,6 @@
     background: $vote-tally;
     padding: 10px 0;
     border-bottom-left-radius: 4px;
-
-    &.mine {
-      background: $my-vote-tally;
-    }
   }
 
   &__delete {

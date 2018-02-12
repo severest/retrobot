@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171220174533) do
+ActiveRecord::Schema.define(version: 20180211000205) do
 
   create_table "deltas", force: :cascade do |t|
     t.text "content"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20171220174533) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "team_id"
+    t.integer "status", default: 2
+    t.string "creator"
     t.index ["key"], name: "index_retros_on_key", unique: true
     t.index ["team_id"], name: "index_retros_on_team_id"
   end

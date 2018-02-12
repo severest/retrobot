@@ -50,6 +50,16 @@ export const sortDeltas = actionDispatcher(() => ({
   type: actionTypes.sortDeltas,
 }));
 
+export const setRetroStatus = actionDispatcher((payload) => ({
+  type: actionTypes.setRetroStatus,
+  payload,
+}));
+
+export const setRetroCreator = actionDispatcher((payload) => ({
+  type: actionTypes.setRetroCreator,
+  payload,
+}));
+
 export const retroBoardInit = (retroKey, history) => {
   isLoading();
   fetch(`/api/retro/${retroKey}`, {
@@ -71,6 +81,8 @@ export const retroBoardInit = (retroKey, history) => {
     }
   })
   .then((retro) => {
+    setRetroStatus(retro.status);
+    setRetroCreator(retro.creator === window.myID);
     retro.deltas.forEach((delta) => addDelta(delta));
     retro.pluses.forEach((plus) => addPlus(plus));
   });

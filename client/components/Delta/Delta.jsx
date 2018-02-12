@@ -10,7 +10,7 @@ import {
 import {
   openNotesModal,
 } from '../../flux/actions.js';
-import { MAX_VOTES } from '../../utils/constants.js';
+import { MAX_VOTES, RETRO_STATUS } from '../../utils/constants.js';
 
 
 class Delta extends React.Component {
@@ -22,6 +22,7 @@ class Delta extends React.Component {
     votes: PropTypes.number.isRequired,
     hide: PropTypes.bool,
     retroKey: PropTypes.string.isRequired,
+    retroState: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
   }
 
@@ -84,15 +85,20 @@ class Delta extends React.Component {
       'card',
       'delta-card',
       'js-test-delta',
-      {
-        'hidden': this.props.hide,
-      },
     );
   }
 
   get voteClass() {
     return classNames(
       'card__votes',
+    );
+  }
+
+  get upVoteClass() {
+    return classNames(
+      'btn',
+      'btn-link',
+      'upvote',
       {
         'mine': this.state.IVoted,
       },
@@ -111,31 +117,38 @@ class Delta extends React.Component {
   }
 
   render() {
+    if (this.props.hide) return null;
     return (
       <div className={this.topClass}>
         <div className="card__left">
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          <div className={this.voteClass}>
-            {this.props.votes}
-          </div>
+          {this.props.retroState === RETRO_STATUS.LOCKED && (
+            <div className={this.voteClass}>
+              {this.props.votes}
+            </div>
+          )}
         </div>
         <div className="card__content">
           {this.props.content}
         </div>
         <div className="card__right">
-          <button
-            onClick={this.handleUpVote}
-            className="btn btn-link upvote"
-          >
-            <i className="fa fa-arrow-up fa-inverse" aria-hidden="true"></i>
-          </button>
-          <button
-            onClick={this.handleDownVote}
-            className="btn btn-link downvote"
-          >
-            <i className="fa fa-arrow-down fa-inverse" aria-hidden="true"></i>
-          </button>
-          {this.props.showOpenNotesBtn && (
+          {this.props.retroState !== RETRO_STATUS.LOCKED && (
+            <button
+              onClick={this.handleUpVote}
+              className={this.upVoteClass}
+            >
+              <i className="fa fa-arrow-up fa-inverse" aria-hidden="true"></i>
+            </button>
+          )}
+          {this.props.retroState !== RETRO_STATUS.LOCKED && (
+            <button
+              onClick={this.handleDownVote}
+              className="btn btn-link downvote"
+            >
+              <i className="fa fa-arrow-down fa-inverse" aria-hidden="true"></i>
+            </button>
+          )}
+          {this.props.showOpenNotesBtn && this.props.retroState === RETRO_STATUS.LOCKED && (
             <button
               onClick={this.handleOpenNotes}
               className="btn btn-link notes"
@@ -143,12 +156,14 @@ class Delta extends React.Component {
               <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
             </button>
           )}
-          <button
-            className={this.deleteClass}
-            onClick={this.handleDelete}
-          >
-            <i className="fa fa-trash" aria-hidden="true"></i>
-          </button>
+          {this.props.retroState !== RETRO_STATUS.LOCKED && (
+            <button
+              className={this.deleteClass}
+              onClick={this.handleDelete}
+            >
+              <i className="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          )}
         </div>
       </div>
     );

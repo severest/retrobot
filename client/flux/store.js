@@ -5,6 +5,8 @@ import '../utils/move-polyfill.js';
 
 import * as actionTypes from './action-types.js';
 
+import { RETRO_STATUS } from '../utils/constants.js';
+
 
 // Initial State
 export const initState = {
@@ -23,6 +25,8 @@ export const initState = {
   notes: null,
   notesLock: null,
   teamSummary: null,
+  retroStatus: RETRO_STATUS.IN_PROGRESS,
+  creator: false,
 };
 
 // Redux reducer
@@ -55,6 +59,7 @@ const actionMap = {
   [actionTypes.addPlus]: (state, action) => {
     const plus = action.payload;
     plus.order = state.pluses.length;
+    plus.hide = plus.userId !== window.myID && state.retroStatus === RETRO_STATUS.IN_PROGRESS;
     return {
       ...state,
       pluses: state.pluses.concat(plus),
@@ -74,6 +79,7 @@ const actionMap = {
   [actionTypes.addDelta]: (state, action) => {
     const delta = action.payload;
     delta.order = state.deltas.length;
+    delta.hide = delta.userId !== window.myID && state.retroStatus === RETRO_STATUS.IN_PROGRESS;
     return {
       ...state,
       deltas: state.deltas.concat(delta),
@@ -221,6 +227,18 @@ const actionMap = {
     return {
       ...state,
       getTeamSummaryError: 'No access to team',
+    };
+  },
+  [actionTypes.setRetroStatus]: (state, action) => {
+    return {
+      ...state,
+      retroStatus: action.payload,
+    };
+  },
+  [actionTypes.setRetroCreator]: (state, action) => {
+    return {
+      ...state,
+      creator: action.payload,
     };
   },
 };

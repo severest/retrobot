@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import {
   deletePlus,
 } from '../../ws/index.js';
+import { RETRO_STATUS } from '../../utils/constants.js';
 
 class Plus extends React.Component {
   static propTypes = {
@@ -13,6 +14,7 @@ class Plus extends React.Component {
     hide: PropTypes.bool,
     id: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
+    retroState: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -25,13 +27,12 @@ class Plus extends React.Component {
   }
 
   render() {
+    if (this.props.hide) return null;
+
     const topClass = classNames(
       'card',
       'plus-card',
       'js-test-plus',
-      {
-        'hidden': this.props.hide,
-      },
     );
     const deleteClass = classNames(
       'btn',
@@ -51,12 +52,14 @@ class Plus extends React.Component {
           {this.props.content}
         </div>
         <div className="card__right">
-          <button
-            className={deleteClass}
-            onClick={this.handleDelete}
-          >
-            <i className="fa fa-trash" aria-hidden="true"></i>
-          </button>
+          {this.props.retroState !== RETRO_STATUS.LOCKED && (
+            <button
+              className={deleteClass}
+              onClick={this.handleDelete}
+            >
+              <i className="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          )}
         </div>
       </div>
     );

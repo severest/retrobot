@@ -1,4 +1,4 @@
-json.(@retro, :id, :key)
+json.(@retro, :id, :key, :status, :creator)
 
 json.deltas do
   json.array! @retro.deltas, partial: 'retro/delta', as: :delta

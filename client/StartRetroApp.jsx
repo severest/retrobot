@@ -39,7 +39,9 @@ class StartRetroApp extends React.Component {
 
   startRetroClick = (evt) => {
     evt.preventDefault();
-    const retro = {};
+    const retro = {
+      creator: window.myID,
+    };
     if ($(this.team).val().trim() !== '') {
       retro.team = $(this.team).val().trim();
     }
