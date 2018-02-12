@@ -14,7 +14,7 @@ class RetroController < ApplicationController
       end
     end
     key = SecureRandom.hex(3)
-    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator])
+    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator], status: 'in_progress')
     return render json: { key: @retro.key }
   end
 

@@ -99,7 +99,7 @@ class ControlPanel extends React.Component {
     return (
       <div className="control-panel">
         <div className="title">
-          <Link to="/" className="jojos">Retrobot</Link>
+          <Link to="/">Retrobot</Link>
         </div>
         {this.renderControls()}
         <div className="inputs">
@@ -109,12 +109,14 @@ class ControlPanel extends React.Component {
               ref={c => this.inputBox = c}
               className="form-control"
               onKeyPress={this.handleInputKeyPress}
+              disabled={this.props.state === RETRO_STATUS.LOCKED}
             />
             <span className="input-group-btn">
               <button
                 className="btn btn-default"
                 type="button"
                 onClick={this.handleSendPlus}
+                disabled={this.props.state === RETRO_STATUS.LOCKED}
               >
                 Plus
               </button>
@@ -122,6 +124,7 @@ class ControlPanel extends React.Component {
                 className="btn btn-default js-test-send-delta-btn"
                 type="button"
                 onClick={this.handleSendDelta}
+                disabled={this.props.state === RETRO_STATUS.LOCKED}
               >
                 Delta
               </button>

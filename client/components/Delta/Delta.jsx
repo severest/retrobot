@@ -75,6 +75,13 @@ class Delta extends React.Component {
   }
 
   handleDelete = () => {
+    const key = `delta-${this.props.id}`;
+    let voted = sessionStorage.getItem(key);
+    if (voted !== null) {
+      voted = parseInt(voted);
+      const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
+      sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes - voted);
+    }
     deleteDelta(this.props.id);
   }
 

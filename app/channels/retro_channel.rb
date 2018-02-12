@@ -23,6 +23,7 @@ class RetroChannel < ApplicationCable::Channel
     elsif data['type'] == 'time' and data['minutes'] == 0 and data['seconds'] == 0
       retro.status = :voting
       retro.save
+      self.broadcast(data)
       self.broadcast({'type' => 'status', 'status' => 'voting'})
     elsif data['type'] == 'lock'
       retro.status = :locked
@@ -32,7 +33,7 @@ class RetroChannel < ApplicationCable::Channel
       retro.status = :voting
       retro.save
       self.broadcast({'type' => 'status', 'status' => 'voting'})
-    elsif data['type'] == 'noteslock' or data['type'] == 'notesunlock'
+    elsif ['noteslock', 'notesunlock', 'time'].include? data['type']
       self.broadcast(data)
     end
 

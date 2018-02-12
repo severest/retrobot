@@ -83,7 +83,7 @@ export const retroBoardInit = (retroKey, history) => {
   .then((retro) => {
     setRetroStatus(retro.status);
     setRetroCreator(retro.creator === window.myID);
-    retro.deltas.forEach((delta) => addDelta(delta));
+    retro.deltas.sort((a,b) => b.votes - a.votes).forEach((delta) => addDelta(delta));
     retro.pluses.forEach((plus) => addPlus(plus));
   });
 };
