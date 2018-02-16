@@ -41,6 +41,7 @@ class RetroBoardApp extends React.Component {
       isOffline: false,
       notes: null,
       notesLock: null,
+      users: [],
     };
   }
 
@@ -62,6 +63,7 @@ class RetroBoardApp extends React.Component {
         isOffline: state.isOffline,
         notes: state.notes,
         notesLock: state.notesLock,
+        users: state.users,
       });
     });
 
@@ -96,6 +98,8 @@ class RetroBoardApp extends React.Component {
         )}
         <ControlPanel
           {...this.state.retro}
+          userCount={this.state.users.length}
+          voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes, 0)}
         />
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
       </div>

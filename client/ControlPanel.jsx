@@ -25,6 +25,8 @@ class ControlPanel extends React.Component {
       minutes: PropTypes.number.isRequired,
       seconds: PropTypes.number.isRequired,
     }).isRequired,
+    userCount: PropTypes.number.isRequired,
+    voteCount: PropTypes.number.isRequired,
   }
 
   handleSendPlus = () => {
@@ -90,6 +92,11 @@ class ControlPanel extends React.Component {
           <button className="btn btn-default" onClick={this.handleSortDeltas}>
             <i className="fa fa-sort-amount-desc" aria-hidden="true"></i>
           </button>
+        )}
+        {this.props.state !== RETRO_STATUS.LOCKED && this.props.creator && (
+          <div className="vote-tally">
+            {this.props.voteCount} <i className="fa fa-plus-circle" aria-hidden="true"></i> / {this.props.userCount} <i className="fa fa-user" aria-hidden="true"></i>
+          </div>
         )}
       </div>
     );
