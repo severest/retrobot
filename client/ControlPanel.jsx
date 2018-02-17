@@ -79,7 +79,7 @@ class ControlPanel extends React.Component {
           </div>
         )}
         {this.props.state === RETRO_STATUS.VOTING && this.props.creator && (
-          <button className="btn btn-default" onClick={this.handleLock}>
+          <button className="btn btn-default js-test-lock" onClick={this.handleLock}>
             <i className="fa fa-lock" aria-hidden="true"></i>
           </button>
         )}

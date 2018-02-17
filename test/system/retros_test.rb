@@ -30,6 +30,18 @@ class RetrosTest < ApplicationSystemTestCase
 
     add_delta("delta2")
     add_plus("plus2")
+
+    r = Retro.last
+    r.status = 'voting'
+    r.save
+
+    if !ENV['LOCAL_TESTING'].nil?
+      visit "http://localhost:8080/retro/#{r.key}"
+    else
+      visit "/retro/#{r.key}"
+    end
+
+    click_on(class: 'js-test-lock')
   end
 
   def add_delta(text)
