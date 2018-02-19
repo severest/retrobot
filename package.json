@@ -11,7 +11,7 @@
     "test:ci": "jest"
   },
   "dependencies": {
-    "actioncable": "^5.1.4",
+    "actioncable": "^5.1.5",
     "aphrodite": "1.2.5",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
