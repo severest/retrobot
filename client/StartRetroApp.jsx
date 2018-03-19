@@ -68,15 +68,19 @@ class StartRetroApp extends React.Component {
       } else {
         this.props.history.push(`/retro/${retro.key}`);
       }
+    }).catch(() => {
+      doneLoading();
+      createRetroError('There was an unknown error, please try again.')
     });
   }
 
   render() {
+    const unknownRegex = /unknown/;
     const passwordClasses = classNames(
       'form-group',
       {
-        'has-error': this.state.error !== '',
-        'has-feedback': this.state.error !== '',
+        'has-error': this.state.error !== '' && !unknownRegex.test(this.state.error),
+        'has-feedback': this.state.error !== '' && !unknownRegex.test(this.state.error),
       }
     )
     return (
