@@ -7,3 +7,11 @@ one:
 two:
   content: MyText
   retro_id: 1
+
+in_progress_delta1:
+  content: MyText
+  retro_id: 6
+
+voting_delta1:
+  content: MyText
+  retro_id: 7

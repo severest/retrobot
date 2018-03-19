@@ -4,6 +4,9 @@ one:
 two:
   name: team two!!!
 
+perms:
+  name: permissions
+
 password_protected:
   name: test team
   password_hash: <%= BCrypt::Password.create('testpassword', cost: 5) %>

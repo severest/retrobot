@@ -4,6 +4,7 @@ one:
   id: 1
   key: abc123
   team: one
+  status: :locked
   created_at: <%= 5.day.ago.to_s(:db) %>
   updated_at: <%= 5.day.ago.to_s(:db) %>
 
@@ -11,17 +12,36 @@ empty:
   id: 2
   key: jjj222
   team: one
+  status: :locked
   created_at: <%= 5.day.ago.to_s(:db) %>
   updated_at: <%= 5.day.ago.to_s(:db) %>
 
 empty_and_old:
   id: 4
   key: jjj224
+  status: :locked
   created_at: <%= 11.day.ago.to_s(:db) %>
   updated_at: <%= 11.day.ago.to_s(:db) %>
 
 old:
   id: 5
   key: jjj225
+  status: :locked
   created_at: <%= 11.day.ago.to_s(:db) %>
   updated_at: <%= 11.day.ago.to_s(:db) %>
+
+in_progress:
+  id: 6
+  key: abc124
+  team: perms
+  status: :in_progress
+  created_at: <%= 5.day.ago.to_s(:db) %>
+  updated_at: <%= 5.day.ago.to_s(:db) %>
+
+in_voting:
+  id: 7
+  key: abc125
+  team: perms
+  status: :voting
+  created_at: <%= 5.day.ago.to_s(:db) %>
+  updated_at: <%= 5.day.ago.to_s(:db) %>
