@@ -1,3 +1,6 @@
+require "base64"
+require "json"
+
 class RetroChannel < ApplicationCable::Channel
   def subscribed
     stream_from "retro_#{params[:room]}"
@@ -12,7 +15,8 @@ class RetroChannel < ApplicationCable::Channel
     self.broadcast({type: 'connect', userId: current_user.id})
   end
 
-  def receive(data)
+  def receive(encodedData)
+    data = JSON.parse(Base64.decode64(encodedData['data']))
     retro = Retro.find_by_key(params[:room])
 
     if data['type'] == 'notes' and data['itemType'] == 'delta'
@@ -76,6 +80,6 @@ class RetroChannel < ApplicationCable::Channel
   protected
 
   def broadcast(data)
-    ActionCable.server.broadcast("retro_#{params[:room]}", data)
+    ActionCable.server.broadcast("retro_#{params[:room]}", Base64.encode64(JSON.generate(data)))
   end
 end

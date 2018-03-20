@@ -19,6 +19,13 @@ import {
 let retroChannel;
 const cable = ActionCable.createConsumer();
 
+const prepMessage = (msg) => {
+  return {data: btoa(unescape(encodeURIComponent(JSON.stringify(msg))))};
+}
+const parseMessage = (msg) => {
+  return JSON.parse(decodeURIComponent(escape(atob(msg))));
+}
+
 export const connectToRetro = (room, receivedCallback) => {
   retroChannel = cable.subscriptions.create({ channel: "RetroChannel", room: room }, {
     connected: function() {
@@ -31,54 +38,56 @@ export const connectToRetro = (room, receivedCallback) => {
 };
 
 export const sendPlus = (content) => {
-  retroChannel.send({ type: 'plus', content, userId: window.myID });
+  retroChannel.send(prepMessage({ type: 'plus', content, userId: window.myID }));
 };
 
 export const deletePlus = (id) => {
-  retroChannel.send({ type: 'delete', itemType: 'plus', itemId: id });
+  retroChannel.send(prepMessage({ type: 'delete', itemType: 'plus', itemId: id }));
 };
 
 export const sendDelta = (content) => {
-  retroChannel.send({ type: 'delta', content, userId: window.myID });
+  retroChannel.send(prepMessage({ type: 'delta', content, userId: window.myID }));
 };
 
 export const deleteDelta = (id) => {
-  retroChannel.send({ type: 'delete', itemType: 'delta', itemId: id });
+  retroChannel.send(prepMessage({ type: 'delete', itemType: 'delta', itemId: id }));
 };
 
 export const sendTime = (minutes, seconds) => {
-  retroChannel.send({ type: 'time', minutes, seconds });
+  retroChannel.send(prepMessage({ type: 'time', minutes, seconds }));
 };
 
 export const sendUpVote = (itemType, itemId) => {
-  retroChannel.send({ type: 'upvote', itemType, itemId });
+  retroChannel.send(prepMessage({ type: 'upvote', itemType, itemId }));
 };
 
 export const sendDownVote = (itemType, itemId) => {
-  retroChannel.send({ type: 'downvote', itemType, itemId });
+  retroChannel.send(prepMessage({ type: 'downvote', itemType, itemId }));
 };
 
 export const sendNotesLock = (itemType) => {
-  retroChannel.send({ type: 'noteslock', itemType, userId: window.myID });
+  retroChannel.send(prepMessage({ type: 'noteslock', itemType, userId: window.myID }));
 };
 export const sendNotesUnlock = (itemType) => {
-  retroChannel.send({ type: 'notesunlock', itemType, userId: window.myID });
+  retroChannel.send(prepMessage({ type: 'notesunlock', itemType, userId: window.myID }));
 };
 
 export const sendNotes = (itemType, itemId, notes) => {
-  retroChannel.send({ type: 'notes', itemType, itemId, notes });
+  retroChannel.send(prepMessage({ type: 'notes', itemType, itemId, notes }));
 };
 
 export const lockRetro = () => {
-  retroChannel.send({ type: 'lock' });
+  retroChannel.send(prepMessage({ type: 'lock' }));
 };
 
 export const unlockRetro = () => {
-  retroChannel.send({ type: 'unlock' });
+  retroChannel.send(prepMessage({ type: 'unlock' }));
 };
 
 export default (room) => {
-  connectToRetro(room, (data) => {
+  connectToRetro(room, (encodedData) => {
+    const data = parseMessage(encodedData);
+
     if (data.type === 'connect') {
       return addUser(data.userId);
     }
