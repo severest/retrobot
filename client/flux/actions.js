@@ -185,6 +185,18 @@ export const getTeamSummary = (team) => {
     }
   })
   .then((team) => {
+    return {
+      ...team,
+      retros: team.retros.map((retro) => ({
+        ...retro,
+        deltas: retro.deltas.map((d) => ({
+          ...d,
+          content: decodeURIComponent(escape(atob(d.content))),
+        })),
+      })),
+    };
+  })
+  .then((team) => {
     receiveTeamSummary(team);
   })
   .catch(() => getTeamSummaryError());
