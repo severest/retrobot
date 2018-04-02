@@ -27,7 +27,7 @@
     "react": "^16.0.0",
     "react-dnd": "^2.5.3",
     "react-dnd-html5-backend": "^2.5.3",
-    "react-dom": "^16.0.0",
+    "react-dom": "^16.3.0",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.0",
     "rxjs": "^5.5.7",
