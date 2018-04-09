@@ -24,7 +24,7 @@
     "moment": "^2.22.0",
     "particlesjs": "2.2.1",
     "prop-types": "^15.6.1",
-    "react": "^16.3.0",
+    "react": "^16.3.1",
     "react-dnd": "^2.5.3",
     "react-dnd-html5-backend": "^2.5.3",
     "react-dom": "^16.3.0",
