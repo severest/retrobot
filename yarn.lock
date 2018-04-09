@@ -132,9 +132,9 @@ acorn@^5.5.0:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.5.3.tgz#f473dd47e0277a08e28e9bec5aeeb04751f0b8c9"
 
-actioncable@^5.1.5:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.1.5.tgz#0ed77345de174f4f90e9c0616f444d15e24fee44"
+actioncable@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.1.6.tgz#0ae70df72aec580009bde4110cf87982e8191526"
 
 ajv-keywords@^2.1.0:
   version "2.1.1"
