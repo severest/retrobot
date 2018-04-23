@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "actioncable": "^5.1.6",
-    "aphrodite": "2.1.1",
+    "aphrodite": "2.2.0",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
     "debug": "^3.1.0",
