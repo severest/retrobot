@@ -219,9 +219,9 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-aphrodite@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/aphrodite/-/aphrodite-2.1.1.tgz#ebf40e2bda9e9852911bb5b7da85dc2812e12845"
+aphrodite@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/aphrodite/-/aphrodite-2.2.0.tgz#3540afe0af1573872bbf15d08e24698e649a4374"
   dependencies:
     asap "^2.0.3"
     inline-style-prefixer "^4.0.0"
