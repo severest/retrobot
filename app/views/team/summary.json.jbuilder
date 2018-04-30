@@ -5,7 +5,7 @@ json.retros do
     json.key retro.key
     json.createdAt retro.created_at
     json.deltas do
-      json.array! retro.deltas.order('votes desc').limit(4), partial: 'retro/delta', as: :delta
+      json.array! retro.deltas.order('votes desc, id desc').limit(4), partial: 'retro/delta', as: :delta
     end
   end
 end
