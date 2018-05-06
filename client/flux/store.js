@@ -1,6 +1,5 @@
 import action$ from './stream.js';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/startWith';
+import { scan, startWith } from 'rxjs/operators';
 import '../utils/move-polyfill.js';
 
 import * as actionTypes from './action-types.js';
@@ -252,4 +251,4 @@ export const reducer = (state = initState, action) => {
 };
 
 // Reduxification
-export default action$.startWith(initState).scan(reducer);
+export default action$.pipe(startWith(initState), scan(reducer));
