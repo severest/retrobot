@@ -4,6 +4,7 @@ import moment from 'moment';
 import { StyleSheet, css } from 'aphrodite';
 import { Link } from 'react-router-dom';
 
+const MIN_DELTAS_SHOWN = 4;
 const styles = StyleSheet.create({
   container: {
     padding: '30px 0',
@@ -84,7 +85,10 @@ class TeamSummary extends React.Component {
                 </Link>
               </div>
               <div className={css(styles.deltas)}>
-                {retro.deltas.map((delta) => {
+                {retro.deltas.map((delta, deltaIndex) => {
+                  if ((deltaIndex + 1) > MIN_DELTAS_SHOWN && (!delta.notes || delta.notes === '')) {
+                    return null;
+                  }
                   return (
                     <div
                       key={delta.id}

@@ -14,6 +14,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
+@import "~rc-tooltip/assets/bootstrap.css";
 @import "retro";
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:200,400,700');
@@ -29,6 +30,12 @@ $fa-font-path: "~font-awesome/fonts";
    &:active,
    &:focus {
      outline: none;
+   }
+ }
+
+ .rc-tooltip {
+   .rc-tooltip-inner {
+     text-align: center;
    }
  }
 
@@ -58,17 +65,19 @@ $fa-font-path: "~font-awesome/fonts";
     }
   }
 
+  .admin-star {
+    color: gold;
+    margin-left: 5px;
+    display: inline-block;
+  }
+
   .actions {
     display: flex;
     align-items: center;
     font-size: 21px;
 
-    .start-timer,
-    .timer {
-      margin-right: 20px;
-    }
-
     .vote-tally {
+      margin-left: 20px;
       font-size: 14px;
     }
   }

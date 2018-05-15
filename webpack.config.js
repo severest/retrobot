@@ -68,6 +68,7 @@ module.exports = {
     }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, './logo.png'),
+      inject: true,
       icons: {
         android: false,
         appleIcon: false,
