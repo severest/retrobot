@@ -42,11 +42,11 @@ class StartRetroApp extends React.Component {
     const retro = {
       creator: window.myID,
     };
-    if ($(this.team).val().trim() !== '') {
-      retro.team = $(this.team).val().trim();
+    if (this.team.value.trim() !== '') {
+      retro.team = this.team.value.trim();
     }
-    if ($(this.password).val() !== '') {
-      retro.password = $(this.password).val();
+    if (this.password.value !== '') {
+      retro.password = this.password.value;
     }
     isLoading();
     fetch('/api/retro/new', {
@@ -102,6 +102,7 @@ class StartRetroApp extends React.Component {
                 ref={c => this.password = c}
                 className="form-control"
                 placeholder="Password (optional)"
+                autoComplete="current-password"
               />
               {this.state.error !== '' && (
                 <p className="help-block">{this.state.error}</p>

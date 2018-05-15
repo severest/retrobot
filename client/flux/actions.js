@@ -1,3 +1,5 @@
+import _debounce from 'lodash/debounce';
+
 import action$ from './stream.js';
 import * as actionTypes from './action-types.js';
 import {
@@ -144,7 +146,7 @@ export const closeNotesModal = actionDispatcher(() => {
   };
 });
 
-const debouncedSendNotes = _.debounce((payload) => {
+const debouncedSendNotes = _debounce((payload) => {
   sendNotes('delta', payload.id, payload.notes);
 }, 500);
 export const updateDeltaNotes = actionDispatcher((payload) => {

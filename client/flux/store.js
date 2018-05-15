@@ -1,3 +1,6 @@
+import _reverse from 'lodash/reverse';
+import _sortBy from 'lodash/sortBy';
+
 import action$ from './stream.js';
 import { scan, startWith } from 'rxjs/operators';
 import '../utils/move-polyfill.js';
@@ -162,7 +165,7 @@ const actionMap = {
   [actionTypes.sortDeltas]: (state) => {
     return {
       ...state,
-      deltas: _.reverse(_.sortBy(state.deltas, ['votes', 'id'])),
+      deltas: _reverse(_sortBy(state.deltas, ['votes', 'id'])),
     };
   },
   [actionTypes.errorWhenCreatingRetro]: (state, action) => {

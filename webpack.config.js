@@ -13,7 +13,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: './client/main.js',
   output: {
-    filename: 'build.js',
+    filename: "[name].bundle.js",
     publicPath: '/',
   },
   module: {
@@ -59,10 +59,6 @@ module.exports = {
   },
   devtool: 'cheap-module-source-map',
   plugins: [
-    new webpack.ProvidePlugin({
-      _: 'lodash',
-      $: 'jquery',
-    }),
     new HtmlWebpackPlugin({
       template: './client/index.ejs',
     }),
@@ -82,8 +78,16 @@ module.exports = {
         windows: false
       }
     }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
     extractSass
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: { test: /[\\/]node_modules[\\/]/, name: "vendors", chunks: "all" }
+      }
+    }
+  },
 }
 
 if (process.env.NODE_ENV === 'production') {

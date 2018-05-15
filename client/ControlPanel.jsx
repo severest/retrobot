@@ -31,15 +31,15 @@ class ControlPanel extends React.Component {
   }
 
   handleSendPlus = () => {
-    if ($(this.inputBox).val().trim() === '') return;
-    sendPlus($(this.inputBox).val().trim(), window.myID);
-    $(this.inputBox).val('');
+    if (this.inputBox.value.trim() === '') return;
+    sendPlus(this.inputBox.value.trim(), window.myID);
+    this.inputBox.value = '';
   }
 
   handleSendDelta = () => {
-    if ($(this.inputBox).val().trim() === '') return;
-    sendDelta($(this.inputBox).val().trim(), window.myID);
-    $(this.inputBox).val('');
+    if (this.inputBox.value.trim() === '') return;
+    sendDelta(this.inputBox.value.trim(), window.myID);
+    this.inputBox.value = '';
   }
 
   handleStartTimer = () => {

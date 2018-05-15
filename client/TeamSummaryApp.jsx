@@ -46,10 +46,10 @@ class TeamSummaryApp extends React.Component {
 
   getTeamSummary = (evt) => {
     evt.preventDefault();
-    if ($(this.password).val() !== '') {
+    if (this.password.value !== '') {
       getTeamSummary({
         name: this.teamName,
-        password: $(this.password).val(),
+        password: this.password.value,
       });
     }
   }

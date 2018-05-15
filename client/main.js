@@ -11,9 +11,9 @@ import {
   isOffline,
 } from './flux/actions.js';
 
-import StartRetroApp from './StartRetroApp.jsx';
-import RetroBoardApp from './RetroBoardApp.jsx';
-import TeamSummaryApp from './TeamSummaryApp.jsx';
+import StartRetroApp from './StartRetroApp-Loadable.jsx';
+import RetroBoardApp from './RetroBoardApp-Loadable.jsx';
+import TeamSummaryApp from './TeamSummaryApp-Loadable.jsx';
 import Particles from './components/Particles/Particles.jsx';
 
 
