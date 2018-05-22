@@ -48,15 +48,22 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should show retro" do
+    retro = create(:full_retro, key: 'abcdef')
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal retro.id, json_response['id']
+    assert_equal 'abcdef', json_response['key']
+    assert_equal 'in_progress', json_response['status']
+    assert_equal 5, json_response['deltas'].count
+    assert_equal 5, json_response['pluses'].count
+  end
+
   test "should show retro with previous deltas" do
     get "/api/retro/#{retros(:empty).key}"
     assert_response :success
     json_response = JSON.parse(@response.body)
-    assert_equal 2, json_response['id']
-    assert_equal 'jjj222', json_response['key']
-    assert_equal 'locked', json_response['status']
-    assert_equal 0, json_response['deltas'].count
-    assert_equal 0, json_response['pluses'].count
     assert_equal 2, json_response['prev_deltas'].count
   end
 

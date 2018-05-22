@@ -66,7 +66,7 @@ class PrevDeltasModal extends React.Component {
 
   render() {
     const modal = (
-      <div className="modal fade show in" tabIndex="-1" role="dialog">
+      <div className="modal fade show in js-test-prev-deltas-modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-body">
@@ -85,7 +85,7 @@ class PrevDeltasModal extends React.Component {
                     className={css(styles.deltaItem)}
                   >
                     <input
-                      className={css(styles.deltaItemCheck)}
+                      className={css(styles.deltaItemCheck) + ' js-test-prev-delta-check'}
                       type="checkbox"
                       selected={this.state.selected.includes(delta.id)}
                       onClick={() => this.handleCheckbox(delta.id)}

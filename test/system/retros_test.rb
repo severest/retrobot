@@ -1,21 +1,6 @@
-require "application_system_test_case"
-
-class RetrosTest < ApplicationSystemTestCase
-  def teardown
-    errors = page.driver.browser.manage.logs.get(:browser)
-    if errors.present?
-      message = errors.map(&:message).join("\n")
-      puts message
-    end
-    assert !errors.present?
-  end
-
+class RetrosTest < RetrobotSystemTestCase
   test "visiting the index" do
-    if !ENV['LOCAL_TESTING'].nil?
-      visit 'http://localhost:8080'
-    else
-      visit '/'
-    end
+    visit '/'
 
     fill_in "Team name (optional)", with: "test team"
     fill_in "Password (optional)", with: "testpassword"
@@ -35,13 +20,20 @@ class RetrosTest < ApplicationSystemTestCase
     r.status = 'voting'
     r.save
 
-    if !ENV['LOCAL_TESTING'].nil?
-      visit "http://localhost:8080/retro/#{r.key}"
-    else
-      visit "/retro/#{r.key}"
-    end
+    visit "/retro/#{r.key}"
 
     click_on(class: 'js-test-lock')
+
+    # test the prev delta dialog
+    visit '/'
+    fill_in "Team name (optional)", with: "test team"
+    fill_in "Password (optional)", with: "testpassword"
+    click_on "Start"
+
+    assert_selector '.js-test-prev-deltas-modal'
+    first('.js-test-prev-delta-check').click()
+    click_on "Add these deltas"
+    assert_selector ".js-test-delta"
   end
 
   def add_delta(text)

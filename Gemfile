@@ -28,6 +28,7 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'sqlite3'
+  gem 'factory_bot_rails'
 end
 
 group :development do
