@@ -3,6 +3,7 @@ class RetroController < ApplicationController
     @retro = Retro.find_by_key!(params[:key])
     @prev_retro_deltas = []
     prev_retro = Retro.where(team: @retro.team)
+                      .where.not(team: nil)
                       .where(status: :locked)
                       .where.not(id: @retro.id)
                       .order('created_at desc').first()

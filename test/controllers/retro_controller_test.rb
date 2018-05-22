@@ -73,4 +73,13 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     json_response = JSON.parse(@response.body)
     assert_equal 0, json_response['prev_deltas'].count
   end
+
+  test "should not have prev deltas on retro with no team" do
+    old_retro = create(:full_retro, key: 'eeeee1', status: 'locked')
+    retro = create(:retro, key: 'eeeee2')
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 0, json_response['prev_deltas'].count
+  end
 end
