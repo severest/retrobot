@@ -6,6 +6,7 @@ import ControlPanel from './ControlPanel.jsx';
 import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
 import Loader from './components/Loader/Loader.jsx';
 import NotesModal from './components/NotesModal/NotesModal.jsx';
+import PrevDeltasModal from './components/PrevDeltasModal/PrevDeltasModal.jsx';
 import { RETRO_STATUS } from './utils/constants.js';
 
 import {
@@ -30,6 +31,7 @@ class RetroBoardApp extends React.Component {
       retro: {
         pluses: [],
         deltas: [],
+        prevDeltas: [],
         timer: {
           show: false,
           minutes: 0,
@@ -42,6 +44,7 @@ class RetroBoardApp extends React.Component {
       notes: null,
       notesLock: null,
       users: [],
+      showPrevDeltasModal: false,
     };
   }
 
@@ -56,6 +59,7 @@ class RetroBoardApp extends React.Component {
         retro: {
           pluses: state.pluses,
           deltas: state.deltas,
+          prevDeltas: state.prevDeltas,
           timer: state.timer,
           state: state.retroStatus,
           creator: state.creator,
@@ -73,6 +77,14 @@ class RetroBoardApp extends React.Component {
 
   componentWillUnmount() {
     this.storeSubscription.unsubscribe();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.retro.prevDeltas.length === 0 &&
+        this.state.retro.prevDeltas.length !== 0 &&
+        this.state.retro.state === RETRO_STATUS.IN_PROGRESS) {
+      this.setState({ showPrevDeltasModal: true });
+    }
   }
 
   render() {
@@ -94,6 +106,12 @@ class RetroBoardApp extends React.Component {
             title={deltaForNotes.content}
             notes={deltaForNotes.notes ? deltaForNotes.notes : ''}
             onClose={() => closeNotesModal()}
+          />
+        )}
+        {this.state.showPrevDeltasModal && (
+          <PrevDeltasModal
+            prevDeltas={this.state.retro.prevDeltas}
+            onClose={() => this.setState({ showPrevDeltasModal: false })}
           />
         )}
         <ControlPanel

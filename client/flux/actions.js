@@ -24,6 +24,10 @@ export const addDelta = actionDispatcher((payload) => ({
   type: actionTypes.addDelta,
   payload
 }));
+export const addPrevDelta = actionDispatcher((payload) => ({
+  type: actionTypes.addPrevDelta,
+  payload
+}));
 export const removeDelta = actionDispatcher((payload) => ({
   type: actionTypes.removeDelta,
   payload
@@ -98,6 +102,15 @@ export const retroBoardInit = (retroKey, history) => {
         content: decodeURIComponent(escape(atob(plus.content))),
       };
       addPlus(parsePlus);
+    });
+    // only want previous deltas for this user with no notes
+    retro.prev_deltas.filter(d => d.userId === window.myID && (!d.notes || d.notes === ''))
+                     .forEach((delta) => {
+      const parseDelta = {
+        ...delta,
+        content: decodeURIComponent(escape(atob(delta.content))),
+      };
+      addPrevDelta(parseDelta);
     });
   });
 };

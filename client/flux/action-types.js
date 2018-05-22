@@ -1,6 +1,7 @@
 export const addPlus = 'ADD_PLUS';
 export const removePlus = 'REMOVE_PLUS';
 export const addDelta = 'ADD_DELTA';
+export const addPrevDelta = 'ADD_PREV_DELTA';
 export const removeDelta = 'REMOVE_DELTA';
 export const updateVotes = 'UPDATE_VOTES';
 export const unhideAll = 'UNHIDE_ALL';

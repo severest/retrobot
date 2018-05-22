@@ -14,6 +14,7 @@ import { RETRO_STATUS } from '../utils/constants.js';
 export const initState = {
   pluses: [],
   deltas: [],
+  prevDeltas: [],
   timer: {
     show: false,
     minutes: 0,
@@ -85,6 +86,13 @@ const actionMap = {
     return {
       ...state,
       deltas: state.deltas.concat(delta),
+    };
+  },
+  [actionTypes.addPrevDelta]: (state, action) => {
+    const delta = action.payload;
+    return {
+      ...state,
+      prevDeltas: state.prevDeltas.concat(delta),
     };
   },
   [actionTypes.removeDelta]: (state, action) => {

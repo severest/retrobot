@@ -8,6 +8,14 @@ one:
   created_at: <%= 5.day.ago.to_s(:db) %>
   updated_at: <%= 5.day.ago.to_s(:db) %>
 
+team_one_in_progress:
+  id: 10
+  key: jjj111
+  team: one
+  status: :in_progress
+  created_at: <%= 4.day.ago.to_s(:db) %>
+  updated_at: <%= 4.day.ago.to_s(:db) %>
+
 empty:
   id: 2
   key: jjj222

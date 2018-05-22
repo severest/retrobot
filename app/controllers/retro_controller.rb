@@ -1,6 +1,14 @@
 class RetroController < ApplicationController
   def show
     @retro = Retro.find_by_key!(params[:key])
+    @prev_retro_deltas = []
+    prev_retro = Retro.where(team: @retro.team)
+                      .where(status: :locked)
+                      .where.not(id: @retro.id)
+                      .order('created_at desc').first()
+    if !prev_retro.nil?
+      @prev_retro_deltas = prev_retro.deltas
+    end
     render 'retro/show.json.jbuilder'
   end
 
