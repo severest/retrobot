@@ -2971,9 +2971,9 @@ eslint-loader@^2.0.0:
     object-hash "^1.1.4"
     rimraf "^2.6.1"
 
-eslint-plugin-jest@21.15.1:
-  version "21.15.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.15.1.tgz#662a3f0888002878f0f388efd09c190a95c33d82"
+eslint-plugin-jest@21.17.0:
+  version "21.17.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.17.0.tgz#fdb00e2f9ff16987d6ebcf2c75c7add105760bbb"
 
 eslint-plugin-react@^7.8.2:
   version "7.8.2"
