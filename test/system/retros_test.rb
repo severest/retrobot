@@ -24,6 +24,12 @@ class RetrosTest < RetrobotSystemTestCase
 
     click_on(class: 'js-test-lock')
 
+    first('.js-test-delta-notes').click()
+    fill_in "Enter notes, action items...", with: "some notes are good"
+    find('.js-test-save-notes').click()
+    first('.js-test-delta-notes').click()
+    assert_selector ".js-test-notes-input", text: "some notes are good"
+
     # test the prev delta dialog
     visit '/'
     fill_in "Team name (optional)", with: "test team"

@@ -1,0 +1,231 @@
+require 'test_helper'
+
+class WebsocketTest < ActiveSupport::TestCase
+  test "create a note" do
+    retro = create(:retro, key: 'eeeee2')
+    delta = create(:delta, retro: retro, content: 'hi')
+    data = {
+      'type' => 'notes',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+      'notes' => 'test note'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    delta.reload
+    assert_equal delta.notes, 'test note'
+    callback.verify
+  end
+
+  test "lock retro" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'lock',
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [{'type' => 'status', 'status' => 'locked'}]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'locked'
+    callback.verify
+  end
+
+  test "unlock retro" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'unlock',
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'voting'
+    callback.verify
+  end
+
+  test "pass the time through" do
+    retro = create(:retro, key: 'eeeee2')
+    assert_equal retro.status, 'in_progress'
+    data = {
+      'type' => 'time',
+      'minutes' => '3',
+      'seconds' => '2'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
+  test "progress the retro when time runs out" do
+    retro = create(:retro, key: 'eeeee2')
+    assert_equal retro.status, 'in_progress'
+    data = {
+      'type' => 'time',
+      'minutes' => 0,
+      'seconds' => 0
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'voting'
+    callback.verify
+  end
+
+  test "pass the noteslock through" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'noteslock'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    callback.verify
+  end
+
+  test "pass the notesunlock through" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'notesunlock'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    callback.verify
+  end
+
+  test "should not pass garbage through" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'jojos'
+    }
+    callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback)
+    callback.verify
+  end
+
+  test "should create delta" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'delta',
+      'content' => 'a new delta',
+      'userId' => 'user1'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('Delta.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should not create delta when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    data = {
+      'type' => 'delta',
+      'content' => 'a new delta',
+      'userId' => 'user1'
+    }
+    callback = MiniTest::Mock.new
+    assert_no_difference('Delta.count') do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should create plus" do
+    retro = create(:retro, key: 'eeeee2')
+    data = {
+      'type' => 'plus',
+      'content' => 'a new plus',
+      'userId' => 'user1'
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('Plus.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should not create plus when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    data = {
+      'type' => 'plus',
+      'content' => 'a new plus',
+      'userId' => 'user1'
+    }
+    callback = MiniTest::Mock.new
+    assert_no_difference('Plus.count') do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should delete delta" do
+    retro = create(:retro, key: 'eeeee2')
+    delta = create(:delta, retro: retro)
+    data = {
+      'type' => 'delete',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('Delta.count', -1) do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should not delete delta when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    delta = create(:delta, retro: retro)
+    data = {
+      'type' => 'delete',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+    }
+    callback = MiniTest::Mock.new
+    assert_no_difference('Delta.count') do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should delete plus" do
+    retro = create(:retro, key: 'eeeee2')
+    plus = create(:plus, retro: retro)
+    data = {
+      'type' => 'delete',
+      'itemType' => 'plus',
+      'itemId' => plus.id,
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('Plus.count', -1) do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+
+  test "should not delete plus when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    plus = create(:plus, retro: retro)
+    data = {
+      'type' => 'delete',
+      'itemType' => 'plus',
+      'itemId' => plus.id,
+    }
+    callback = MiniTest::Mock.new
+    assert_no_difference('Plus.count') do
+      WebsocketHelper.handle('eeeee2', data, callback)
+    end
+    callback.verify
+  end
+end

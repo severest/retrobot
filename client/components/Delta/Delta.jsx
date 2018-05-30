@@ -158,7 +158,7 @@ class Delta extends React.Component {
           {this.props.showOpenNotesBtn && this.props.retroState === RETRO_STATUS.LOCKED && (
             <button
               onClick={this.handleOpenNotes}
-              className="btn btn-link notes"
+              className="btn btn-link notes js-test-delta-notes"
             >
               <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
             </button>

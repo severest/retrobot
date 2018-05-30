@@ -57,7 +57,7 @@ module.exports = {
     },
     historyApiFallback: true
   },
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-module-eval-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.ejs',

@@ -63,7 +63,7 @@ class NotesModal extends React.Component {
                 {this.props.title}
               </div>
               <textarea
-                className={css(styles.input)}
+                className={css(styles.input) + ' js-test-notes-input'}
                 placeholder="Enter notes, action items..."
                 value={this.state.notes}
                 onChange={this.handleTextareaChange}
@@ -72,7 +72,7 @@ class NotesModal extends React.Component {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-primary js-test-save-notes"
                 onClick={this.props.onClose}
               >
                 Save and close
