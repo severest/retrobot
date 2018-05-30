@@ -241,28 +241,6 @@ describe('the store', () => {
     expect(newState.notesLock).toBe('456');
   });
 
-  it('updates order', () => {
-    const init = {
-      ...initState,
-      deltas: [{id: 1}, {id: 2}, {id: 3}],
-      pluses: [{id: 1}, {id: 2}, {id: 3}],
-    };
-    let action = {
-      type: actionTypes.updateOrder,
-      payload: {type: 'delta', dragIndex: 0, hoverIndex: 1},
-    };
-    let newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 2}, {id: 1}, {id: 3}]);
-    expect(newState.pluses).toEqual([{id: 1}, {id: 2}, {id: 3}]);
-    action = {
-      type: actionTypes.updateOrder,
-      payload: {type: 'plus', dragIndex: 0, hoverIndex: 2},
-    };
-    newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 2}, {id: 1}, {id: 3}]);
-    expect(newState.pluses).toEqual([{id: 2}, {id: 3}, {id: 1}]);
-  });
-
   it('updates timer', () => {
     const action = {
       type: actionTypes.updateTimer,

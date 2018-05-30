@@ -42,11 +42,6 @@ export const unhideAll = actionDispatcher(() => ({
   type: actionTypes.unhideAll,
 }));
 
-export const updateOrder = actionDispatcher((payload) => ({
-  type: actionTypes.updateOrder,
-  payload,
-}));
-
 export const updateTimer = actionDispatcher((payload) => ({
   type: actionTypes.updateTimer,
   payload,

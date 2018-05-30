@@ -9,7 +9,6 @@ export const loading = 'LOADING';
 export const doneLoading = 'DONE_LOADING';
 export const addUser = 'ADD_USER';
 export const removeUser = 'REMOVE_USER';
-export const updateOrder = 'UPDATE_ORDER';
 export const updateTimer = 'UPDATE_TIMER';
 export const sortDeltas = 'SORT_DELTAS';
 export const errorWhenCreatingRetro = 'CREATE_RETRO_ERROR';

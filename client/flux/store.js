@@ -106,20 +106,6 @@ const actionMap = {
       }, []),
     };
   },
-  [actionTypes.updateOrder]: (state, action) => {
-    if (action.payload.type === 'delta') {
-      const deltas = state.deltas.move(action.payload.dragIndex, action.payload.hoverIndex);
-      return {
-        ...state,
-        deltas,
-      };
-    }
-    const pluses = state.pluses.move(action.payload.dragIndex, action.payload.hoverIndex);
-    return {
-      ...state,
-      pluses,
-    };
-  },
   [actionTypes.updateVotes]: (state, action) => {
     return {
       ...state,

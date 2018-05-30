@@ -27,8 +27,6 @@
     "prop-types": "^15.6.1",
     "rc-tooltip": "^3.7.2",
     "react": "^16.4.0",
-    "react-dnd": "^2.5.3",
-    "react-dnd-html5-backend": "^2.5.3",
     "react-dom": "^16.4.0",
     "react-loadable": "^5.4.0",
     "react-router-dom": "^4.2.2",
