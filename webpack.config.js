@@ -57,7 +57,6 @@ module.exports = {
     },
     historyApiFallback: true
   },
-  devtool: 'cheap-module-eval-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.ejs',
@@ -91,7 +90,6 @@ module.exports = {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = 'source-map';
   module.exports.output.path = path.resolve(__dirname, './public');
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -103,4 +101,6 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ]);
+} else {
+  module.exports.devtool = 'cheap-module-eval-source-map';
 }
