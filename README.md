@@ -1,9 +1,9 @@
-![build status](https://travis-ci.org/severest/retrobot.svg?branch=master)
+# Retrobot [![build status](https://travis-ci.org/severest/retrobot.svg?branch=master)](https://travis-ci.org/severest/retrobot)
 
 ## Installation
 
 1. Install ruby 2.4.1
-2. Install node 6.12.2
+2. Install node 8.1.1
 3. Install yarn
 
 ## Development
