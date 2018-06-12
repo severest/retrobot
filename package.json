@@ -32,7 +32,7 @@
     "react-router-dom": "^4.3.1",
     "react-transition-group": "^2.3.1",
     "rxjs": "^6.2.0",
-    "tough-cookie": "^2.3.4"
+    "tough-cookie": "^2.4.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
