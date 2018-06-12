@@ -7,20 +7,22 @@ class WebsocketHelper
       delta.notes = data['notes']
       delta.save
       callback.call(data)
-    elsif data['type'] == 'time' and data['minutes'] == 0 and data['seconds'] == 0
-      retro.status = :voting
-      retro.save
-      callback.call(data)
-      callback.call({'type' => 'status', 'status' => 'voting'})
-    elsif data['type'] == 'lock'
+    elsif data['type'] == 'lock' and data['userId'] == retro.creator
       retro.status = :locked
       retro.save
       callback.call({'type' => 'status', 'status' => 'locked'})
-    elsif data['type'] == 'unlock'
+    elsif data['type'] == 'unlock' and data['userId'] == retro.creator
       retro.status = :voting
       retro.save
       callback.call({'type' => 'status', 'status' => 'voting'})
-    elsif ['noteslock', 'notesunlock', 'time'].include? data['type']
+    elsif data['type'] == 'time' and data['userId'] == retro.creator
+      callback.call(data)
+      if data['minutes'] == 0 and data['seconds'] == 0
+        retro.status = :voting
+        retro.save
+        callback.call({'type' => 'status', 'status' => 'voting'})
+      end
+    elsif ['noteslock', 'notesunlock'].include? data['type']
       callback.call(data)
     end
 

@@ -54,7 +54,7 @@ export const deleteDelta = (id) => {
 };
 
 export const sendTime = (minutes, seconds) => {
-  retroChannel.send(prepMessage({ type: 'time', minutes, seconds }));
+  retroChannel.send(prepMessage({ type: 'time', minutes, seconds, userId: window.myID }));
 };
 
 export const sendUpVote = (itemType, itemId) => {
@@ -77,11 +77,11 @@ export const sendNotes = (itemType, itemId, notes) => {
 };
 
 export const lockRetro = () => {
-  retroChannel.send(prepMessage({ type: 'lock' }));
+  retroChannel.send(prepMessage({ type: 'lock', userId: window.myID }));
 };
 
 export const unlockRetro = () => {
-  retroChannel.send(prepMessage({ type: 'unlock' }));
+  retroChannel.send(prepMessage({ type: 'unlock', userId: window.myID }));
 };
 
 export default (room) => {

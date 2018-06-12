@@ -19,6 +19,20 @@ class WebsocketTest < ActiveSupport::TestCase
   end
 
   test "lock retro" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'lock',
+      'userId' => 'user1',
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [{'type' => 'status', 'status' => 'locked'}]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'locked'
+    callback.verify
+  end
+
+  test "lock retro with empty creator" do
     retro = create(:retro, key: 'eeeee2')
     data = {
       'type' => 'lock',
@@ -31,7 +45,46 @@ class WebsocketTest < ActiveSupport::TestCase
     callback.verify
   end
 
+  test "non-creator shouldnt lock retro" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'lock',
+      'userId' => 'notuser1',
+    }
+    callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
+  test "empty user shouldnt lock retro" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'lock',
+    }
+    callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
   test "unlock retro" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'unlock',
+      'userId' => 'user1',
+    }
+    callback = MiniTest::Mock.new
+    callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'voting'
+    callback.verify
+  end
+
+  test "unlock retro with empty creator" do
     retro = create(:retro, key: 'eeeee2')
     data = {
       'type' => 'unlock',
@@ -44,16 +97,58 @@ class WebsocketTest < ActiveSupport::TestCase
     callback.verify
   end
 
+  test "shouldnt unlock retro with wrong creator" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'unlock',
+      'userId' => 'notuser1',
+    }
+    callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
+  test "shouldnt unlock retro with empty creator" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    data = {
+      'type' => 'unlock',
+    }
+    callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
   test "pass the time through" do
-    retro = create(:retro, key: 'eeeee2')
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
     assert_equal retro.status, 'in_progress'
     data = {
       'type' => 'time',
       'minutes' => '3',
-      'seconds' => '2'
+      'seconds' => '2',
+      'userId' => 'user1',
     }
     callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
+    WebsocketHelper.handle('eeeee2', data, callback)
+    retro.reload
+    assert_equal retro.status, 'in_progress'
+    callback.verify
+  end
+
+  test "shouldnt pass the time through with wrong user" do
+    retro = create(:retro, key: 'eeeee2', creator: 'user1')
+    assert_equal retro.status, 'in_progress'
+    data = {
+      'type' => 'time',
+      'minutes' => '3',
+      'seconds' => '2',
+      'userId' => 'notuser1',
+    }
+    callback = MiniTest::Mock.new
     WebsocketHelper.handle('eeeee2', data, callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
