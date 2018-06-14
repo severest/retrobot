@@ -9,7 +9,7 @@ const PROPS = {
   id: 1,
   content: 'delta content',
   index: 1,
-  votes: 0,
+  votes: [],
   retroKey: '123456',
   retroState: RETRO_STATUS.IN_PROGRESS,
   showOpenNotesBtn: true,

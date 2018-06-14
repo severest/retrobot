@@ -117,7 +117,7 @@ class RetroBoardApp extends React.Component {
         <ControlPanel
           {...this.state.retro}
           userCount={this.state.users.length}
-          voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes, 0)}
+          voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
         />
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
       </div>

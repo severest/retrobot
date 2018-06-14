@@ -29,25 +29,28 @@ class WebsocketHelper
     if !retro.locked?
       if data['type'] == 'upvote' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])
-        delta.votes = delta.votes + 1
-        delta.save
-        data['votes'] = delta.votes
-        callback.call(data)
+        if DeltaVote.where(user: data['userId'], delta: delta).count < retro.max_votes
+          DeltaVote.create(user: data['userId'], delta: delta)
+          data['votes'] = delta.delta_votes.map { |v| v.user }
+          callback.call(data)
+        end
       elsif data['type'] == 'downvote' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])
-        delta.votes = delta.votes - 1
-        delta.save
-        data['votes'] = delta.votes
-        callback.call(data)
+        vote = DeltaVote.where(user: data['userId'], delta: delta).first()
+        if !vote.nil?
+          vote.destroy
+          data['votes'] = delta.delta_votes.map { |v| v.user }
+          callback.call(data)
+        end
       elsif data['type'] == 'plus'
         plus = Plus.create(retro: retro, content: data['content'], user: data['userId'])
         data['id'] = plus.id
-        data['votes'] = 0
+        data['votes'] = []
         callback.call(data)
       elsif data['type'] == 'delta'
         delta = Delta.create(retro: retro, content: data['content'], user: data['userId'])
         data['id'] = delta.id
-        data['votes'] = 0
+        data['votes'] = []
         callback.call(data)
       elsif data['type'] == 'delete' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])

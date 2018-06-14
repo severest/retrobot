@@ -19,7 +19,7 @@ class Delta extends React.Component {
     userId: PropTypes.string,
     id: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
-    votes: PropTypes.number.isRequired,
+    votes: PropTypes.arrayOf(PropTypes.string).isRequired,
     hide: PropTypes.bool,
     retroKey: PropTypes.string.isRequired,
     retroState: PropTypes.string.isRequired,
@@ -131,7 +131,7 @@ class Delta extends React.Component {
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
           {this.props.retroState === RETRO_STATUS.LOCKED && (
             <div className={this.voteClass}>
-              {this.props.votes}
+              {this.props.votes.length}
             </div>
           )}
         </div>

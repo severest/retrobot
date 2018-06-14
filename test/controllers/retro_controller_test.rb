@@ -56,6 +56,7 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_equal retro.id, json_response['id']
     assert_equal 'abcdef', json_response['key']
     assert_equal 'in_progress', json_response['status']
+    assert_equal 2, json_response['max_votes']
     assert_equal 5, json_response['deltas'].count
     assert_equal 5, json_response['pluses'].count
   end

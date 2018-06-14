@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180211000205) do
+ActiveRecord::Schema.define(version: 2018_06_14_045347) do
+
+  create_table "delta_votes", force: :cascade do |t|
+    t.string "user"
+    t.bigint "delta_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["delta_id"], name: "index_delta_votes_on_delta_id"
+  end
 
   create_table "deltas", force: :cascade do |t|
     t.text "content"
@@ -28,7 +36,6 @@ ActiveRecord::Schema.define(version: 20180211000205) do
     t.integer "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "votes", default: 0
     t.string "user"
     t.index ["retro_id"], name: "index_pluses_on_retro_id"
   end
@@ -40,6 +47,7 @@ ActiveRecord::Schema.define(version: 20180211000205) do
     t.integer "team_id"
     t.integer "status", default: 2
     t.string "creator"
+    t.integer "max_votes", default: 2
     t.index ["key"], name: "index_retros_on_key", unique: true
     t.index ["team_id"], name: "index_retros_on_team_id"
   end

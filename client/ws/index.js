@@ -58,11 +58,11 @@ export const sendTime = (minutes, seconds) => {
 };
 
 export const sendUpVote = (itemType, itemId) => {
-  retroChannel.send(prepMessage({ type: 'upvote', itemType, itemId }));
+  retroChannel.send(prepMessage({ type: 'upvote', itemType, itemId, userId: window.myID }));
 };
 
 export const sendDownVote = (itemType, itemId) => {
-  retroChannel.send(prepMessage({ type: 'downvote', itemType, itemId }));
+  retroChannel.send(prepMessage({ type: 'downvote', itemType, itemId, userId: window.myID }));
 };
 
 export const sendNotesLock = (itemType) => {
