@@ -13,6 +13,7 @@ const PROPS = {
   retroKey: '123456',
   retroState: RETRO_STATUS.IN_PROGRESS,
   showOpenNotesBtn: true,
+  maxVotes: 2,
 };
 
 it('renders without crashing', () => {
