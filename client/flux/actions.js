@@ -61,6 +61,16 @@ export const setRetroCreator = actionDispatcher((payload) => ({
   payload,
 }));
 
+export const setTimeLimitMinutes = actionDispatcher((payload) => ({
+  type: actionTypes.setTimeLimitMinutes,
+  payload,
+}));
+
+export const setMaxVotes = actionDispatcher((payload) => ({
+  type: actionTypes.setMaxVotes,
+  payload,
+}));
+
 export const retroBoardInit = (retroKey, history) => {
   isLoading();
   fetch(`/api/retro/${retroKey}`, {
@@ -83,6 +93,8 @@ export const retroBoardInit = (retroKey, history) => {
   })
   .then((retro) => {
     setRetroStatus(retro.status);
+    setTimeLimitMinutes(retro.time_limit);
+    setMaxVotes(retro.max_votes);
     setRetroCreator(retro.creator === window.myID);
     retro.deltas.sort((a,b) => b.votes - a.votes).forEach((delta) => {
       const parseDelta = {

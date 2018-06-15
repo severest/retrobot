@@ -9,6 +9,7 @@ class RetroBoard extends React.Component {
   static propTypes = {
     pluses: PropTypes.array.isRequired,
     deltas: PropTypes.array.isRequired,
+    maxVotes: PropTypes.number.isRequired,
     retroKey: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
     state: PropTypes.string.isRequired,
@@ -45,6 +46,7 @@ class RetroBoard extends React.Component {
                 retroKey={this.props.retroKey}
                 showOpenNotesBtn={this.props.showOpenNotesBtn}
                 retroState={this.props.state}
+                maxVotes={this.props.maxVotes}
                 {...d}
               />
             </CSSTransition>

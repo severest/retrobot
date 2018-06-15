@@ -3,7 +3,6 @@ import _sortBy from 'lodash/sortBy';
 
 import action$ from './stream.js';
 import { scan, startWith } from 'rxjs/operators';
-import '../utils/move-polyfill.js';
 
 import * as actionTypes from './action-types.js';
 
@@ -30,6 +29,8 @@ export const initState = {
   teamSummary: null,
   retroStatus: RETRO_STATUS.IN_PROGRESS,
   creator: false,
+  timeLimitMinutes: 0,
+  maxVotes: 0,
 };
 
 // Redux reducer
@@ -235,6 +236,18 @@ const actionMap = {
     return {
       ...state,
       creator: action.payload,
+    };
+  },
+  [actionTypes.setTimeLimitMinutes]: (state, action) => {
+    return {
+      ...state,
+      timeLimitMinutes: action.payload,
+    };
+  },
+  [actionTypes.setMaxVotes]: (state, action) => {
+    return {
+      ...state,
+      maxVotes: action.payload,
     };
   },
 };

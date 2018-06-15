@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_14_045347) do
+ActiveRecord::Schema.define(version: 2018_06_15_060030) do
 
   create_table "delta_votes", force: :cascade do |t|
     t.string "user"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2018_06_14_045347) do
     t.integer "status", default: 2
     t.string "creator"
     t.integer "max_votes", default: 2
+    t.integer "time_limit_minutes", default: 5
     t.index ["key"], name: "index_retros_on_key", unique: true
     t.index ["team_id"], name: "index_retros_on_team_id"
   end

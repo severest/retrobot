@@ -11,7 +11,7 @@ import {
 } from './ws/index.js';
 import {
   startTimer,
-} from './timer.js';
+} from './utils/timer.js';
 import {
   sortDeltas,
 } from './flux/actions.js';
@@ -26,6 +26,7 @@ class ControlPanel extends React.Component {
       minutes: PropTypes.number.isRequired,
       seconds: PropTypes.number.isRequired,
     }).isRequired,
+    timeLimitMinutes: PropTypes.number.isRequired,
     userCount: PropTypes.number.isRequired,
     voteCount: PropTypes.number.isRequired,
   }
@@ -43,7 +44,7 @@ class ControlPanel extends React.Component {
   }
 
   handleStartTimer = () => {
-    startTimer();
+    startTimer(this.props.timeLimitMinutes);
   }
 
   handleInputKeyPress = (evt) => {

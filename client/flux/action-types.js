@@ -22,3 +22,5 @@ export const getTeamSummaryError = 'GET_TEAM_SUMMARY_ERROR';
 export const receiveTeamSummary = 'RECEIVE_TEAM_SUMMARY';
 export const setRetroStatus = 'SET_RETRO_STATUS';
 export const setRetroCreator = 'SET_RETRO_CREATOR';
+export const setTimeLimitMinutes = 'SET_TIME_LIMIT';
+export const setMaxVotes = 'SET_MAX_VOTES';

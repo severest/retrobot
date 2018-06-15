@@ -10,7 +10,7 @@ import {
 import {
   openNotesModal,
 } from '../../flux/actions.js';
-import { MAX_VOTES, RETRO_STATUS } from '../../utils/constants.js';
+import { RETRO_STATUS } from '../../utils/constants.js';
 
 
 class Delta extends React.Component {
@@ -19,6 +19,7 @@ class Delta extends React.Component {
     userId: PropTypes.string,
     id: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
+    maxVotes: PropTypes.number.isRequired,
     votes: PropTypes.arrayOf(PropTypes.string).isRequired,
     hide: PropTypes.bool,
     retroKey: PropTypes.string.isRequired,
@@ -39,7 +40,7 @@ class Delta extends React.Component {
     const key = `delta-${this.props.id}`;
     const voted = sessionStorage.getItem(key);
     const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
-    if (totalVotes === MAX_VOTES) {
+    if (totalVotes === this.props.maxVotes) {
       alert('You have reached your vote maximum');
       return;
     }

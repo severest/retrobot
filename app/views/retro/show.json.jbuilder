@@ -1,4 +1,5 @@
 json.(@retro, :id, :key, :status, :creator, :max_votes)
+json.time_limit @retro.time_limit_minutes
 
 json.deltas do
   json.array! @retro.deltas, partial: 'retro/delta', as: :delta
