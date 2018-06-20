@@ -23,13 +23,15 @@ class RetroController < ApplicationController
       end
     end
     key = SecureRandom.hex(3)
-    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator], status: 'in_progress')
+    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator],
+                          max_votes: retro_params[:max_votes], status: 'in_progress',
+                          time_limit_minutes: retro_params[:time_limit])
     return render json: { key: @retro.key }
   end
 
   private
 
   def retro_params
-    params.fetch(:retro, {}).permit(:team, :password, :creator)
+    params.fetch(:retro, {}).permit(:team, :password, :creator, :time_limit, :max_votes)
   end
 end

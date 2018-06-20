@@ -8,6 +8,17 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create a retro with params" do
+    assert_difference('Retro.count', 1) do
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10' } }
+      assert_response :success
+      json_response = JSON.parse(@response.body)
+      retro = Retro.find_by_key(json_response['key'])
+      assert_equal retro.max_votes, 5
+      assert_equal retro.time_limit_minutes, 10
+    end
+  end
+
   test "create a retro with a new team" do
     assert_difference('Team.count', 1) do
       post '/api/retro/new', params: { retro: { team: 'New team' } }

@@ -48,6 +48,8 @@ class StartRetroApp extends React.Component {
     if (this.password.value !== '') {
       retro.password = this.password.value;
     }
+    retro.max_votes = this.maxVotes.value;
+    retro.time_limit = this.timeLimit.value;
     isLoading();
     fetch('/api/retro/new', {
       method: 'POST',
@@ -107,6 +109,46 @@ class StartRetroApp extends React.Component {
               {this.state.error !== '' && (
                 <p className="help-block">{this.state.error}</p>
               )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="maxVotes">Max votes</label>
+              <select
+                className="form-control"
+                id="maxVotes"
+                ref={c => this.maxVotes = c}
+                defaultValue="2"
+              >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="timeLimit">Time limit (minutes)</label>
+              <select
+                className="form-control"
+                id="timeLimit"
+                ref={c => this.timeLimit = c}
+                defaultValue="5"
+              >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
             </div>
             <button
               className="btn btn-primary create-retro-btn"
