@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   if Rails.env.test?
     root 'home#index'
     get 'retro/*key', to: 'home#index'
+    get 'summary/*team', to: 'home#index'
   end
 end
