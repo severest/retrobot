@@ -94,8 +94,8 @@ class TeamSummary extends React.Component {
                       key={delta.id}
                       className={css(styles.delta)}
                     >
-                      <div className={css(styles.deltaContent)}>{delta.content}</div>
-                      <div className={css(styles.votes)}>{delta.votes.length} votes</div>
+                      <div className={`${css(styles.deltaContent)} js-test-delta-summary-content`}>{delta.content}</div>
+                      <div className={`${css(styles.votes)} js-test-delta-summary-votes`}>{delta.votes.length} {delta.votes.length === 1 ? 'vote' : 'votes'}</div>
                       {!delta.notes || delta.notes === '' ? (
                         <div className={css(styles.emptyNotes)}>No action items</div>
                       ) : (

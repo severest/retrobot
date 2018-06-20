@@ -14,7 +14,7 @@ import {
 } from './utils/timer.js';
 import {
   sortDeltas,
-} from './flux/actions.js';
+} from './flux/retro/actions.js';
 import { RETRO_STATUS } from './utils/constants.js';
 
 class ControlPanel extends React.Component {

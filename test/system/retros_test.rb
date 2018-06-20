@@ -22,6 +22,7 @@ class RetrosTest < RetrobotSystemTestCase
 
     visit "/retro/#{r.key}"
 
+    first('.js-test-delta-upvote').click()
     click_on(class: 'js-test-lock')
 
     first('.js-test-delta-notes').click()
@@ -40,6 +41,13 @@ class RetrosTest < RetrobotSystemTestCase
     first('.js-test-prev-delta-check').click()
     click_on "Add these deltas"
     assert_selector ".js-test-delta"
+
+    # test summary
+    visit '/summary/test team'
+    fill_in "Password", with: "testpassword"
+    click_on "Get summary"
+    assert_selector ".js-test-delta-summary-content", text: "this my delta, so COOL!"
+    assert_selector ".js-test-delta-summary-votes", text: "1 vote"
   end
 
   def add_delta(text)

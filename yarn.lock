@@ -6702,6 +6702,12 @@ react-loadable@^5.4.0:
   dependencies:
     prop-types "^15.5.0"
 
+react-notification@^6.8.2:
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/react-notification/-/react-notification-6.8.2.tgz#5d9910cc2993bd51a234d3809e94a98dc490cfb0"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-reconciler@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"

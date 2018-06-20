@@ -9,7 +9,7 @@ import uuid from './utils/uuid.js';
 import {
   isOnline,
   isOffline,
-} from './flux/actions.js';
+} from './flux/retro/actions.js';
 
 import StartRetroApp from './StartRetroApp-Loadable.jsx';
 import RetroBoardApp from './RetroBoardApp-Loadable.jsx';

@@ -7,15 +7,16 @@ import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineInd
 import Loader from './components/Loader/Loader.jsx';
 import NotesModal from './components/NotesModal/NotesModal.jsx';
 import PrevDeltasModal from './components/PrevDeltasModal/PrevDeltasModal.jsx';
+import Notifications from './components/Notifications/Notifications.jsx';
 import { RETRO_STATUS } from './utils/constants.js';
 
 import {
   retroBoardInit,
   closeNotesModal,
-} from './flux/actions.js';
+} from './flux/retro/actions.js';
 
 import socketInit from './ws/index.js';
-import store$ from './flux/store.js';
+import retroStore$ from './flux/retro/store.js';
 
 class RetroBoardApp extends React.Component {
   static propTypes = {
@@ -51,11 +52,7 @@ class RetroBoardApp extends React.Component {
   }
 
   componentDidMount() {
-    if (!sessionStorage.getItem(`totalVotes-${this.retroKey}`)) {
-      sessionStorage.setItem(`totalVotes-${this.retroKey}`, 0);
-    }
-
-    this.storeSubscription = store$.subscribe((state) => {
+    this.storeSubscription = retroStore$.subscribe((state) => {
       this.setState({
         isLoading: state.isLoading,
         retro: {
@@ -124,6 +121,7 @@ class RetroBoardApp extends React.Component {
           voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
         />
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
+        <Notifications />
       </div>
     );
   }

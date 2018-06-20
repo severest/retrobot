@@ -9,7 +9,7 @@ import {
 } from '../../ws/index.js';
 import {
   openNotesModal,
-} from '../../flux/actions.js';
+} from '../../flux/retro/actions.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
 
 
@@ -32,57 +32,15 @@ class Delta extends React.Component {
     userId: '',
   }
 
-  state = {
-    IVoted: false,
-  }
-
   handleUpVote = () => {
-    const key = `delta-${this.props.id}`;
-    const voted = sessionStorage.getItem(key);
-    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
-    if (totalVotes === this.props.maxVotes) {
-      alert('You have reached your vote maximum');
-      return;
-    }
-
     sendUpVote('delta', this.props.id);
-    if (voted === null) {
-      sessionStorage.setItem(key, 1);
-    } else {
-      sessionStorage.setItem(key, parseInt(voted) + 1);
-    }
-    this.setState({ IVoted: true });
-    sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes + 1);
   }
 
   handleDownVote = () => {
-    const key = `delta-${this.props.id}`;
-    let voted = sessionStorage.getItem(key);
-    if (voted === null) {
-      alert("You can't down vote something you haven't voted for yet");
-      return;
-    }
-
     sendDownVote('delta', this.props.id);
-    voted = parseInt(voted);
-    if ((voted - 1) === 0) {
-      this.setState({ IVoted: false });
-      sessionStorage.removeItem(key);
-    } else {
-      sessionStorage.setItem(key, voted - 1);
-    }
-    const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
-    sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes - 1);
   }
 
   handleDelete = () => {
-    const key = `delta-${this.props.id}`;
-    let voted = sessionStorage.getItem(key);
-    if (voted !== null) {
-      voted = parseInt(voted);
-      const totalVotes = parseInt(sessionStorage.getItem(`totalVotes-${this.props.retroKey}`));
-      sessionStorage.setItem(`totalVotes-${this.props.retroKey}`, totalVotes - voted);
-    }
     deleteDelta(this.props.id);
   }
 
@@ -107,8 +65,9 @@ class Delta extends React.Component {
       'btn',
       'btn-link',
       'upvote',
+      'js-test-delta-upvote',
       {
-        'mine': this.state.IVoted,
+        'mine': this.props.votes.includes(window.myID),
       },
     );
   }

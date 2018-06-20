@@ -8,9 +8,9 @@ import TeamSummary from './TeamSummary.jsx';
 
 import {
   getTeamSummary,
-} from './flux/actions.js';
+} from './flux/retro/actions.js';
 
-import store$ from './flux/store.js';
+import store$ from './flux/retro/store.js';
 
 class TeamSummaryApp extends React.Component {
   static propTypes = {

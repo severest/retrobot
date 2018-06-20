@@ -17,12 +17,16 @@ class RetroChannel < ApplicationCable::Channel
 
   def receive(encodedData)
     data = JSON.parse(Base64.decode64(encodedData['data']))
-    WebsocketHelper.handle(params[:room], data, lambda { |data| self.broadcast(data) })
+    WebsocketHelper.handle(params[:room], data, lambda { |data| self.broadcast(data) }, lambda { |data| self.notification(data) })
   end
 
   protected
 
   def broadcast(data)
     ActionCable.server.broadcast("retro_#{params[:room]}", Base64.encode64(JSON.generate(data)))
+  end
+
+  def notification(data)
+    ActionCable.server.broadcast("retro_notifications_#{params[:room]}_#{current_user.id}", data)
   end
 end

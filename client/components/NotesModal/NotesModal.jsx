@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 import {
   updateDeltaNotes,
-} from '../../flux/actions.js';
+} from '../../flux/retro/actions.js';
 
 
 class NotesModal extends React.Component {

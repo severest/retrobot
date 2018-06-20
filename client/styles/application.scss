@@ -39,6 +39,13 @@ $fa-font-path: "~font-awesome/fonts";
    }
  }
 
+ .notification-bar {
+   z-index: 1000;
+   .notification-bar-message {
+     font-size: 18px;
+   }
+ }
+
  .control-panel {
   font-weight: 200;
   position: fixed;

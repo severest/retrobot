@@ -1,5 +1,5 @@
 class WebsocketHelper
-  def self.handle(retro_key, data, callback)
+  def self.handle(retro_key, data, callback, notification_callback)
     retro = Retro.find_by_key(retro_key)
 
     if data['type'] == 'notes' and data['itemType'] == 'delta'
@@ -29,10 +29,12 @@ class WebsocketHelper
     if !retro.locked?
       if data['type'] == 'upvote' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])
-        if DeltaVote.where(user: data['userId'], delta: delta).count < retro.max_votes
+        if DeltaVote.joins(delta: :retro).select('retros.key').where(user: data['userId'], 'retros.key' => retro.key).count < retro.max_votes
           DeltaVote.create(user: data['userId'], delta: delta)
           data['votes'] = delta.delta_votes.map { |v| v.user }
           callback.call(data)
+        else
+          notification_callback.call({'error' => 'You\'ve already voted the maximum number of times'})
         end
       elsif data['type'] == 'downvote' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])
@@ -41,6 +43,8 @@ class WebsocketHelper
           vote.destroy
           data['votes'] = delta.delta_votes.map { |v| v.user }
           callback.call(data)
+        else
+          notification_callback.call({'error' => 'You can\'t downvote something you haven\'t voted for'})
         end
       elsif data['type'] == 'plus'
         plus = Plus.create(retro: retro, content: data['content'], user: data['userId'])

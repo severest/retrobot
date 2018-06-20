@@ -6,7 +6,7 @@ import {
   sendNotesLock,
   sendNotesUnlock,
   sendNotes,
-} from '../ws/index.js';
+} from '../../ws/index.js';
 
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));

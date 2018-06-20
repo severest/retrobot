@@ -6,7 +6,7 @@ import { scan, startWith } from 'rxjs/operators';
 
 import * as actionTypes from './action-types.js';
 
-import { RETRO_STATUS } from '../utils/constants.js';
+import { RETRO_STATUS } from '../../utils/constants.js';
 
 
 // Initial State

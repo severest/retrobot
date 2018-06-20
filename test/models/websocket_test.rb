@@ -11,11 +11,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'notes' => 'test note'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     delta.reload
     assert_equal delta.notes, 'test note'
     callback.verify
+    notification_callback.verify
   end
 
   test "lock retro" do
@@ -25,11 +27,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [{'type' => 'status', 'status' => 'locked'}]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'locked'
     callback.verify
+    notification_callback.verify
   end
 
   test "lock retro with empty creator" do
@@ -38,11 +42,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'lock',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [{'type' => 'status', 'status' => 'locked'}]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'locked'
     callback.verify
+    notification_callback.verify
   end
 
   test "non-creator shouldnt lock retro" do
@@ -52,10 +58,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'notuser1',
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "empty user shouldnt lock retro" do
@@ -64,10 +72,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'lock',
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "unlock retro" do
@@ -77,11 +87,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'voting'
     callback.verify
+    notification_callback.verify
   end
 
   test "unlock retro with empty creator" do
@@ -90,11 +102,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'unlock',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'voting'
     callback.verify
+    notification_callback.verify
   end
 
   test "shouldnt unlock retro with wrong creator" do
@@ -104,10 +118,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'notuser1',
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "shouldnt unlock retro with empty creator" do
@@ -116,10 +132,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'unlock',
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "pass the time through" do
@@ -132,11 +150,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "shouldnt pass the time through with wrong user" do
@@ -149,10 +169,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'notuser1',
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'in_progress'
     callback.verify
+    notification_callback.verify
   end
 
   test "progress the retro when time runs out" do
@@ -164,12 +186,14 @@ class WebsocketTest < ActiveSupport::TestCase
       'seconds' => 0
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     callback.expect :call, nil, [{'type' => 'status', 'status' => 'voting'}]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     retro.reload
     assert_equal retro.status, 'voting'
     callback.verify
+    notification_callback.verify
   end
 
   test "pass the noteslock through" do
@@ -178,9 +202,11 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'noteslock'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     callback.verify
+    notification_callback.verify
   end
 
   test "pass the notesunlock through" do
@@ -189,9 +215,11 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'notesunlock'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    WebsocketHelper.handle('eeeee2', data, callback)
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     callback.verify
+    notification_callback.verify
   end
 
   test "should not pass garbage through" do
@@ -200,8 +228,10 @@ class WebsocketTest < ActiveSupport::TestCase
       'type' => 'jojos'
     }
     callback = MiniTest::Mock.new
-    WebsocketHelper.handle('eeeee2', data, callback)
+    notification_callback = MiniTest::Mock.new
+    WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     callback.verify
+    notification_callback.verify
   end
 
   test "should create delta" do
@@ -212,11 +242,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('Delta.count', 1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not create delta when locked" do
@@ -227,10 +259,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('Delta.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should create plus" do
@@ -241,11 +275,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('Plus.count', 1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not create plus when locked" do
@@ -256,10 +292,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => 'user1'
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('Plus.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should delete delta" do
@@ -271,11 +309,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'itemId' => delta.id,
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('Delta.count', -1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not delete delta when locked" do
@@ -287,10 +327,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'itemId' => delta.id,
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('Delta.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should delete plus" do
@@ -302,11 +344,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'itemId' => plus.id,
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('Plus.count', -1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not delete plus when locked" do
@@ -318,10 +362,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'itemId' => plus.id,
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('Plus.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should upvote delta" do
@@ -334,11 +380,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('DeltaVote.count', 1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not allow more upvotes than max" do
@@ -352,10 +400,80 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    notification_callback.expect :call, nil, [{"error"=>"You've already voted the maximum number of times"}]
     assert_no_difference('DeltaVote.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
+  end
+
+  test "should not allow more upvotes than max on diff deltas" do
+    retro = create(:retro, key: 'eeeee2', max_votes: 2)
+    delta = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    delta_vote2 = create(:delta_vote, delta: delta2, user: '1')
+    data = {
+      'type' => 'upvote',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    notification_callback.expect :call, nil, [{"error"=>"You've already voted the maximum number of times"}]
+    assert_no_difference('DeltaVote.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should allow more upvotes than max on diff retros" do
+    retro = create(:retro, key: 'eeeee2', max_votes: 2)
+    retro2 = create(:retro, key: 'eeeee3', max_votes: 2)
+    delta = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro2)
+    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    delta_vote2 = create(:delta_vote, delta: delta2, user: '1')
+    data = {
+      'type' => 'upvote',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('DeltaVote.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should allow more upvotes than max on diff deltas with diff people" do
+    retro = create(:retro, key: 'eeeee2', max_votes: 2)
+    delta = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    delta_vote2 = create(:delta_vote, delta: delta2, user: '2')
+    data = {
+      'type' => 'upvote',
+      'itemType' => 'delta',
+      'itemId' => delta.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [data]
+    assert_difference('DeltaVote.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
   end
 
   test "should allow more upvotes than max from a diff user" do
@@ -369,11 +487,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '2',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('DeltaVote.count', 1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not upvote delta when locked" do
@@ -386,10 +506,12 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('DeltaVote.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should downvote delta" do
@@ -403,11 +525,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     assert_difference('DeltaVote.count', -1) do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not downvote delta if vote doesnt exist" do
@@ -421,10 +545,13 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    notification_callback.expect :call, nil, [{"error"=>"You can't downvote something you haven't voted for"}]
     assert_no_difference('DeltaVote.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 
   test "should not downvote delta when locked" do
@@ -438,9 +565,11 @@ class WebsocketTest < ActiveSupport::TestCase
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
     assert_no_difference('DeltaVote.count') do
-      WebsocketHelper.handle('eeeee2', data, callback)
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
+    notification_callback.verify
   end
 end

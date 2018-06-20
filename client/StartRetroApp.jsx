@@ -8,9 +8,9 @@ import {
   createRetroError,
   isLoading,
   doneLoading,
-} from './flux/actions.js';
+} from './flux/retro/actions.js';
 
-import store$ from './flux/store.js';
+import store$ from './flux/retro/store.js';
 
 class StartRetroApp extends React.Component {
   static propTypes = {

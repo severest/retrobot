@@ -1,4 +1,5 @@
 import ActionCable from 'actioncable';
+import uuid from 'uuid/v4';
 
 import {
   addPlus,
@@ -14,7 +15,10 @@ import {
   unlockNotes,
   updateDeltaNotes,
   setRetroStatus,
-} from '../flux/actions.js';
+} from '../flux/retro/actions.js';
+import {
+  addNotification,
+} from '../flux/notifications/actions.js';
 
 let retroChannel;
 const cable = ActionCable.createConsumer();
@@ -26,13 +30,18 @@ const parseMessage = (msg) => {
   return JSON.parse(decodeURIComponent(escape(atob(msg))));
 }
 
-export const connectToRetro = (room, receivedCallback) => {
+export const connectToRetro = (room, receivedCallback, notificationCallback) => {
   retroChannel = cable.subscriptions.create({ channel: "RetroChannel", room: room }, {
     connected: function() {
       this.perform('appear', {userId: window.myID});
     },
     received: (data) => {
       receivedCallback(data);
+    },
+  });
+  cable.subscriptions.create({ channel: "RetroNotificationChannel", room: room, userId: window.myID }, {
+    received: (data) => {
+      notificationCallback(data);
     },
   });
 };
@@ -133,5 +142,11 @@ export default (room) => {
     if (data.type === 'status') {
       return setRetroStatus(data.status)
     }
+  }, (notification) => {
+    addNotification({
+      message: notification.error,
+      key: uuid(),
+      dismissAfter: 3000,
+    })
   });
 }

@@ -3,7 +3,7 @@ import {
 } from '../ws/index.js';
 import {
   updateTimer,
-} from '../flux/actions.js';
+} from '../flux/retro/actions.js';
 
 let timer;
 
