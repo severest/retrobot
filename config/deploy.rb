@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.10.2'
+lock '3.11.0'
 
 set :application, 'retrobot'
 set :repo_url, 'git@github.com:severest/retrobot.git'
