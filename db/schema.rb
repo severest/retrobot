@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2018_06_21_162025) do
 
-  create_table "delta_votes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "delta_votes", force: :cascade do |t|
     t.string "user"
     t.bigint "delta_id"
     t.datetime "created_at", null: false
@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 2018_06_21_162025) do
     t.index ["delta_id"], name: "index_delta_votes_on_delta_id"
   end
 
-  create_table "deltas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "deltas", force: :cascade do |t|
     t.text "content"
-    t.bigint "retro_id"
+    t.integer "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "user"
@@ -30,20 +30,20 @@ ActiveRecord::Schema.define(version: 2018_06_21_162025) do
     t.index ["retro_id"], name: "index_deltas_on_retro_id"
   end
 
-  create_table "pluses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "pluses", force: :cascade do |t|
     t.text "content"
-    t.bigint "retro_id"
+    t.integer "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "user"
     t.index ["retro_id"], name: "index_pluses_on_retro_id"
   end
 
-  create_table "retros", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "retros", force: :cascade do |t|
     t.string "key", limit: 191
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "team_id"
+    t.integer "team_id"
     t.integer "status", default: 2
     t.string "creator"
     t.integer "max_votes", default: 2
@@ -52,15 +52,11 @@ ActiveRecord::Schema.define(version: 2018_06_21_162025) do
     t.index ["team_id"], name: "index_retros_on_team_id"
   end
 
-  create_table "teams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "password_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "delta_votes", "deltas"
-  add_foreign_key "deltas", "retros"
-  add_foreign_key "pluses", "retros"
-  add_foreign_key "retros", "teams"
 end

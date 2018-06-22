@@ -1,8 +1,18 @@
+import uuid from 'uuid/v4';
+
 import * as actionTypes from './action-types.js';
 import {
   initState,
   reducer,
 } from './store.js';
+
+const generateVotes = (number) => {
+  const votes = [];
+  for(let i=0; i < number; i++) {
+    votes.push(uuid());
+  }
+  return votes;
+}
 
 describe('the store', () => {
 
@@ -134,46 +144,35 @@ describe('the store', () => {
   it('update votes on deltas', () => {
     const init = {
       ...initState,
-      deltas: [{id: 1, votes: 1}, {id: 2, votes: 2}],
-      pluses: [{id: 1, votes: 3}, {id: 2, votes: 4}],
+      deltas: [{id: 1, votes: generateVotes(1)}, {id: 2, votes: generateVotes(2)}],
+      pluses: [{id: 1, votes: generateVotes(3)}, {id: 2, votes: generateVotes(4)}],
     };
     const action = {
       type: actionTypes.updateVotes,
-      payload: {itemId: 1, votes: 5, itemType: 'delta'},
+      payload: {itemId: 1, votes: generateVotes(5), itemType: 'delta'},
     };
     const newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 1, votes: 5}, {id: 2, votes: 2}]);
-    expect(newState.pluses).toEqual([{id: 1, votes: 3}, {id: 2, votes: 4}]);
-  });
-
-  it('update votes on pluses', () => {
-    const init = {
-      ...initState,
-      deltas: [{id: 1, votes: 1}, {id: 2, votes: 2}],
-      pluses: [{id: 1, votes: 3}, {id: 2, votes: 4}],
-    };
-    const action = {
-      type: actionTypes.updateVotes,
-      payload: {itemId: 1, votes: 5, itemType: 'plus'},
-    };
-    const newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 1, votes: 1}, {id: 2, votes: 2}]);
-    expect(newState.pluses).toEqual([{id: 1, votes: 5}, {id: 2, votes: 4}]);
+    expect(newState.deltas[0].id).toBe(1);
+    expect(newState.deltas[1].id).toBe(2);
+    expect(newState.deltas[0].votes.length).toBe(5);
+    expect(newState.deltas[1].votes.length).toBe(2);
   });
 
   it('doesnt update votes', () => {
     const init = {
       ...initState,
-      deltas: [{id: 1, votes: 1}, {id: 2, votes: 2}],
-      pluses: [{id: 1, votes: 3}, {id: 2, votes: 4}],
+      deltas: [{id: 1, votes: generateVotes(1)}, {id: 2, votes: generateVotes(2)}],
+      pluses: [{id: 1, votes: generateVotes(3)}, {id: 2, votes: generateVotes(4)}],
     };
     const action = {
       type: actionTypes.updateVotes,
-      payload: {itemId: 10, votes: 5, itemType: 'delta'},
+      payload: {itemId: 10, votes: generateVotes(5), itemType: 'delta'},
     };
     const newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 1, votes: 1}, {id: 2, votes: 2}]);
-    expect(newState.pluses).toEqual([{id: 1, votes: 3}, {id: 2, votes: 4}]);
+    expect(newState.deltas[0].id).toBe(1);
+    expect(newState.deltas[1].id).toBe(2);
+    expect(newState.deltas[0].votes.length).toBe(1);
+    expect(newState.deltas[1].votes.length).toBe(2);
   });
 
   it('unhides all', () => {
@@ -270,13 +269,13 @@ describe('the store', () => {
   it('sorts deltas', () => {
     const init = {
       ...initState,
-      deltas: [{id: 1, votes: 4}, {id: 2, votes: 6}, {id: 3, votes: 6}],
+      deltas: [{id: 1, votes: generateVotes(4)}, {id: 2, votes: generateVotes(6)}, {id: 3, votes: generateVotes(6)}],
     };
     let action = {
       type: actionTypes.sortDeltas,
     };
     let newState = reducer(init, action);
-    expect(newState.deltas).toEqual([{id: 3, votes: 6}, {id: 2, votes: 6}, {id: 1, votes: 4}]);
+    expect(newState.deltas.map(d => d.id)).toEqual([3, 2, 1]);
   });
 
   it('updates delta notes', () => {

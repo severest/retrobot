@@ -160,7 +160,7 @@ const actionMap = {
   [actionTypes.sortDeltas]: (state) => {
     return {
       ...state,
-      deltas: _reverse(_sortBy(state.deltas, ['votes', 'id'])),
+      deltas: _reverse(_sortBy(state.deltas, [(d) => d.votes.length, 'id'])),
     };
   },
   [actionTypes.errorWhenCreatingRetro]: (state, action) => {

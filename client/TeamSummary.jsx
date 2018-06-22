@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { StyleSheet, css } from 'aphrodite';
 import { Link } from 'react-router-dom';
+import _reverse from 'lodash/reverse';
+import _sortBy from 'lodash/sortBy';
 
 const MIN_DELTAS_SHOWN = 4;
 const styles = StyleSheet.create({
@@ -85,7 +87,7 @@ class TeamSummary extends React.Component {
                 </Link>
               </div>
               <div className={css(styles.deltas)}>
-                {retro.deltas.map((delta, deltaIndex) => {
+                {_reverse(_sortBy(retro.deltas, [(d) => d.votes.length, 'id'])).map((delta, deltaIndex) => {
                   if ((deltaIndex + 1) > MIN_DELTAS_SHOWN && (!delta.notes || delta.notes === '')) {
                     return null;
                   }

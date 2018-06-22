@@ -96,7 +96,7 @@ export const retroBoardInit = (retroKey, history) => {
     setTimeLimitMinutes(retro.time_limit);
     setMaxVotes(retro.max_votes);
     setRetroCreator(retro.creator === window.myID);
-    retro.deltas.sort((a,b) => b.votes - a.votes).forEach((delta) => {
+    retro.deltas.sort((a,b) => b.votes.length - a.votes.length).forEach((delta) => {
       const parseDelta = {
         ...delta,
         content: decodeURIComponent(escape(atob(delta.content))),
