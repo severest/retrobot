@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production webpack --hide-modules --mode production",
     "test": "jest -o --watch",
     "test:ci": "jest",
-    "analyzer": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json"
+    "analyzer": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
+    "lint": "eslint --ext .jsx --ext .js client/"
   },
   "dependencies": {
     "actioncable": "^5.1.6",

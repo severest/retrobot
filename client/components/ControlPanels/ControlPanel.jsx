@@ -8,14 +8,14 @@ import {
   sendDelta,
   lockRetro,
   unlockRetro,
-} from './ws/index.js';
+} from '../../ws/index.js';
 import {
   startTimer,
-} from './utils/timer.js';
+} from '../../utils/timer.js';
 import {
   sortDeltas,
-} from './flux/retro/actions.js';
-import { RETRO_STATUS } from './utils/constants.js';
+} from '../../flux/retro/actions.js';
+import { RETRO_STATUS } from '../../utils/constants.js';
 
 class ControlPanel extends React.Component {
   static propTypes = {

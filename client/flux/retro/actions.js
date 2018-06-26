@@ -33,6 +33,18 @@ export const removeDelta = actionDispatcher((payload) => ({
   payload
 }));
 
+export const addDeltaToSelection = actionDispatcher((payload) => ({
+  type: actionTypes.addDeltaToSelection,
+  payload
+}));
+export const removeDeltaFromSelection = actionDispatcher((payload) => ({
+  type: actionTypes.removeDeltaFromSelection,
+  payload
+}));
+export const clearSelectedDeltas = actionDispatcher(() => ({
+  type: actionTypes.clearSelectedDeltas
+}));
+
 export const updateVotes = actionDispatcher((payload) => ({
   type: actionTypes.updateVotes,
   payload

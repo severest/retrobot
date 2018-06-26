@@ -141,6 +141,43 @@ describe('the store', () => {
     expect(newState.deltas).toEqual([{id: 1}, {id: 2}]);
   });
 
+  it('adds delta to selection', () => {
+    const init = {
+      ...initState,
+    };
+    const action = {
+      type: actionTypes.addDeltaToSelection,
+      payload: 3,
+    };
+    const newState = reducer(init, action);
+    expect(newState.selectedDeltas).toEqual([3]);
+  });
+
+  it('removes delta from selection', () => {
+    const init = {
+      ...initState,
+      selectedDeltas: [3, 2]
+    };
+    const action = {
+      type: actionTypes.removeDeltaFromSelection,
+      payload: 3,
+    };
+    const newState = reducer(init, action);
+    expect(newState.selectedDeltas).toEqual([2]);
+  });
+
+  it('clears delta selection', () => {
+    const init = {
+      ...initState,
+      selectedDeltas: [3, 2]
+    };
+    const action = {
+      type: actionTypes.clearSelectedDeltas,
+    };
+    const newState = reducer(init, action);
+    expect(newState.selectedDeltas).toEqual([]);
+  });
+
   it('update votes on deltas', () => {
     const init = {
       ...initState,

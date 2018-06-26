@@ -13,7 +13,6 @@ class Plus extends React.Component {
     content: PropTypes.string.isRequired,
     hide: PropTypes.bool,
     id: PropTypes.number.isRequired,
-    index: PropTypes.number.isRequired,
     retroState: PropTypes.string.isRequired,
   }
 

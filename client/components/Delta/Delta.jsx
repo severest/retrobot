@@ -9,6 +9,8 @@ import {
 } from '../../ws/index.js';
 import {
   openNotesModal,
+  addDeltaToSelection,
+  removeDeltaFromSelection,
 } from '../../flux/retro/actions.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
 
@@ -18,13 +20,11 @@ class Delta extends React.Component {
     content: PropTypes.string.isRequired,
     userId: PropTypes.string,
     id: PropTypes.number.isRequired,
-    index: PropTypes.number.isRequired,
-    maxVotes: PropTypes.number.isRequired,
     votes: PropTypes.arrayOf(PropTypes.string).isRequired,
     hide: PropTypes.bool,
-    retroKey: PropTypes.string.isRequired,
     retroState: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
+    selected: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
@@ -32,25 +32,42 @@ class Delta extends React.Component {
     userId: '',
   }
 
-  handleUpVote = () => {
+  handleUpVote = (e) => {
+    e.stopPropagation();
     sendUpVote('delta', this.props.id);
   }
 
-  handleDownVote = () => {
+  handleDownVote = (e) => {
+    e.stopPropagation();
     sendDownVote('delta', this.props.id);
   }
 
-  handleDelete = () => {
+  handleDelete = (e) => {
+    e.stopPropagation();
     deleteDelta(this.props.id);
   }
 
-  handleOpenNotes = () => openNotesModal(this.props.id)
+  handleOpenNotes = (e) => {
+    e.stopPropagation();
+    openNotesModal(this.props.id);
+  }
+
+  handleDeltaClick = () => {
+    if (this.props.selected) {
+      removeDeltaFromSelection(this.props.id);
+    } else {
+      addDeltaToSelection(this.props.id);
+    }
+  }
 
   get topClass() {
     return classNames(
       'card',
       'delta-card',
       'js-test-delta',
+      {
+        'delta-card--selected': this.props.selected,
+      },
     );
   }
 
@@ -86,7 +103,10 @@ class Delta extends React.Component {
   render() {
     if (this.props.hide) return null;
     return (
-      <div className={this.topClass}>
+      <div
+        className={this.topClass}
+        onClick={this.handleDeltaClick}
+      >
         <div className="card__left">
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
           {this.props.retroState === RETRO_STATUS.LOCKED && (

@@ -9,6 +9,7 @@ class RetroBoard extends React.Component {
   static propTypes = {
     pluses: PropTypes.array.isRequired,
     deltas: PropTypes.array.isRequired,
+    selectedDeltas: PropTypes.arrayOf(PropTypes.number).isRequired,
     maxVotes: PropTypes.number.isRequired,
     retroKey: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
@@ -19,14 +20,13 @@ class RetroBoard extends React.Component {
     return (
       <div className="retro-container">
         <TransitionGroup className="retro-container--plus">
-          {this.props.pluses.filter(p => !p.hide).map((p, i) =>
+          {this.props.pluses.filter(p => !p.hide).map((p) =>
             <CSSTransition
               key={p.id}
               timeout={200}
               classNames="fade"
             >
               <Plus
-                index={i}
                 retroState={this.props.state}
                 {...p}
               />
@@ -35,18 +35,16 @@ class RetroBoard extends React.Component {
         </TransitionGroup>
 
         <TransitionGroup className="retro-container--delta">
-          {this.props.deltas.filter(d => !d.hide).map((d, i) =>
+          {this.props.deltas.filter(d => !d.hide).map((d) =>
             <CSSTransition
               key={d.id}
               timeout={200}
               classNames="fade"
             >
               <Delta
-                index={i}
-                retroKey={this.props.retroKey}
                 showOpenNotesBtn={this.props.showOpenNotesBtn}
                 retroState={this.props.state}
-                maxVotes={this.props.maxVotes}
+                selected={this.props.selectedDeltas.includes(d.id)}
                 {...d}
               />
             </CSSTransition>

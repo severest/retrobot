@@ -59,6 +59,12 @@ $fa-font-path: "~font-awesome/fonts";
   background: rgba(82, 82, 82, 0.88);
   width: 100%;
   z-index: 10;
+  height: 71px;
+
+  &--selection {
+    justify-content: space-between;
+    padding: 10px 60px;
+  }
 
   .title {
     font-size: 19px;

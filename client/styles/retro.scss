@@ -111,6 +111,10 @@
 }
 
 .delta-card {
+  &--selected {
+    box-shadow: 0 0 40px #131313;
+  }
+
   .card__content {
     background: $delta;
   }

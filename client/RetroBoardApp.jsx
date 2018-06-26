@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import RetroBoard from './RetroBoard.jsx';
-import ControlPanel from './ControlPanel.jsx';
+import ControlPanel from './components/ControlPanels/ControlPanel.jsx';
+import SelectionControlPanel from './components/ControlPanels/SelectionControlPanel.jsx';
 import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
 import Loader from './components/Loader/Loader.jsx';
 import NotesModal from './components/NotesModal/NotesModal.jsx';
@@ -32,6 +34,7 @@ class RetroBoardApp extends React.Component {
       retro: {
         pluses: [],
         deltas: [],
+        selectedDeltas: [],
         prevDeltas: [],
         timer: {
           show: false,
@@ -58,6 +61,7 @@ class RetroBoardApp extends React.Component {
         retro: {
           pluses: state.pluses,
           deltas: state.deltas,
+          selectedDeltas: state.selectedDeltas,
           prevDeltas: state.prevDeltas,
           timer: state.timer,
           state: state.retroStatus,
@@ -115,12 +119,35 @@ class RetroBoardApp extends React.Component {
             onClose={() => this.setState({ showPrevDeltasModal: false })}
           />
         )}
-        <ControlPanel
-          {...this.state.retro}
-          userCount={this.state.users.length}
-          voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
-        />
+
+        <TransitionGroup className="retro-container--controls">
+          {this.state.retro.selectedDeltas.length === 0 ? (
+            <CSSTransition
+              key="normal-controls"
+              timeout={200}
+              classNames="fade"
+            >
+              <ControlPanel
+                {...this.state.retro}
+                userCount={this.state.users.length}
+                voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
+              />
+            </CSSTransition>
+          ) : (
+            <CSSTransition
+              key="selection-controls"
+              timeout={200}
+              classNames="fade"
+            >
+              <SelectionControlPanel
+                selectedDeltas={this.state.retro.selectedDeltas}
+              />
+            </CSSTransition>
+          )}
+        </TransitionGroup>
+
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
+
         <Notifications />
       </div>
     );

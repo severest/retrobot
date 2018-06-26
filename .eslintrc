@@ -27,5 +27,8 @@
       "experimentalObjectRestSpread": true,
       "jsx": true
     }
+  },
+  "rules": {
+    "react/no-unused-prop-types": [2]
   }
 }

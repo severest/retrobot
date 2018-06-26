@@ -13,6 +13,7 @@ import { RETRO_STATUS } from '../../utils/constants.js';
 export const initState = {
   pluses: [],
   deltas: [],
+  selectedDeltas: [],
   prevDeltas: [],
   timer: {
     show: false,
@@ -72,12 +73,7 @@ const actionMap = {
   [actionTypes.removePlus]: (state, action) => {
     return {
       ...state,
-      pluses: state.pluses.reduce((arr, plus) => {
-        if (plus.id === action.payload.itemId) {
-          return arr;
-        }
-        return arr.concat(plus);
-      }, []),
+      pluses: state.pluses.filter(p => p.id !== action.payload.itemId),
     };
   },
   [actionTypes.addDelta]: (state, action) => {
@@ -99,12 +95,25 @@ const actionMap = {
   [actionTypes.removeDelta]: (state, action) => {
     return {
       ...state,
-      deltas: state.deltas.reduce((arr, delta) => {
-        if (delta.id === action.payload.itemId) {
-          return arr;
-        }
-        return arr.concat(delta);
-      }, []),
+      deltas: state.deltas.filter(d => d.id !== action.payload.itemId),
+    };
+  },
+  [actionTypes.addDeltaToSelection]: (state, action) => {
+    return {
+      ...state,
+      selectedDeltas: state.selectedDeltas.concat(action.payload),
+    };
+  },
+  [actionTypes.removeDeltaFromSelection]: (state, action) => {
+    return {
+      ...state,
+      selectedDeltas: state.selectedDeltas.filter(d => d !== action.payload),
+    };
+  },
+  [actionTypes.clearSelectedDeltas]: (state) => {
+    return {
+      ...state,
+      selectedDeltas: [],
     };
   },
   [actionTypes.updateVotes]: (state, action) => {
