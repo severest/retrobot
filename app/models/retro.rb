@@ -1,6 +1,7 @@
 class Retro < ApplicationRecord
   has_many :pluses, class_name: 'Plus'
   has_many :deltas, class_name: 'Delta'
+  has_many :delta_groups
   belongs_to :team, optional: true
   enum status: [ :in_progress, :voting, :locked ]
 
@@ -10,5 +11,14 @@ class Retro < ApplicationRecord
   def self.prune_old_retros
     Retro.left_joins(:pluses).left_joins(:deltas).group(:id).where('retros.created_at < ?', 7.days.ago)
          .where('pluses.id is null AND deltas.id is null').destroy_all
+  end
+
+  def delta_group_array
+    self.delta_groups.map {
+      |group| {
+        'id' => group.id,
+        'deltaIds' => group.deltas.map { |d| d.id }
+      }
+    }
   end
 end

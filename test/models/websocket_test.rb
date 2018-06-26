@@ -572,4 +572,69 @@ class WebsocketTest < ActiveSupport::TestCase
     callback.verify
     notification_callback.verify
   end
+
+  test "should create delta group" do
+    retro = create(:retro, key: 'eeeee2')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    data = {
+      'type' => 'group',
+      'itemType' => 'delta',
+      'deltaIds' => [delta1.id, delta2.id],
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_difference('DeltaGroup.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta1.id, delta2.id]
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should delete previous groups when create delta group" do
+    retro = create(:retro, key: 'eeeee2')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    delta3 = create(:delta, retro: retro)
+    delta_group = create(:delta_group, retro: retro)
+    delta_group.add_deltas([delta1.id, delta2.id])
+    assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta1.id, delta2.id]
+    data = {
+      'type' => 'group',
+      'itemType' => 'delta',
+      'deltaIds' => [delta1.id, delta2.id, delta3.id],
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_no_difference('DeltaGroup.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta1.id, delta2.id, delta3.id]
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should not create delta group when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    data = {
+      'type' => 'group',
+      'itemType' => 'delta',
+      'deltaIds' => [delta1.id, delta2.id],
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    assert_no_difference('DeltaGroup.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
 end

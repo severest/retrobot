@@ -64,6 +64,14 @@ class WebsocketHelper
         plus = Plus.find(data['itemId'])
         plus.destroy
         callback.call(data)
+      elsif data['type'] == 'group' and data['itemType'] == 'delta'
+        DeltaGroup.joins(delta_group_items: :delta).where('deltas.id' => data['deltaIds']).destroy_all
+        dg = DeltaGroup.create(retro: retro)
+        dg.add_deltas(data['deltaIds'])
+        callback.call({
+            'type' => 'deltaGroups',
+            'groups' => retro.delta_group_array
+        })
       end
     end
   end
