@@ -3,7 +3,7 @@
 ## Installation
 
 1. Install ruby 2.4.1
-2. Install node 8.1.1
+2. Install node 9.11.2
 3. Install yarn
 
 ## Development
