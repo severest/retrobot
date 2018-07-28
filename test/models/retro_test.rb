@@ -50,8 +50,8 @@ class RetroTest < ActiveSupport::TestCase
     delta_group2.add_deltas([delta3.id])
 
     expected = [
-      {'id' => delta_group1.id, 'deltaIds' => [delta1.id, delta2.id]},
-      {'id' => delta_group2.id, 'deltaIds' => [delta3.id]},
+      {'id' => delta_group1.id, 'deltas' => [delta1.id, delta2.id]},
+      {'id' => delta_group2.id, 'deltas' => [delta3.id]},
     ]
     assert_equal retro.delta_group_array, expected
   end

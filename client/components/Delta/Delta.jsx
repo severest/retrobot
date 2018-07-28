@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import {
-  sendUpVote,
-  sendDownVote,
   deleteDelta,
 } from '../../ws/index.js';
 import {
   openNotesModal,
   addDeltaToSelection,
   removeDeltaFromSelection,
+  displayDeltaGroup,
 } from '../../flux/retro/actions.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
+
+import DeltaVotes from './DeltaVotes.jsx';
 
 
 class Delta extends React.Component {
@@ -25,21 +26,14 @@ class Delta extends React.Component {
     retroState: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
     selected: PropTypes.bool.isRequired,
+    deltaGroupId: PropTypes.number,
+    deltaGroupDeltas: PropTypes.array,
   }
 
   static defaultProps = {
     hide: false,
     userId: '',
-  }
-
-  handleUpVote = (e) => {
-    e.stopPropagation();
-    sendUpVote('delta', this.props.id);
-  }
-
-  handleDownVote = (e) => {
-    e.stopPropagation();
-    sendDownVote('delta', this.props.id);
+    deltaGroupDeltas: [],
   }
 
   handleDelete = (e) => {
@@ -52,12 +46,19 @@ class Delta extends React.Component {
     openNotesModal(this.props.id);
   }
 
-  handleDeltaClick = () => {
+  handleDeltaClick = (e) => {
+    e.stopPropagation();
+    const ids = this.props.deltaGroupDeltas.length ? this.props.deltaGroupDeltas : [this.props.id];
     if (this.props.selected) {
-      removeDeltaFromSelection(this.props.id);
+      removeDeltaFromSelection(ids);
     } else {
-      addDeltaToSelection(this.props.id);
+      addDeltaToSelection(ids);
     }
+  }
+
+  handleGroupDisplay = (e) => {
+    e.stopPropagation();
+    displayDeltaGroup(this.props.deltaGroupId);
   }
 
   get topClass() {
@@ -74,18 +75,6 @@ class Delta extends React.Component {
   get voteClass() {
     return classNames(
       'card__votes',
-    );
-  }
-
-  get upVoteClass() {
-    return classNames(
-      'btn',
-      'btn-link',
-      'upvote',
-      'js-test-delta-upvote',
-      {
-        'mine': this.props.votes.includes(window.myID),
-      },
     );
   }
 
@@ -107,8 +96,16 @@ class Delta extends React.Component {
         className={this.topClass}
         onClick={this.handleDeltaClick}
       >
+        {this.props.deltaGroupDeltas.length > 1 && (
+          <button
+            className="btn card__group"
+            onClick={this.handleGroupDisplay}
+          >
+            {`+${this.props.deltaGroupDeltas.length - 1}`}
+          </button>
+        )}
         <div className="card__left">
-          <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          <i className="fa fa-exclamation-triangle" aria-hidden="true" />
           {this.props.retroState === RETRO_STATUS.LOCKED && (
             <div className={this.voteClass}>
               {this.props.votes.length}
@@ -119,36 +116,25 @@ class Delta extends React.Component {
           {this.props.content}
         </div>
         <div className="card__right">
-          {this.props.retroState !== RETRO_STATUS.LOCKED && (
-            <button
-              onClick={this.handleUpVote}
-              className={this.upVoteClass}
-            >
-              <i className="fa fa-arrow-up fa-inverse" aria-hidden="true"></i>
-            </button>
-          )}
-          {this.props.retroState !== RETRO_STATUS.LOCKED && (
-            <button
-              onClick={this.handleDownVote}
-              className="btn btn-link downvote"
-            >
-              <i className="fa fa-arrow-down fa-inverse" aria-hidden="true"></i>
-            </button>
-          )}
+          <DeltaVotes
+            retroState={this.props.retroState}
+            id={this.props.id}
+            votes={this.props.votes}
+          />
           {this.props.showOpenNotesBtn && this.props.retroState === RETRO_STATUS.LOCKED && (
             <button
               onClick={this.handleOpenNotes}
               className="btn btn-link notes js-test-delta-notes"
             >
-              <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i>
+              <i className="fa fa-pencil-square-o fa-inverse" aria-hidden="true" />
             </button>
           )}
-          {this.props.retroState !== RETRO_STATUS.LOCKED && (
+          {this.props.retroState !== RETRO_STATUS.LOCKED && this.props.deltaGroupDeltas.length === 0 && (
             <button
               className={this.deleteClass}
               onClick={this.handleDelete}
             >
-              <i className="fa fa-trash" aria-hidden="true"></i>
+              <i className="fa fa-trash" aria-hidden="true" />
             </button>
           )}
         </div>

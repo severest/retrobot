@@ -24,14 +24,34 @@ class WebsocketHelper
       end
     elsif ['noteslock', 'notesunlock'].include? data['type']
       callback.call(data)
+    elsif data['type'] == 'group' and data['itemType'] == 'delta' and data['userId'] == retro.creator
+      DeltaGroup.joins(delta_group_items: :delta).where('deltas.id' => data['deltas']).destroy_all
+      dg = DeltaGroup.create(retro: retro)
+      dg.add_deltas(data['deltas'])
+      callback.call({
+          'type' => 'deltaGroups',
+          'groups' => retro.delta_group_array
+      })
+    elsif data['type'] == 'delete' and data['itemType'] == 'deltaGroup' and data['userId'] == retro.creator
+      DeltaGroup.find(data['deltaGroupId']).destroy
+      callback.call({
+          'type' => 'deltaGroups',
+          'groups' => retro.delta_group_array
+      })
+    elsif data['type'] == 'delete' and data['itemType'] == 'deltaGroupItem' and data['userId'] == retro.creator
+      DeltaGroupItem.joins(:delta).where('deltas.id' => data['deltaId']).destroy_all
+      callback.call({
+          'type' => 'deltaGroups',
+          'groups' => retro.delta_group_array
+      })
     end
 
     if !retro.locked?
       if data['type'] == 'upvote' and data['itemType'] == 'delta'
         delta = Delta.find(data['itemId'])
-        if DeltaVote.joins(delta: :retro).select('retros.key').where(user: data['userId'], 'retros.key' => retro.key).count < retro.max_votes
+        if DeltaVote.joins(delta: :retro).select('retros.key').where(user: data['userId'], 'retros.key' => retro.key).size < retro.max_votes
           DeltaVote.create(user: data['userId'], delta: delta)
-          data['votes'] = delta.delta_votes.map { |v| v.user }
+          data['votes'] = delta.delta_votes.pluck(:user)
           callback.call(data)
         else
           notification_callback.call({'error' => 'You\'ve already voted the maximum number of times'})
@@ -41,7 +61,7 @@ class WebsocketHelper
         vote = DeltaVote.where(user: data['userId'], delta: delta).first()
         if !vote.nil?
           vote.destroy
-          data['votes'] = delta.delta_votes.map { |v| v.user }
+          data['votes'] = delta.delta_votes.pluck(:user)
           callback.call(data)
         else
           notification_callback.call({'error' => 'You can\'t downvote something you haven\'t voted for'})
@@ -60,18 +80,14 @@ class WebsocketHelper
         delta = Delta.find(data['itemId'])
         delta.destroy
         callback.call(data)
-      elsif data['type'] == 'delete' and data['itemType'] == 'plus'
-        plus = Plus.find(data['itemId'])
-        plus.destroy
-        callback.call(data)
-      elsif data['type'] == 'group' and data['itemType'] == 'delta'
-        DeltaGroup.joins(delta_group_items: :delta).where('deltas.id' => data['deltaIds']).destroy_all
-        dg = DeltaGroup.create(retro: retro)
-        dg.add_deltas(data['deltaIds'])
         callback.call({
             'type' => 'deltaGroups',
             'groups' => retro.delta_group_array
         })
+      elsif data['type'] == 'delete' and data['itemType'] == 'plus'
+        plus = Plus.find(data['itemId'])
+        plus.destroy
+        callback.call(data)
       end
     end
   end

@@ -8,6 +8,12 @@ $delta: #CC2936;
 $vote-tally: #3c2105;
 $my-vote-tally: $brand-primary;
 
+// z-indexes
+$zIndex-group-badge: 10;
+$zIndex-retro-overlay: 15;
+$zIndex-controls: 20;
+$zIndex-notifications: 1000;
+
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
 $fa-font-path: "~font-awesome/fonts";
@@ -40,7 +46,7 @@ $fa-font-path: "~font-awesome/fonts";
  }
 
  .notification-bar {
-   z-index: 1000;
+   z-index: $zIndex-notifications;
    .notification-bar-message {
      font-size: 18px;
    }
@@ -58,12 +64,18 @@ $fa-font-path: "~font-awesome/fonts";
   padding: 10px;
   background: rgba(82, 82, 82, 0.88);
   width: 100%;
-  z-index: 10;
+  z-index: $zIndex-controls;
   height: 71px;
 
   &--selection {
     justify-content: space-between;
     padding: 10px 60px;
+
+    .selection-controls {
+      button {
+        margin: 0 5px;
+      }
+    }
   }
 
   .title {
@@ -110,4 +122,18 @@ $fa-font-path: "~font-awesome/fonts";
     position: relative;
     top: 2px;
   }
+ }
+
+ .retro-overlay {
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   background: rgba(0, 0, 0, 0.3);
+   z-index: $zIndex-retro-overlay;
+ }
+
+ .modal {
+   overflow-y: auto;
  }

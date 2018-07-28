@@ -45,7 +45,7 @@ class Plus extends React.Component {
     return (
       <div className={topClass}>
         <div className="card__left">
-          <i className="fa fa-plus" aria-hidden="true"></i>
+          <i className="fa fa-plus" aria-hidden="true" />
         </div>
         <div className="card__content">
           {this.props.content}
@@ -56,7 +56,7 @@ class Plus extends React.Component {
               className={deleteClass}
               onClick={this.handleDelete}
             >
-              <i className="fa fa-trash" aria-hidden="true"></i>
+              <i className="fa fa-trash" aria-hidden="true" />
             </button>
           )}
         </div>

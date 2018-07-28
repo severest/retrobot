@@ -17,7 +17,7 @@ class Retro < ApplicationRecord
     self.delta_groups.map {
       |group| {
         'id' => group.id,
-        'deltaIds' => group.deltas.map { |d| d.id }
+        'deltas' => group.deltas.pluck(:id)
       }
     }
   end

@@ -10,6 +10,7 @@ class RetroBoard extends React.Component {
     pluses: PropTypes.array.isRequired,
     deltas: PropTypes.array.isRequired,
     selectedDeltas: PropTypes.arrayOf(PropTypes.number).isRequired,
+    deltaGroups: PropTypes.array.isRequired,
     maxVotes: PropTypes.number.isRequired,
     retroKey: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
@@ -35,20 +36,42 @@ class RetroBoard extends React.Component {
         </TransitionGroup>
 
         <TransitionGroup className="retro-container--delta">
-          {this.props.deltas.filter(d => !d.hide).map((d) =>
-            <CSSTransition
-              key={d.id}
-              timeout={200}
-              classNames="fade"
-            >
-              <Delta
-                showOpenNotesBtn={this.props.showOpenNotesBtn}
-                retroState={this.props.state}
-                selected={this.props.selectedDeltas.includes(d.id)}
-                {...d}
-              />
-            </CSSTransition>
-          )}
+          {this.props.deltas
+            .map((delta) => {
+              const group = this.props.deltaGroups.find((g) => g.deltas.includes(delta.id));
+              const votes = group ? group.deltas.reduce((arr, groupDeltaId) => {
+                const groupDelta = this.props.deltas.find(del => del.id === groupDeltaId);
+                if (groupDelta) {
+                  return arr.concat(groupDelta.votes);
+                }
+                return arr;
+              }, []) : delta.votes;
+              return {
+                ...delta,
+                deltaGroupId: group ? group.id : null,
+                deltaGroupDeltas: group ? group.deltas : [],
+                hide: delta.hide || (group && group.deltas[0] !== delta.id),
+                votes,
+              };
+            })
+            .filter(d => !d.hide)
+            .map((d) => {
+              return (
+                <CSSTransition
+                  key={d.id}
+                  timeout={200}
+                  classNames="fade"
+                >
+                  <Delta
+                    showOpenNotesBtn={this.props.showOpenNotesBtn}
+                    retroState={this.props.state}
+                    selected={this.props.selectedDeltas.includes(d.id)}
+                    {...d}
+                  />
+                </CSSTransition>
+              );
+            })
+          }
         </TransitionGroup>
       </div>
     );

@@ -28,7 +28,7 @@ class OfflineIndicatorModal extends React.Component {
         <div className="modal-dialog" role="document">
           <div className={`modal-content ${css(styles.errorContent)}`}>
             <div className={`modal-body ${css(styles.errorBody)}`}>
-              <i className={`fa fa-exclamation-circle fa-inverse ${css(styles.icon)}`} aria-hidden="true"></i>
+              <i className={`fa fa-exclamation-circle fa-inverse ${css(styles.icon)}`} aria-hidden="true" />
               You are offline
             </div>
           </div>

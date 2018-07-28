@@ -70,7 +70,22 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, json_response['max_votes']
     assert_equal 5, json_response['time_limit']
     assert_equal 5, json_response['deltas'].count
+    assert_equal 0, json_response['delta_groups'].count
     assert_equal 5, json_response['pluses'].count
+  end
+
+  test "should show retro delta_groups" do
+    retro = create(:full_retro, key: 'abcdef')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    delta_group = create(:delta_group, retro: retro)
+    delta_group.add_deltas([delta1.id, delta2.id])
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 1, json_response['delta_groups'].count
+    assert_equal delta_group.id, json_response['delta_groups'][0]['id']
+    assert_equal [delta1.id, delta2.id], json_response['delta_groups'][0]['deltas']
   end
 
   test "should show retro with previous deltas" do

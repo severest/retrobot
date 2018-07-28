@@ -311,6 +311,10 @@ class WebsocketTest < ActiveSupport::TestCase
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
+    callback.expect :call, nil, [{
+      'type' => 'deltaGroups',
+      'groups' => [],
+    }]
     assert_difference('Delta.count', -1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
@@ -574,13 +578,13 @@ class WebsocketTest < ActiveSupport::TestCase
   end
 
   test "should create delta group" do
-    retro = create(:retro, key: 'eeeee2')
+    retro = create(:retro, key: 'eeeee2', creator: '1')
     delta1 = create(:delta, retro: retro)
     delta2 = create(:delta, retro: retro)
     data = {
       'type' => 'group',
       'itemType' => 'delta',
-      'deltaIds' => [delta1.id, delta2.id],
+      'deltas' => [delta1.id, delta2.id],
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
@@ -594,8 +598,70 @@ class WebsocketTest < ActiveSupport::TestCase
     notification_callback.verify
   end
 
+  test "should not create delta group when not creator" do
+    retro = create(:retro, key: 'eeeee2', creator: '2')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    data = {
+      'type' => 'group',
+      'itemType' => 'delta',
+      'deltas' => [delta1.id, delta2.id],
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    assert_no_difference('DeltaGroup.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should delete delta group" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    group = create(:delta_group, retro: retro)
+    group.add_deltas([delta1.id, delta2.id])
+    data = {
+      'type' => 'delete',
+      'itemType' => 'deltaGroup',
+      'deltaGroupId' => group.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_difference('DeltaGroup.count', -1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should not delete delta group when not creator" do
+    retro = create(:retro, key: 'eeeee2', creator: '2')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    group = create(:delta_group, retro: retro)
+    group.add_deltas([delta1.id, delta2.id])
+    data = {
+      'type' => 'delete',
+      'itemType' => 'deltaGroup',
+      'deltaGroupId' => group.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    assert_no_difference('DeltaGroup.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
   test "should delete previous groups when create delta group" do
-    retro = create(:retro, key: 'eeeee2')
+    retro = create(:retro, key: 'eeeee2', creator: '1')
     delta1 = create(:delta, retro: retro)
     delta2 = create(:delta, retro: retro)
     delta3 = create(:delta, retro: retro)
@@ -605,7 +671,7 @@ class WebsocketTest < ActiveSupport::TestCase
     data = {
       'type' => 'group',
       'itemType' => 'delta',
-      'deltaIds' => [delta1.id, delta2.id, delta3.id],
+      'deltas' => [delta1.id, delta2.id, delta3.id],
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
@@ -619,14 +685,39 @@ class WebsocketTest < ActiveSupport::TestCase
     notification_callback.verify
   end
 
+  test "should delete delta groups item" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    delta1 = create(:delta, retro: retro)
+    delta2 = create(:delta, retro: retro)
+    delta3 = create(:delta, retro: retro)
+    delta_group = create(:delta_group, retro: retro)
+    delta_group.add_deltas([delta1.id, delta2.id, delta3.id])
+    assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta1.id, delta2.id, delta3.id]
+    data = {
+      'type' => 'delete',
+      'itemType' => 'deltaGroupItem',
+      'deltaId' => delta1.id,
+      'userId' => '1',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_no_difference('DeltaGroup.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta2.id, delta3.id]
+    callback.verify
+    notification_callback.verify
+  end
+
   test "should not create delta group when locked" do
-    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    retro = create(:retro, key: 'eeeee2', status: 'locked', creator: '1')
     delta1 = create(:delta, retro: retro)
     delta2 = create(:delta, retro: retro)
     data = {
       'type' => 'group',
       'itemType' => 'delta',
-      'deltaIds' => [delta1.id, delta2.id],
+      'deltas' => [delta1.id, delta2.id],
       'userId' => '1',
     }
     callback = MiniTest::Mock.new

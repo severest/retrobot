@@ -147,10 +147,23 @@ describe('the store', () => {
     };
     const action = {
       type: actionTypes.addDeltaToSelection,
-      payload: 3,
+      payload: [3],
     };
     const newState = reducer(init, action);
     expect(newState.selectedDeltas).toEqual([3]);
+  });
+
+  it('doesnt add duplicate delta to selection', () => {
+    const init = {
+      ...initState,
+      selectedDeltas: [3, 2]
+    };
+    const action = {
+      type: actionTypes.addDeltaToSelection,
+      payload: [3],
+    };
+    const newState = reducer(init, action);
+    expect(newState.selectedDeltas).toEqual([3, 2]);
   });
 
   it('removes delta from selection', () => {
@@ -160,7 +173,7 @@ describe('the store', () => {
     };
     const action = {
       type: actionTypes.removeDeltaFromSelection,
-      payload: 3,
+      payload: [3],
     };
     const newState = reducer(init, action);
     expect(newState.selectedDeltas).toEqual([2]);
@@ -176,6 +189,19 @@ describe('the store', () => {
     };
     const newState = reducer(init, action);
     expect(newState.selectedDeltas).toEqual([]);
+  });
+
+  it('updates delta groups', () => {
+    const init = {
+      ...initState,
+      deltaGroups: [{id: 1, deltas: [1,2]}],
+    };
+    const action = {
+      type: actionTypes.updateDeltaGroups,
+      payload: [{id: 2, deltas: [3,4]}],
+    };
+    const newState = reducer(init, action);
+    expect(newState.deltaGroups).toEqual([{id: 2, deltas: [3,4]}]);
   });
 
   it('update votes on deltas', () => {
@@ -306,13 +332,24 @@ describe('the store', () => {
   it('sorts deltas', () => {
     const init = {
       ...initState,
-      deltas: [{id: 1, votes: generateVotes(4)}, {id: 2, votes: generateVotes(6)}, {id: 3, votes: generateVotes(6)}],
+      deltas: [
+        {id: 1, votes: generateVotes(3)},
+        {id: 2, votes: generateVotes(1)},
+        {id: 3, votes: generateVotes(1)},
+        {id: 4, votes: generateVotes(1)},
+        {id: 5, votes: generateVotes(1)},
+      ],
+      deltaGroups: [
+        {
+          deltas: [2,3,4,5],
+        },
+      ],
     };
     let action = {
       type: actionTypes.sortDeltas,
     };
     let newState = reducer(init, action);
-    expect(newState.deltas.map(d => d.id)).toEqual([3, 2, 1]);
+    expect(newState.deltas.map(d => d.id)).toEqual([5,4,3,2,1]);
   });
 
   it('updates delta notes', () => {

@@ -4,6 +4,7 @@ json.time_limit @retro.time_limit_minutes
 json.deltas do
   json.array! @retro.deltas, partial: 'retro/delta', as: :delta
 end
+json.delta_groups @retro.delta_group_array
 json.pluses do
   json.array! @retro.pluses, partial: 'retro/plus', as: :plus
 end

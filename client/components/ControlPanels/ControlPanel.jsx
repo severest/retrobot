@@ -76,7 +76,7 @@ class ControlPanel extends React.Component {
           placement="top"
           overlay="You are the admin"
         >
-          <i className="fa fa-star" aria-hidden="true"></i>
+          <i className="fa fa-star" aria-hidden="true" />
         </Tooltip>
       </div>
     );
@@ -96,17 +96,17 @@ class ControlPanel extends React.Component {
         <div className="btn-group" role="group">
           {this.props.state === RETRO_STATUS.VOTING && this.props.creator && (
             <button className="btn btn-default js-test-lock" onClick={this.handleLock}>
-              <i className="fa fa-lock" aria-hidden="true"></i>
+              <i className="fa fa-lock" aria-hidden="true" />
             </button>
           )}
           {this.props.state === RETRO_STATUS.LOCKED && this.props.creator && (
             <button className="btn btn-default" onClick={this.handleUnlock}>
-              <i className="fa fa-unlock" aria-hidden="true"></i>
+              <i className="fa fa-unlock" aria-hidden="true" />
             </button>
           )}
           {this.props.state === RETRO_STATUS.LOCKED && (
             <button className="btn btn-default" onClick={this.handleSortDeltas}>
-              <i className="fa fa-sort-amount-desc" aria-hidden="true"></i>
+              <i className="fa fa-sort-amount-desc" aria-hidden="true" />
             </button>
           )}
         </div>
@@ -117,7 +117,7 @@ class ControlPanel extends React.Component {
               overlay="Number of votes submitted"
             >
               <span>
-                {this.props.voteCount} <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                {this.props.voteCount} <i className="fa fa-plus-circle" aria-hidden="true" />
               </span>
             </Tooltip>
             {' / '}
@@ -126,7 +126,7 @@ class ControlPanel extends React.Component {
               overlay="Users in the retro"
             >
               <span>
-                {this.props.userCount} <i className="fa fa-user" aria-hidden="true"></i>
+                {this.props.userCount} <i className="fa fa-user" aria-hidden="true" />
               </span>
             </Tooltip>
           </div>
@@ -165,7 +165,7 @@ class ControlPanel extends React.Component {
             </button>
           </span>
         </div>
-        <div>Enter: <i className="fa fa-plus" aria-hidden="true"></i>, ShiftEnter: <i className="fa fa-exclamation-triangle" aria-hidden="true"></i></div>
+        <div>Enter: <i className="fa fa-plus" aria-hidden="true" />, ShiftEnter: <i className="fa fa-exclamation-triangle" aria-hidden="true" /></div>
       </div>
     );
   }

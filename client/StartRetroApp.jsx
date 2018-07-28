@@ -155,7 +155,7 @@ class StartRetroApp extends React.Component {
               type="submit"
               disabled={this.state.isLoading}
             >
-              <i className="fa fa-play" aria-hidden="true"></i> Start retro
+              <i className="fa fa-play" aria-hidden="true" /> Start retro
             </button>
           </form>
         </div>

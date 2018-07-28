@@ -10,6 +10,7 @@ import Loader from './components/Loader/Loader.jsx';
 import NotesModal from './components/NotesModal/NotesModal.jsx';
 import PrevDeltasModal from './components/PrevDeltasModal/PrevDeltasModal.jsx';
 import Notifications from './components/Notifications/Notifications.jsx';
+import DeltaGroupDisplay from './components/Delta/DeltaGroupDisplay.jsx';
 import { RETRO_STATUS } from './utils/constants.js';
 
 import {
@@ -35,6 +36,7 @@ class RetroBoardApp extends React.Component {
         pluses: [],
         deltas: [],
         selectedDeltas: [],
+        deltaGroups: [],
         prevDeltas: [],
         timer: {
           show: false,
@@ -51,6 +53,7 @@ class RetroBoardApp extends React.Component {
       notesLock: null,
       users: [],
       showPrevDeltasModal: false,
+      deltaGroupDisplay: null,
     };
   }
 
@@ -62,6 +65,7 @@ class RetroBoardApp extends React.Component {
           pluses: state.pluses,
           deltas: state.deltas,
           selectedDeltas: state.selectedDeltas,
+          deltaGroups: state.deltaGroups,
           prevDeltas: state.prevDeltas,
           timer: state.timer,
           state: state.retroStatus,
@@ -73,6 +77,7 @@ class RetroBoardApp extends React.Component {
         notes: state.notes,
         notesLock: state.notesLock,
         users: state.users,
+        deltaGroupDisplay: state.deltaGroupDisplay,
       });
     });
 
@@ -140,6 +145,7 @@ class RetroBoardApp extends React.Component {
               classNames="fade"
             >
               <SelectionControlPanel
+                isCreator={this.state.retro.creator}
                 selectedDeltas={this.state.retro.selectedDeltas}
               />
             </CSSTransition>
@@ -147,6 +153,24 @@ class RetroBoardApp extends React.Component {
         </TransitionGroup>
 
         <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
+
+        {this.state.deltaGroupDisplay && (
+          <DeltaGroupDisplay
+            retroState={this.state.retro.state}
+            deltas={this.state.retro.deltaGroups
+              .find(g => g.id === this.state.deltaGroupDisplay).deltas
+              .reduce((arr, deltaId) => {
+                const delta = this.state.retro.deltas.find(del => del.id === deltaId);
+                if (delta) {
+                  return arr.concat(delta);
+                }
+                return arr;
+              }, [])
+            }
+            deltaGroupId={this.state.deltaGroupDisplay}
+            isCreator={this.state.retro.creator}
+          />
+        )}
 
         <Notifications />
       </div>

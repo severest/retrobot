@@ -45,6 +45,19 @@ export const clearSelectedDeltas = actionDispatcher(() => ({
   type: actionTypes.clearSelectedDeltas
 }));
 
+export const updateDeltaGroups = actionDispatcher((payload) => ({
+  type: actionTypes.updateDeltaGroups,
+  payload
+}));
+
+export const displayDeltaGroup = actionDispatcher((payload) => ({
+  type: actionTypes.displayDeltaGroup,
+  payload
+}));
+export const clearDeltaGroupDisplay = actionDispatcher(() => ({
+  type: actionTypes.clearDeltaGroupDisplay
+}));
+
 export const updateVotes = actionDispatcher((payload) => ({
   type: actionTypes.updateVotes,
   payload
@@ -108,6 +121,7 @@ export const retroBoardInit = (retroKey, history) => {
     setTimeLimitMinutes(retro.time_limit);
     setMaxVotes(retro.max_votes);
     setRetroCreator(retro.creator === window.myID);
+    updateDeltaGroups(retro.delta_groups);
     retro.deltas.sort((a,b) => b.votes.length - a.votes.length).forEach((delta) => {
       const parseDelta = {
         ...delta,

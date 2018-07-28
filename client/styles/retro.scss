@@ -115,6 +115,21 @@
     box-shadow: 0 0 40px #131313;
   }
 
+  .card__group {
+    position: absolute;
+    padding: 5px 7px;
+    top: -5px;
+    left: -5px;
+    background: lighten($delta, 20%);
+    border-radius: 8px;
+    z-index: $zIndex-group-badge;
+
+    &:hover {
+      background: lighten($delta, 10%);
+      color: darken(white, 10%);
+    }
+  }
+
   .card__content {
     background: $delta;
   }
@@ -138,6 +153,38 @@
   .card__left {
     i {
       left: 8px;
+    }
+  }
+}
+
+.delta-group-display {
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid darken(white, 20%);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &__content {
+      width: 360px;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+
+      .upvote .fa,
+      .downvote .fa {
+        color: darken(white, 40%);
+      }
+
+      .upvote.mine .fa {
+        color: $my-vote-tally;
+      }
     }
   }
 }

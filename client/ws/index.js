@@ -15,6 +15,7 @@ import {
   unlockNotes,
   updateDeltaNotes,
   setRetroStatus,
+  updateDeltaGroups,
 } from '../flux/retro/actions.js';
 import {
   addNotification,
@@ -60,6 +61,18 @@ export const sendDelta = (content) => {
 
 export const deleteDelta = (id) => {
   retroChannel.send(prepMessage({ type: 'delete', itemType: 'delta', itemId: id }));
+};
+
+export const sendDeltaGroup = (deltaIds) => {
+  retroChannel.send(prepMessage({ type: 'group', itemType: 'delta', deltas: deltaIds, userId: window.myID }));
+};
+
+export const deleteDeltaGroup = (deltaGroupId) => {
+  retroChannel.send(prepMessage({ type: 'delete', itemType: 'deltaGroup', userId: window.myID, deltaGroupId }));
+};
+
+export const deleteDeltaGroupItem = (deltaId) => {
+  retroChannel.send(prepMessage({ type: 'delete', itemType: 'deltaGroupItem', userId: window.myID, deltaId }));
 };
 
 export const sendTime = (minutes, seconds) => {
@@ -141,6 +154,9 @@ export default (room) => {
     }
     if (data.type === 'status') {
       return setRetroStatus(data.status)
+    }
+    if (data.type === 'deltaGroups') {
+      return updateDeltaGroups(data.groups);
     }
   }, (notification) => {
     addNotification({

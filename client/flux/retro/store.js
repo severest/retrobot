@@ -1,5 +1,6 @@
 import _reverse from 'lodash/reverse';
 import _sortBy from 'lodash/sortBy';
+import _uniq from 'lodash/uniq';
 
 import action$ from './stream.js';
 import { scan, startWith } from 'rxjs/operators';
@@ -14,6 +15,8 @@ export const initState = {
   pluses: [],
   deltas: [],
   selectedDeltas: [],
+  deltaGroups: [],
+  deltaGroupDisplay: null,
   prevDeltas: [],
   timer: {
     show: false,
@@ -101,19 +104,37 @@ const actionMap = {
   [actionTypes.addDeltaToSelection]: (state, action) => {
     return {
       ...state,
-      selectedDeltas: state.selectedDeltas.concat(action.payload),
+      selectedDeltas: _uniq(state.selectedDeltas.concat(action.payload)),
     };
   },
   [actionTypes.removeDeltaFromSelection]: (state, action) => {
     return {
       ...state,
-      selectedDeltas: state.selectedDeltas.filter(d => d !== action.payload),
+      selectedDeltas: state.selectedDeltas.filter(d => !action.payload.includes(d)),
     };
   },
   [actionTypes.clearSelectedDeltas]: (state) => {
     return {
       ...state,
       selectedDeltas: [],
+    };
+  },
+  [actionTypes.updateDeltaGroups]: (state, action) => {
+    return {
+      ...state,
+      deltaGroups: action.payload,
+    };
+  },
+  [actionTypes.displayDeltaGroup]: (state, action) => {
+    return {
+      ...state,
+      deltaGroupDisplay: action.payload,
+    };
+  },
+  [actionTypes.clearDeltaGroupDisplay]: (state) => {
+    return {
+      ...state,
+      deltaGroupDisplay: null,
     };
   },
   [actionTypes.updateVotes]: (state, action) => {
@@ -169,7 +190,17 @@ const actionMap = {
   [actionTypes.sortDeltas]: (state) => {
     return {
       ...state,
-      deltas: _reverse(_sortBy(state.deltas, [(d) => d.votes.length, 'id'])),
+      deltas: _reverse(_sortBy(state.deltas, [(delta) => {
+        const group = state.deltaGroups.find((g) => g.deltas.includes(delta.id));
+        const votes = group ? group.deltas.reduce((arr, groupDeltaId) => {
+          const groupDelta = state.deltas.find(del => del.id === groupDeltaId);
+          if (groupDelta) {
+            return arr.concat(groupDelta.votes);
+          }
+          return arr;
+        }, []) : delta.votes;
+        return votes;
+      }, 'id'])),
     };
   },
   [actionTypes.errorWhenCreatingRetro]: (state, action) => {
