@@ -1,14 +1,22 @@
 class RetroController < ApplicationController
   def show
     @retro = Retro.find_by_key!(params[:key])
-    @prev_retro_deltas = []
-    prev_retro = Retro.where(team: @retro.team)
+    @prev_retro_deltas_without_notes = []
+    prev_retro = Retro.includes(:deltas)
+                      .where(team: @retro.team)
                       .where.not(team: nil)
                       .where(status: :locked)
                       .where.not(id: @retro.id)
                       .order('created_at desc').first()
     if !prev_retro.nil?
-      @prev_retro_deltas = prev_retro.deltas
+      deltas = prev_retro.deltas.select{ |delta| delta.notes.nil? || delta.notes == "" }
+      delta_groups = DeltaGroup.includes(:deltas).where(retro: prev_retro)
+      delta_groups.each do |group|
+        if group.deltas.any? { |delta| !delta.notes.nil? && delta.notes != "" }
+          deltas = deltas.select{ |delta| !group.deltas.include?(delta) }
+        end
+      end
+      @prev_retro_deltas_without_notes = deltas
     end
     render 'retro/show.json.jbuilder'
   end

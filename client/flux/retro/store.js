@@ -99,6 +99,7 @@ const actionMap = {
     return {
       ...state,
       deltas: state.deltas.filter(d => d.id !== action.payload.itemId),
+      selectedDeltas: state.selectedDeltas.filter(d => d !== action.payload.itemId),
     };
   },
   [actionTypes.addDeltaToSelection]: (state, action) => {

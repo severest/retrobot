@@ -709,23 +709,4 @@ class WebsocketTest < ActiveSupport::TestCase
     callback.verify
     notification_callback.verify
   end
-
-  test "should not create delta group when locked" do
-    retro = create(:retro, key: 'eeeee2', status: 'locked', creator: '1')
-    delta1 = create(:delta, retro: retro)
-    delta2 = create(:delta, retro: retro)
-    data = {
-      'type' => 'group',
-      'itemType' => 'delta',
-      'deltas' => [delta1.id, delta2.id],
-      'userId' => '1',
-    }
-    callback = MiniTest::Mock.new
-    notification_callback = MiniTest::Mock.new
-    assert_no_difference('DeltaGroup.count') do
-      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
-    end
-    callback.verify
-    notification_callback.verify
-  end
 end

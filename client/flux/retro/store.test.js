@@ -115,6 +115,20 @@ describe('the store', () => {
     expect(newState.deltas.length).toBe(0);
   });
 
+  it('removes selected deltas when removing deltas', () => {
+    const init = {
+      ...initState,
+      deltas: [{id: 1}],
+      selectedDeltas: [1,2],
+    };
+    const action = {
+      type: actionTypes.removeDelta,
+      payload: {itemId: 1},
+    };
+    const newState = reducer(init, action);
+    expect(newState.selectedDeltas.length).toBe(1);
+  });
+
   it('removes the right deltas', () => {
     const init = {
       ...initState,

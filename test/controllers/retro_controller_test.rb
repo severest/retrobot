@@ -110,4 +110,32 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     json_response = JSON.parse(@response.body)
     assert_equal 0, json_response['prev_deltas'].count
   end
+
+  test "should not have prev deltas that have notes" do
+    team = create(:team)
+    old_retro = create(:full_retro, key: 'eeeee1', status: 'locked', team: team)
+    delta = old_retro.deltas.first()
+    delta.notes = 'hi'
+    delta.save
+    retro = create(:retro, key: 'eeeee2', team: team)
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 4, json_response['prev_deltas'].count
+  end
+
+  test "should not have prev deltas that belong to a group with notes" do
+    team = create(:team)
+    old_retro = create(:retro, key: 'eeeee1', status: 'locked', team: team)
+    delta1 = create(:delta, retro: old_retro, notes: 'hi')
+    delta2 = create(:delta, retro: old_retro)
+    delta3 = create(:delta, retro: old_retro)
+    delta_group = create(:delta_group, retro: old_retro)
+    delta_group.add_deltas([delta1.id, delta2.id])
+    retro = create(:retro, key: 'eeeee2', team: team)
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 1, json_response['prev_deltas'].count
+  end
 end

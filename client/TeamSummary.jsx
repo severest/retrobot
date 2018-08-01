@@ -5,8 +5,8 @@ import { StyleSheet, css } from 'aphrodite';
 import { Link } from 'react-router-dom';
 import _reverse from 'lodash/reverse';
 import _sortBy from 'lodash/sortBy';
+import _every from 'lodash/every';
 
-const MIN_DELTAS_SHOWN = 4;
 const styles = StyleSheet.create({
   container: {
     padding: '30px 0',
@@ -65,6 +65,7 @@ class TeamSummary extends React.Component {
     retros: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.string.isRequired,
       createdAt: PropTypes.string.isRequired,
+      deltaGroups: PropTypes.array.isRequired,
       deltas: PropTypes.array.isRequired,
     })).isRequired,
   }
@@ -87,8 +88,50 @@ class TeamSummary extends React.Component {
                 </Link>
               </div>
               <div className={css(styles.deltas)}>
-                {_reverse(_sortBy(retro.deltas, [(d) => d.votes.length, 'id'])).map((delta, deltaIndex) => {
-                  if ((deltaIndex + 1) > MIN_DELTAS_SHOWN && (!delta.notes || delta.notes === '')) {
+                {_reverse(_sortBy(retro.deltas, [(delta) => {
+                  const group = retro.deltaGroups.find((g) => g.deltas.includes(delta.id));
+                  const votes = group ? group.deltas.reduce((arr, groupDeltaId) => {
+                    const groupDelta = retro.deltas.find(del => del.id === groupDeltaId);
+                    if (groupDelta) {
+                      return arr.concat(groupDelta.votes);
+                    }
+                    return arr;
+                  }, []) : delta.votes;
+                  return votes;
+                }, 'id']))
+                .map((delta) => {
+                  const group = retro.deltaGroups.find((g) => g.deltas.includes(delta.id));
+                  const votes = group ? group.deltas.reduce((arr, groupDeltaId) => {
+                    const groupDelta = retro.deltas.find(del => del.id === groupDeltaId);
+                    if (groupDelta) {
+                      return arr.concat(groupDelta.votes);
+                    }
+                    return arr;
+                  }, []) : delta.votes;
+                  const notes = group ? group.deltas.reduce((notesArray, groupDeltaId) => {
+                    const groupDelta = retro.deltas.find(del => del.id === groupDeltaId);
+                    if (groupDelta && groupDelta.notes && groupDelta.notes !== '') {
+                      return notesArray.concat(groupDelta.notes);
+                    }
+                    return notesArray;
+                  }, []) : [delta.notes];
+                  const content = group ? group.deltas.reduce((contentArray, groupDeltaId) => {
+                    const groupDelta = retro.deltas.find(del => del.id === groupDeltaId);
+                    if (groupDelta) {
+                      return contentArray.concat(groupDelta.content);
+                    }
+                    return contentArray;
+                  }, []) : [delta.content];
+                  return {
+                    ...delta,
+                    hide: (group && group.deltas[0] !== delta.id),
+                    votes,
+                    notes,
+                    content,
+                  };
+                })
+                .map((delta) => {
+                  if (_every(delta.notes, (notes) => !notes || notes === '') || delta.hide) {
                     return null;
                   }
                   return (
@@ -96,13 +139,23 @@ class TeamSummary extends React.Component {
                       key={delta.id}
                       className={css(styles.delta)}
                     >
-                      <div className={`${css(styles.deltaContent)} js-test-delta-summary-content`}>{delta.content}</div>
+                      {delta.content.map((content) => (
+                        <div
+                          key={content}
+                          className={`${css(styles.deltaContent)}
+                          js-test-delta-summary-content`}
+                        >
+                          {content}
+                        </div>
+                      ))}
                       <div className={`${css(styles.votes)} js-test-delta-summary-votes`}>{delta.votes.length} {delta.votes.length === 1 ? 'vote' : 'votes'}</div>
-                      {!delta.notes || delta.notes === '' ? (
-                        <div className={css(styles.emptyNotes)}>No action items</div>
-                      ) : (
-                        <div className={css(styles.notes)}>{delta.notes}</div>
-                      )}
+
+                      {delta.notes.map((notes) => {
+                        if (!notes || notes === '') {
+                          return null;
+                        }
+                        return <div key={notes} className={css(styles.notes)}>{notes}</div>
+                      })}
                     </div>
                   );
                 })}

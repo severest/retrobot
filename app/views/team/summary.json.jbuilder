@@ -7,5 +7,6 @@ json.retros do
     json.deltas do
       json.array! retro.deltas, partial: 'retro/delta', as: :delta
     end
+    json.deltaGroups retro.delta_group_array
   end
 end
