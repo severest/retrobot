@@ -27,6 +27,7 @@ class RetrosTest < RetrobotSystemTestCase
 
     first('.js-test-delta-notes').click()
     fill_in "Enter notes, action items...", with: "some notes are good"
+    sleep(1)
     find('.js-test-save-notes').click()
     first('.js-test-delta-notes').click()
     assert_selector ".js-test-notes-input", text: "some notes are good"
