@@ -97,7 +97,7 @@ class TeamSummary extends React.Component {
                     }
                     return arr;
                   }, []) : delta.votes;
-                  return votes;
+                  return votes.length;
                 }, 'id']))
                 .map((delta) => {
                   const group = retro.deltaGroups.find((g) => g.deltas.includes(delta.id));

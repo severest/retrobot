@@ -200,7 +200,7 @@ const actionMap = {
           }
           return arr;
         }, []) : delta.votes;
-        return votes;
+        return votes.length;
       }, 'id'])),
     };
   },
