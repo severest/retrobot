@@ -111,10 +111,6 @@
 }
 
 .delta-card {
-  &--selected {
-    box-shadow: 0 0 40px #131313;
-  }
-
   .card__group {
     position: absolute;
     padding: 5px 7px;
@@ -137,6 +133,14 @@
   .card__left,
   .card__right {
     background: darken($delta, 20%);
+  }
+
+  &--selected {
+    box-shadow: 0 0 20px $blue;
+
+    .card__content {
+      background: darken($delta, 10%);
+    }
   }
 }
 
