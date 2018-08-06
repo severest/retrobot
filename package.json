@@ -27,7 +27,7 @@
     "particlesjs": "2.2.2",
     "prop-types": "^15.6.2",
     "rc-tooltip": "^3.7.2",
-    "react": "^16.4.1",
+    "react": "^16.4.2",
     "react-dom": "^16.4.1",
     "react-loadable": "^5.4.0",
     "react-notification": "^6.8.2",
