@@ -13,7 +13,7 @@
     "lint": "eslint --ext .jsx --ext .js client/"
   },
   "dependencies": {
-    "actioncable": "^5.1.6",
+    "actioncable": "^5.2.1",
     "aphrodite": "2.2.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "bootstrap-sass": "^3.3.7",
