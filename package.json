@@ -58,7 +58,7 @@
     "jest": "^23.4.2",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.22.1",
     "webpack": "^4.16.3",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
