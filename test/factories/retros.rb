@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :retro do
     status "in_progress"
+    key { SecureRandom.hex(3) }
   end
 
   factory :full_retro, parent: :retro do

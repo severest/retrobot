@@ -8,9 +8,9 @@ import TeamSummary from './TeamSummary.jsx';
 
 import {
   getTeamSummary,
-} from './flux/retro/actions.js';
+} from './flux/summary/actions.js';
 
-import store$ from './flux/retro/store.js';
+import store$ from './flux/summary/store.js';
 
 class TeamSummaryApp extends React.Component {
   static propTypes = {
@@ -25,6 +25,7 @@ class TeamSummaryApp extends React.Component {
       error: '',
       isOffline: false,
       teamSummary: null,
+      page: 1,
     };
   }
 
@@ -54,11 +55,15 @@ class TeamSummaryApp extends React.Component {
     }
   }
 
-  render() {
-    if (this.state.isLoading) {
-      return <Loader />;
-    }
+  getNextPage = () => {
+    this.setState({
+      page: this.state.page + 1,
+    }, () => {
+      getTeamSummary({name: this.teamName}, this.state.page);
+    })
+  }
 
+  render() {
     const passwordClasses = classNames(
       'form-group',
       {
@@ -69,7 +74,7 @@ class TeamSummaryApp extends React.Component {
     return (
       <div>
         {this.state.isOffline && <OfflineIndicatorModal />}
-        {this.state.teamSummary === null ? (
+        {!this.state.teamSummary || this.state.teamSummary.name === undefined ? (
           <div className="create-retro">
             <form role="form" onSubmit={this.getTeamSummary}>
               <div className={passwordClasses}>
@@ -93,7 +98,20 @@ class TeamSummaryApp extends React.Component {
             </form>
           </div>
         ) : (
-          <TeamSummary {...this.state.teamSummary} />
+          <React.Fragment>
+            <TeamSummary {...this.state.teamSummary} />
+            {this.state.isLoading && <Loader />}
+            {!this.state.isLoading && this.state.teamSummary.retros.length < this.state.teamSummary.totalRetros && (
+              <div className="team-summary__load-more">
+                <button
+                  className="btn btn-default"
+                  onClick={this.getNextPage}
+                >
+                  Load more
+                </button>
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
     );

@@ -26,6 +26,11 @@ class TeamController < ApplicationController
   end
 
   def render_summary
+    page = params[:page].try(&:to_i) || 1
+    limit = 25
+    offset = (page - 1) * limit
+    @retros = @team.retros.where('status' => :locked).order('created_at desc').limit(limit).offset(offset)
+    @total_retros = @team.retros.where('status' => :locked).count
     render 'team/summary.json.jbuilder'
   end
 end
