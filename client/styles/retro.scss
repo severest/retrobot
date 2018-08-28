@@ -177,6 +177,13 @@
       width: 360px;
     }
 
+    &__votes {
+      background: #c00;
+      color: #fff;
+      border-radius: 15px;
+      padding: 5px 8px;
+    }
+
     &__actions {
       display: flex;
       align-items: center;

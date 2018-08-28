@@ -8,6 +8,7 @@ import {
   deleteDeltaGroup,
   deleteDeltaGroupItem,
 } from '../../ws/index.js';
+import { RETRO_STATUS } from '../../utils/constants.js';
 
 import DeltaVotes from '../Delta/DeltaVotes.jsx';
 
@@ -48,6 +49,11 @@ class DeltaGroupDisplay extends React.Component {
                       <div className="delta-group-display__item__content">
                         {delta.content}
                       </div>
+                      {this.props.retroState === RETRO_STATUS.LOCKED && (
+                        <div className="delta-group-display__item__votes">
+                          {delta.votes.length} {delta.votes.length === 1 ? 'vote' : 'votes'}
+                        </div>
+                      )}
                       <div className="delta-group-display__item__actions">
                         <DeltaVotes
                           retroState={this.props.retroState}
