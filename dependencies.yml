@@ -5,11 +5,11 @@ collectors:
   actors:
   # pull requests for all major, minor, and patch updates
   - type: js-npm
-    versions: "Y.Y.Y"
+    versions: "Y.Y.0"
 
 - type: ruby-bundler
   path: /
   actors:
   # pull requests for all major, minor, and patch updates
   - type: ruby-bundler
-    versions: "Y.Y.Y"
+    versions: "Y.Y.0"
