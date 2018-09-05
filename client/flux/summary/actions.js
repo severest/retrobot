@@ -27,7 +27,6 @@ export const getTeamSummary = (team, page=1) => {
     }),
   })
   .then((res) => {
-    doneLoading();
     if (res.ok) {
       return res.json();
     } else {
@@ -48,6 +47,7 @@ export const getTeamSummary = (team, page=1) => {
   })
   .then((team) => {
     receiveTeamSummary(team);
+    doneLoading();
   })
   .catch(() => getTeamSummaryError());
 };

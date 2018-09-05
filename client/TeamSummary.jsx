@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import _reverse from 'lodash/reverse';
 import _sortBy from 'lodash/sortBy';
 import _every from 'lodash/every';
+import Linkify from 'linkifyjs/react';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
   notes: {
     whiteSpace: 'pre-line',
     marginTop: '10px',
+    wordBreak: 'break-word',
   },
   emptyNotes: {
     fontStyle: 'italic',
@@ -154,7 +156,11 @@ class TeamSummary extends React.Component {
                         if (!notes || notes === '') {
                           return null;
                         }
-                        return <div key={notes} className={css(styles.notes)}>{notes}</div>
+                        return (
+                          <div key={notes} className={css(styles.notes)}>
+                            <Linkify>{notes}</Linkify>
+                          </div>
+                        );
                       })}
                     </div>
                   );

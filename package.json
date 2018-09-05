@@ -22,6 +22,7 @@
     "favicons-webpack-plugin": "^0.0.9",
     "font-awesome": "^4.7.0",
     "fresh": "^0.5.2",
+    "linkifyjs": "^2.1.7",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "particlesjs": "2.2.2",

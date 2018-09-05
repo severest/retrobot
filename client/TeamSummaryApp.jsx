@@ -75,28 +75,32 @@ class TeamSummaryApp extends React.Component {
       <div>
         {this.state.isOffline && <OfflineIndicatorModal />}
         {!this.state.teamSummary || this.state.teamSummary.name === undefined ? (
-          <div className="create-retro">
-            <form role="form" onSubmit={this.getTeamSummary}>
-              <div className={passwordClasses}>
-                <input
-                  type="password"
-                  ref={c => this.password = c}
-                  className="form-control"
-                  placeholder="Password"
-                />
-                {this.state.error !== '' && (
-                  <p className="help-block">{this.state.error}</p>
-                )}
+          <React.Fragment>
+            {this.state.isLoading ? <Loader /> : (
+              <div className="create-retro">
+                <form role="form" onSubmit={this.getTeamSummary}>
+                  <div className={passwordClasses}>
+                    <input
+                      type="password"
+                      ref={c => this.password = c}
+                      className="form-control"
+                      placeholder="Password"
+                    />
+                    {this.state.error !== '' && (
+                      <p className="help-block">{this.state.error}</p>
+                    )}
+                  </div>
+                  <button
+                    className="btn btn-primary create-retro-btn"
+                    type="submit"
+                    disabled={this.state.isLoading}
+                  >
+                    Get summary
+                  </button>
+                </form>
               </div>
-              <button
-                className="btn btn-primary create-retro-btn"
-                type="submit"
-                disabled={this.state.isLoading}
-              >
-                Get summary
-              </button>
-            </form>
-          </div>
+            )}
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <TeamSummary {...this.state.teamSummary} />
