@@ -45,6 +45,7 @@ class RetrosTest < RetrobotSystemTestCase
 
     # test summary
     visit '/summary/test team'
+    find('.form-control', wait: 10)
     fill_in "Password", with: "testpassword"
     click_on "Get summary"
     assert_selector ".js-test-delta-summary-content", text: "this my delta, so COOL!"

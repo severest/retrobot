@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :delta do
-    content "a delta"
+    content { "a delta" }
   end
 end

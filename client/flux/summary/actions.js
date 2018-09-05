@@ -49,7 +49,10 @@ export const getTeamSummary = (team, page=1) => {
     receiveTeamSummary(team);
     doneLoading();
   })
-  .catch(() => getTeamSummaryError());
+  .catch(() => {
+    getTeamSummaryError();
+    doneLoading();
+  });
 };
 
 export const getTeamSummaryError = actionDispatcher(() => ({
