@@ -5,6 +5,12 @@
   background: darken($bg, 10%);
   padding: 30px;
   border-radius: 4px;
+
+  &__title {
+    font-size: 54px;
+    text-align: center;
+    color: darken($bg, 8%);
+  }
 }
 
 .retro-container {

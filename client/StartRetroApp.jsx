@@ -96,6 +96,7 @@ class StartRetroApp extends React.Component {
                 ref={c => this.team = c}
                 className="form-control"
                 placeholder="Team name (optional)"
+                autoComplete="team-name"
               />
             </div>
             <div className={passwordClasses}>
@@ -158,6 +159,10 @@ class StartRetroApp extends React.Component {
               <i className="fa fa-play" aria-hidden="true" /> Start retro
             </button>
           </form>
+        </div>
+
+        <div className="create-retro__title">
+          Retrob<i className="fa fa-recycle" aria-hidden="true" />t
         </div>
       </div>
     );
