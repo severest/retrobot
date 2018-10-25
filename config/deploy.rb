@@ -2,7 +2,7 @@
 lock '3.11.0'
 
 set :application, 'retrobot'
-set :repo_url, 'git@github.com:severest/retrobot.git'
+set :repo_url, 'https://github.com/severest/retrobot.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
