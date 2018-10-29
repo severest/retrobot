@@ -11,7 +11,7 @@ import Linkify from 'linkifyjs/react';
 const styles = StyleSheet.create({
   container: {
     padding: '30px 0',
-    width: '900px',
+    maxWidth: '900px',
     margin: 'auto',
   },
   header: {

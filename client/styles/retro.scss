@@ -29,6 +29,15 @@
   }
 }
 
+@media (max-width: 600px) {
+  .retro-container {
+    &--plus,
+    &--delta {
+      width: 100%;
+    }
+  }
+}
+
 .card {
   color: white;
   margin: 5px;
