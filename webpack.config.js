@@ -6,14 +6,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].css",
+    filename: "[name].[hash].css",
     disable: process.env.NODE_ENV === "development"
 });
 
 module.exports = {
   entry: './client/main.js',
   output: {
-    filename: "[name].bundle.js",
+    filename: "[name].[hash].bundle.js",
     publicPath: '/',
   },
   module: {
