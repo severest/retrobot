@@ -33,6 +33,13 @@ $fa-font-path: "~font-awesome/fonts";
   font-family: 'Open Sans', sans-serif;
  }
 
+ input[type="text"],
+ input[type="password"],
+ select:focus,
+ textarea {
+   font-size: 16px;
+ }
+
  .btn-link {
    &:active,
    &:focus {

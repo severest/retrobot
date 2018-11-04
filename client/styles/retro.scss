@@ -1,3 +1,5 @@
+$mobile-breakpoint: 600px;
+
 .create-retro {
   margin: 70px auto;
   text-align: center;
@@ -7,9 +9,21 @@
   border-radius: 4px;
 
   &__title {
+    width: 400px;
+    margin: auto;
     font-size: 54px;
     text-align: center;
     color: darken($bg, 8%);
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .create-retro {
+    width: 100%;
+
+    &__title {
+      width: 100%;
+    }
   }
 }
 
@@ -29,7 +43,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $mobile-breakpoint) {
   .retro-container {
     &--plus,
     &--delta {
