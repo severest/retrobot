@@ -24,7 +24,7 @@
     "fresh": "^0.5.2",
     "linkifyjs": "^2.1.7",
     "lodash": "^4.17.10",
-    "moment": "^2.22.2",
+    "moment": "^2.23.0",
     "particlesjs": "2.2.2",
     "prop-types": "^15.6.2",
     "rc-tooltip": "^3.7.2",
