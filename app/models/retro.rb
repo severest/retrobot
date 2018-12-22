@@ -2,9 +2,11 @@ class Retro < ApplicationRecord
   has_many :pluses, class_name: 'Plus'
   has_many :deltas, class_name: 'Delta'
   has_many :delta_groups
+  has_many :temperature_checks
   belongs_to :team, optional: true
   enum status: [ :in_progress, :voting, :locked ]
 
+  validates :max_votes, :time_limit_minutes, presence: true
   validates :key, format: { with: /\A[a-zA-Z0-9]{6}\z/,
     message: "6 digit alphanumeric" }
 

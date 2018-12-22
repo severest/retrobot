@@ -709,4 +709,57 @@ class WebsocketTest < ActiveSupport::TestCase
     callback.verify
     notification_callback.verify
   end
+
+  test "should add temperature check" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+      'temperature' => 3,
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_difference('TemperatureCheck.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert TemperatureCheck.where(retro: retro, user: '10').exists?
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should update temperature check" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    check = create(:temperature_check, retro: retro, user: '10', temperature: 3)
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+      'temperature' => 8,
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_no_difference('TemperatureCheck.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert_equal TemperatureCheck.where(retro: retro, user: '10').first.temperature, 8
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should not create temperature check without temp" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    notification_callback.expect :call, nil, [{"error"=>"Unable to create new temperature check"}]
+    assert_no_difference('TemperatureCheck.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
 end

@@ -16,6 +16,7 @@ import {
   updateDeltaNotes,
   setRetroStatus,
   updateDeltaGroups,
+  addTemperatureCheck,
 } from '../flux/retro/actions.js';
 import {
   addNotification,
@@ -106,6 +107,10 @@ export const unlockRetro = () => {
   retroChannel.send(prepMessage({ type: 'unlock', userId: window.myID }));
 };
 
+export const sendTemperatureCheck = (temperature, notes) => {
+  retroChannel.send(prepMessage({ type: 'temperature', userId: window.myID, temperature, notes }));
+};
+
 export default (room) => {
   connectToRetro(room, (encodedData) => {
     const data = parseMessage(encodedData);
@@ -157,6 +162,9 @@ export default (room) => {
     }
     if (data.type === 'deltaGroups') {
       return updateDeltaGroups(data.groups);
+    }
+    if (data.type === 'temperature') {
+      return addTemperatureCheck(data);
     }
   }, (notification) => {
     addNotification({

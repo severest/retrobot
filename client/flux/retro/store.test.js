@@ -403,4 +403,34 @@ describe('the store', () => {
     expect(newState.notesLock).toBe(null);
   });
 
+  it('add temperature check', () => {
+    const init = {
+      ...initState,
+    };
+    let action = {
+      type: actionTypes.addTemperatureCheck,
+      payload: { userId: '1', temperature: 3 },
+    };
+    let newState = reducer(init, action);
+    expect(newState.temperatureChecks).toHaveLength(1);
+    action.payload = { userId: '2', temperature: 7 };
+    newState = reducer(newState, action);
+    expect(newState.temperatureChecks).toHaveLength(2);
+  });
+
+  it('only updates temperature check on user id', () => {
+    const init = {
+      ...initState,
+    };
+    let action = {
+      type: actionTypes.addTemperatureCheck,
+      payload: { userId: '1', temperature: 3 },
+    };
+    let newState = reducer(init, action);
+    expect(newState.temperatureChecks).toHaveLength(1);
+    action.payload = { userId: '1', temperature: 7 };
+    newState = reducer(init, action);
+    expect(newState.temperatureChecks).toHaveLength(1);
+    expect(newState.temperatureChecks[0].temperature).toBe(7);
+  });
 });

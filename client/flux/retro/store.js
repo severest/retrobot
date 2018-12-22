@@ -18,6 +18,7 @@ export const initState = {
   deltaGroups: [],
   deltaGroupDisplay: null,
   prevDeltas: [],
+  temperatureChecks: [],
   timer: {
     show: false,
     minutes: 0,
@@ -35,6 +36,7 @@ export const initState = {
   creator: false,
   timeLimitMinutes: 0,
   maxVotes: 0,
+  includeTemperatureCheck: false,
 };
 
 // Redux reducer
@@ -289,6 +291,31 @@ const actionMap = {
     return {
       ...state,
       maxVotes: action.payload,
+    };
+  },
+  [actionTypes.setIncludeTemperatureCheck]: (state, action) => {
+    return {
+      ...state,
+      includeTemperatureCheck: action.payload,
+    };
+  },
+  [actionTypes.addTemperatureCheck]: (state, action) => {
+    let temperatureChecks;
+    const temperatureCheck = action.payload;
+    const existing = state.temperatureChecks.find(c => c.userId === temperatureCheck.userId);
+    if (existing) {
+      temperatureChecks = state.temperatureChecks.map((check) => {
+        if (check.userId === temperatureCheck.userId) {
+          return temperatureCheck;
+        }
+        return check;
+      });
+    } else {
+      temperatureChecks = state.temperatureChecks.concat(temperatureCheck);
+    }
+    return {
+      ...state,
+      temperatureChecks,
     };
   },
 };

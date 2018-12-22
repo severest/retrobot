@@ -96,6 +96,16 @@ export const setMaxVotes = actionDispatcher((payload) => ({
   payload,
 }));
 
+export const setIncludeTemperatureCheck = actionDispatcher((payload) => ({
+  type: actionTypes.setIncludeTemperatureCheck,
+  payload,
+}));
+
+export const addTemperatureCheck = actionDispatcher((payload) => ({
+  type: actionTypes.addTemperatureCheck,
+  payload,
+}));
+
 export const retroBoardInit = (retroKey, history) => {
   isLoading();
   fetch(`/api/retro/${retroKey}`, {
@@ -120,6 +130,7 @@ export const retroBoardInit = (retroKey, history) => {
     setRetroStatus(retro.status);
     setTimeLimitMinutes(retro.time_limit);
     setMaxVotes(retro.max_votes);
+    setIncludeTemperatureCheck(retro.include_temperature_check);
     setRetroCreator(retro.creator === window.myID);
     updateDeltaGroups(retro.delta_groups);
     retro.deltas.sort((a,b) => b.votes.length - a.votes.length).forEach((delta) => {
@@ -144,6 +155,9 @@ export const retroBoardInit = (retroKey, history) => {
         content: decodeURIComponent(escape(atob(delta.content))),
       };
       addPrevDelta(parseDelta);
+    });
+    retro.temperature_checks.forEach((check) => {
+      addTemperatureCheck(check);
     });
   });
 };

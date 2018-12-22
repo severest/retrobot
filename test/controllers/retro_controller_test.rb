@@ -3,7 +3,7 @@ require 'test_helper'
 class RetroControllerTest < ActionDispatch::IntegrationTest
   test "create a retro" do
     assert_difference('Retro.count', 1) do
-      post '/api/retro/new', params: {}
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10' } }
       assert_response :success
     end
   end
@@ -16,19 +16,30 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
       retro = Retro.find_by_key(json_response['key'])
       assert_equal retro.max_votes, 5
       assert_equal retro.time_limit_minutes, 10
+      assert !retro.include_temperature_check
+    end
+  end
+
+  test "create a retro with include_temperature_check" do
+    assert_difference('Retro.count', 1) do
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', include_temperature_check: true } }
+      assert_response :success
+      json_response = JSON.parse(@response.body)
+      retro = Retro.find_by_key(json_response['key'])
+      assert retro.include_temperature_check
     end
   end
 
   test "create a retro with a new team" do
     assert_difference('Team.count', 1) do
-      post '/api/retro/new', params: { retro: { team: 'New team' } }
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', team: 'New team' } }
       assert_response :success
     end
   end
 
   test "create a retro with a new team with password" do
     assert_difference('Team.count', 1) do
-      post '/api/retro/new', params: { retro: { team: 'New team', password: 'hi' } }
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', team: 'New team', password: 'hi' } }
       assert_response :success
       t = Team.find_by_name('new team')
       assert t.password == 'hi'
@@ -38,7 +49,7 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
   test "create a retro with an existing team" do
     assert_difference('Retro.count', 1) do
       t = teams(:one)
-      post '/api/retro/new', params: { retro: { team: t.name } }
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', team: t.name } }
       assert_response :success
     end
   end
@@ -46,7 +57,7 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
   test "should not create a retro with password protected team and no password" do
     assert_no_difference('Retro.count') do
       t = teams(:password_protected)
-      post '/api/retro/new', params: { retro: { team: t.name } }
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', team: t.name } }
       assert_response :bad_request
     end
   end
@@ -54,7 +65,7 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
   test "should create a retro with password protected team" do
     assert_difference('Retro.count', 1) do
       t = teams(:password_protected)
-      post '/api/retro/new', params: { retro: { team: t.name, password: 'testpassword' } }
+      post '/api/retro/new', params: { retro: { max_votes: '5', time_limit: '10', team: t.name, password: 'testpassword' } }
       assert_response :success
     end
   end
@@ -72,6 +83,15 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_equal 5, json_response['deltas'].count
     assert_equal 0, json_response['delta_groups'].count
     assert_equal 5, json_response['pluses'].count
+    assert !json_response['include_temperature_check']
+  end
+
+  test "should show include temperature check" do
+    retro = create(:full_retro, key: 'abcdef', include_temperature_check: true)
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert json_response['include_temperature_check']
   end
 
   test "should show retro delta_groups" do
@@ -137,5 +157,17 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     json_response = JSON.parse(@response.body)
     assert_equal 1, json_response['prev_deltas'].count
+  end
+
+  test "should show retro temperature_checks" do
+    retro = create(:full_retro, key: 'abcdef')
+    create(:temperature_check, retro: retro, temperature: 4, notes: 'hi', user: '2')
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 1, json_response['temperature_checks'].count
+    assert_equal 4, json_response['temperature_checks'][0]['temperature']
+    assert_equal 'hi', json_response['temperature_checks'][0]['notes']
+    assert_equal '2', json_response['temperature_checks'][0]['userId']
   end
 end

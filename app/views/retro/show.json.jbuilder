@@ -1,4 +1,4 @@
-json.(@retro, :id, :key, :status, :creator, :max_votes)
+json.(@retro, :id, :key, :status, :creator, :max_votes, :include_temperature_check)
 json.time_limit @retro.time_limit_minutes
 
 json.deltas do
@@ -10,4 +10,7 @@ json.pluses do
 end
 json.prev_deltas do
   json.array! @prev_retro_deltas_without_notes, partial: 'retro/delta', as: :delta
+end
+json.temperature_checks do
+  json.array! @retro.temperature_checks, partial: 'retro/temperature_check', as: :temperature_check
 end

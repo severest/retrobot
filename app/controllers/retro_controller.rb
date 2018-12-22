@@ -31,15 +31,20 @@ class RetroController < ApplicationController
       end
     end
     key = SecureRandom.hex(3)
-    @retro = Retro.create(key: key, team: team, creator: retro_params[:creator],
+    @retro = Retro.new(key: key, team: team, creator: retro_params[:creator],
                           max_votes: retro_params[:max_votes], status: 'in_progress',
-                          time_limit_minutes: retro_params[:time_limit])
-    return render json: { key: @retro.key }
+                          time_limit_minutes: retro_params[:time_limit],
+                          include_temperature_check: retro_params[:include_temperature_check])
+    if @retro.save
+      return render json: { key: @retro.key }
+    else
+      return render json: { 'error' => 'Unable to create new retro' }, status: :bad_request
+    end
   end
 
   private
 
   def retro_params
-    params.fetch(:retro, {}).permit(:team, :password, :creator, :time_limit, :max_votes)
+    params.fetch(:retro, {}).permit(:team, :password, :creator, :time_limit, :max_votes, :include_temperature_check)
   end
 end

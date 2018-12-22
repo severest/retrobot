@@ -47,12 +47,14 @@ class RetroBoardApp extends React.Component {
         creator: false,
         timeLimitMinutes: 0,
         maxVotes: 0,
+        includeTemperatureCheck: false,
       },
       isOffline: false,
       notes: null,
       notesLock: null,
       users: [],
       showPrevDeltasModal: false,
+      showTemperatureCheckModal: false,
       deltaGroupDisplay: null,
     };
   }
@@ -72,6 +74,7 @@ class RetroBoardApp extends React.Component {
           creator: state.creator,
           timeLimitMinutes: state.timeLimitMinutes,
           maxVotes: state.maxVotes,
+          includeTemperatureCheck: state.includeTemperatureCheck,
         },
         isOffline: state.isOffline,
         notes: state.notes,
