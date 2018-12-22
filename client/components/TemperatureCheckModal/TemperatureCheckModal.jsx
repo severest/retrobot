@@ -13,6 +13,31 @@ const styles = StyleSheet.create({
     fontSize: '12px',
     marginBottom: '10px',
   },
+  input: {
+    resize: 'none',
+    width: '100%',
+    height: '50px',
+    border: 'none',
+    ':focus': {
+      outline: 'none',
+    },
+    marginTop: '10px',
+  },
+  sliderValue: {
+    textAlign: 'center',
+    width: '100%',
+    fontSize: '24px',
+    fontWeight: 'bold',
+    margin: '20px 0',
+  },
+  sliderContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '16px',
+  },
+  slider: {
+    margin: '0 15px',
+  },
 });
 
 import {
@@ -26,7 +51,7 @@ class TemperatureCheckModal extends React.Component {
   }
 
   state = {
-    temperature: 0,
+    temperature: 5,
     notes: '',
   }
 
@@ -66,12 +91,22 @@ class TemperatureCheckModal extends React.Component {
                 if you wish.
               </div>
 
-              <input
-                type="range"
-                min="0"
-                max="10"
-                value={this.state.temperature}
-              />
+              <div className={css(styles.sliderValue)}>
+                {this.state.temperature}
+              </div>
+
+              <div className={css(styles.sliderContainer)}>
+                <div>0</div>
+                <input
+                  className={css(styles.slider)}
+                  type="range"
+                  min="0"
+                  max="10"
+                  value={this.state.temperature}
+                  onChange={this.handleChangeTemperature}
+                />
+                <div>10</div>
+              </div>
 
               <textarea
                 className={css(styles.input) + ' js-test-notes-input'}

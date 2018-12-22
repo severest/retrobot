@@ -11,6 +11,7 @@ import NotesModal from './components/NotesModal/NotesModal.jsx';
 import PrevDeltasModal from './components/PrevDeltasModal/PrevDeltasModal.jsx';
 import Notifications from './components/Notifications/Notifications.jsx';
 import DeltaGroupDisplay from './components/Delta/DeltaGroupDisplay.jsx';
+import TemperatureCheckModal from './components/TemperatureCheckModal/TemperatureCheckModal.jsx';
 import { RETRO_STATUS } from './utils/constants.js';
 
 import {
@@ -93,10 +94,13 @@ class RetroBoardApp extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.retro.prevDeltas.length === 0 &&
-        this.state.retro.prevDeltas.length !== 0 &&
-        this.state.retro.state === RETRO_STATUS.IN_PROGRESS) {
-      this.setState({ showPrevDeltasModal: true });
+    if (this.state.retro.state === RETRO_STATUS.IN_PROGRESS) {
+      if (prevState.retro.prevDeltas.length === 0 && this.state.retro.prevDeltas.length !== 0) {
+        this.setState({ showPrevDeltasModal: true });
+      }
+      if (!prevState.retro.includeTemperatureCheck && this.state.retro.includeTemperatureCheck) {
+        this.setState({ showTemperatureCheckModal: true });
+      }
     }
   }
 
@@ -124,7 +128,16 @@ class RetroBoardApp extends React.Component {
         {this.state.showPrevDeltasModal && (
           <PrevDeltasModal
             prevDeltas={this.state.retro.prevDeltas}
-            onClose={() => this.setState({ showPrevDeltasModal: false })}
+            onClose={() => {
+              this.setState({
+                showPrevDeltasModal: false,
+              });
+            }}
+          />
+        )}
+        {this.state.showTemperatureCheckModal && !this.state.showPrevDeltasModal && (
+          <TemperatureCheckModal
+            onClose={() => this.setState({ showTemperatureCheckModal: false })}
           />
         )}
 

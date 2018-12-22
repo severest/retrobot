@@ -17,10 +17,18 @@ class StartRetroApp extends React.Component {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    isLoading: false,
-    error: '',
-    isOffline: false,
+  constructor(props) {
+    super(props);
+    this.teamField = React.createRef();
+    this.passwordField = React.createRef();
+    this.maxVotesDropdown = React.createRef();
+    this.timeLimitDropdown = React.createRef();
+    this.includeTempCheck = React.createRef();
+    this.state = {
+      isLoading: false,
+      error: '',
+      isOffline: false,
+    };
   }
 
   componentDidMount() {
@@ -42,14 +50,15 @@ class StartRetroApp extends React.Component {
     const retro = {
       creator: window.myID,
     };
-    if (this.team.value.trim() !== '') {
-      retro.team = this.team.value.trim();
+    if (this.teamField.current.value.trim() !== '') {
+      retro.team = this.teamField.current.value.trim();
     }
-    if (this.password.value !== '') {
-      retro.password = this.password.value;
+    if (this.passwordField.current.value !== '') {
+      retro.password = this.passwordField.current.value;
     }
-    retro.max_votes = this.maxVotes.value;
-    retro.time_limit = this.timeLimit.value;
+    retro.max_votes = this.maxVotesDropdown.current.value;
+    retro.time_limit = this.timeLimitDropdown.current.value;
+    retro.include_temperature_check = this.includeTempCheck.current.checked;
     isLoading();
     fetch('/api/retro/new', {
       method: 'POST',
@@ -93,7 +102,7 @@ class StartRetroApp extends React.Component {
             <div className="form-group">
               <input
                 type="text"
-                ref={c => this.team = c}
+                ref={this.teamField}
                 className="form-control"
                 placeholder="Team name (optional)"
                 autoComplete="team-name"
@@ -102,7 +111,7 @@ class StartRetroApp extends React.Component {
             <div className={passwordClasses}>
               <input
                 type="password"
-                ref={c => this.password = c}
+                ref={this.passwordField}
                 className="form-control"
                 placeholder="Password (optional)"
                 autoComplete="current-password"
@@ -116,7 +125,7 @@ class StartRetroApp extends React.Component {
               <select
                 className="form-control"
                 id="maxVotes"
-                ref={c => this.maxVotes = c}
+                ref={this.maxVotesDropdown}
                 defaultValue="2"
               >
                 <option>1</option>
@@ -136,7 +145,7 @@ class StartRetroApp extends React.Component {
               <select
                 className="form-control"
                 id="timeLimit"
-                ref={c => this.timeLimit = c}
+                ref={this.timeLimitDropdown}
                 defaultValue="5"
               >
                 <option>1</option>
@@ -150,6 +159,11 @@ class StartRetroApp extends React.Component {
                 <option>9</option>
                 <option>10</option>
               </select>
+            </div>
+            <div className="checkbox">
+              <label>
+                <input type="checkbox" ref={this.includeTempCheck} /> Include temperature check
+              </label>
             </div>
             <button
               className="btn btn-primary create-retro-btn"
