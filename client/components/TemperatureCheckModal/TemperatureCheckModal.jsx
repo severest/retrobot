@@ -70,7 +70,7 @@ class TemperatureCheckModal extends React.Component {
     });
   };
 
-  handleChangeNotes = (evt) => {
+  handleChangeTemperatureNotes = (evt) => {
     this.setState({
       notes: evt.target.value,
     });
@@ -109,10 +109,10 @@ class TemperatureCheckModal extends React.Component {
               </div>
 
               <textarea
-                className={css(styles.input) + ' js-test-notes-input'}
+                className={css(styles.input) + ' js-test-temperature-notes-input'}
                 placeholder="Optional notes"
                 value={this.state.notes}
-                onChange={this.handleChangeNotes}
+                onChange={this.handleChangeTemperatureNotes}
               />
             </div>
             <div className="modal-footer">

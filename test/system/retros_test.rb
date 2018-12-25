@@ -1,5 +1,5 @@
 class RetrosTest < RetrobotSystemTestCase
-  test "visiting the index" do
+  test "creating a retro and looking at summary" do
     visit '/'
 
     fill_in "Team name (optional)", with: "test team"
@@ -50,6 +50,13 @@ class RetrosTest < RetrobotSystemTestCase
     click_on "Get summary"
     assert_selector ".js-test-delta-summary-content", text: "this my delta, so COOL!"
     assert_selector ".js-test-delta-summary-votes", text: "1 vote"
+  end
+
+  test "temperature check" do
+    visit '/'
+    check 'Include temperature check'
+    click_on 'Start'
+    assert_selector '.js-test-temp-check-modal'
   end
 
   def add_delta(text)
