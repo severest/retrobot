@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
   slider: {
     margin: '0 15px',
   },
+  sliderLabel: {
+    width: '20px',
+  },
+  sliderLabelRight: {
+    textAlign: 'right',
+  },
 });
 
 import {
@@ -96,7 +102,7 @@ class TemperatureCheckModal extends React.Component {
               </div>
 
               <div className={css(styles.sliderContainer)}>
-                <div>0</div>
+                <div className={css(styles.sliderLabel)}>0</div>
                 <input
                   className={css(styles.slider)}
                   type="range"
@@ -105,7 +111,7 @@ class TemperatureCheckModal extends React.Component {
                   value={this.state.temperature}
                   onChange={this.handleChangeTemperature}
                 />
-                <div>10</div>
+                <div className={css(styles.sliderLabel, styles.sliderLabelRight)}>10</div>
               </div>
 
               <textarea
@@ -128,7 +134,7 @@ class TemperatureCheckModal extends React.Component {
                 className="btn btn-primary"
                 onClick={this.handleConfirm}
               >
-                Confirm
+                Submit temperature check
               </button>
             </div>
           </div>
