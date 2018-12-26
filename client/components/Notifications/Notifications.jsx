@@ -26,7 +26,17 @@ class Notifications extends React.Component {
   render() {
     return (
       <NotificationStack
-        notifications={this.state.notifications}
+        notifications={this.state.notifications.map((n) => ({
+          ...n,
+          barStyle: {
+            color: 'black',
+            background: 'white',
+            borderLeft: '5px solid orange',
+            borderRadius: '0 4px 4px 0',
+            padding: '15px 30px',
+            boxShadow: '0 0 10px black',
+          },
+        }))}
         onDismiss={notification => removeNotification(notification.key)}
       />
     );

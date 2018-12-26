@@ -1,4 +1,5 @@
 namespace :retrobot do
+
   desc "Move votes from delta model to their own"
   task migrate_votes: :environment do
     Delta.find_each do |delta|
