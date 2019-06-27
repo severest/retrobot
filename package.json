@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --hide-modules --mode production",
     "test": "jest -o --watch",
     "test:ci": "jest",
-    "analyzer": "webpack --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
+    "analyzer": "webpack --mode production --profile --json > bundle-stats.json && webpack-bundle-analyzer bundle-stats.json",
     "lint": "eslint --ext .jsx --ext .js client/"
   },
   "dependencies": {
@@ -61,7 +61,7 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.28.0",
-    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.7"
   },
