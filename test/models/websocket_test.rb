@@ -3,19 +3,19 @@ require 'test_helper'
 class WebsocketTest < ActiveSupport::TestCase
   test "create a note" do
     retro = create(:retro, key: 'eeeee2')
-    delta = create(:delta, retro: retro, content: 'hi')
+    group = create(:delta_group_one_delta, retro: retro)
     data = {
       'type' => 'notes',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'notes' => 'test note'
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
     WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
-    delta.reload
-    assert_equal delta.notes, 'test note'
+    group.reload
+    assert_equal group.notes, 'test note'
     callback.verify
     notification_callback.verify
   end
@@ -302,11 +302,11 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should delete delta" do
     retro = create(:retro, key: 'eeeee2')
-    delta = create(:delta, retro: retro)
+    group = create(:delta_group_one_delta, retro: retro)
     data = {
       'type' => 'delete',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
@@ -324,11 +324,11 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not delete delta when locked" do
     retro = create(:retro, key: 'eeeee2', status: 'locked')
-    delta = create(:delta, retro: retro)
+    group = create(:delta_group_one_delta, retro: retro)
     data = {
       'type' => 'delete',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
@@ -376,17 +376,17 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should upvote delta" do
     retro = create(:retro, key: 'eeeee2')
-    delta = create(:delta, retro: retro)
+    group = create(:delta_group_one_delta, retro: retro)
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    assert_difference('DeltaVote.count', 1) do
+    assert_difference('DeltaGroupVote.count', 1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -395,18 +395,18 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not allow more upvotes than max" do
     retro = create(:retro, key: 'eeeee2', max_votes: 1)
-    delta = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    delta_vote = create(:delta_vote, delta_group: group, user: '1')
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     notification_callback.expect :call, nil, [{"error"=>"You've already voted the maximum number of times"}]
-    assert_no_difference('DeltaVote.count') do
+    assert_no_difference('DeltaGroupVote.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -415,20 +415,20 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not allow more upvotes than max on diff deltas" do
     retro = create(:retro, key: 'eeeee2', max_votes: 2)
-    delta = create(:delta, retro: retro)
-    delta2 = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
-    delta_vote2 = create(:delta_vote, delta: delta2, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    group2 = create(:delta_group_one_delta, retro: retro)
+    vote = create(:delta_vote, delta_group: group, user: '1')
+    vote2 = create(:delta_vote, delta_group: group2, user: '1')
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     notification_callback.expect :call, nil, [{"error"=>"You've already voted the maximum number of times"}]
-    assert_no_difference('DeltaVote.count') do
+    assert_no_difference('DeltaGroupVote.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -438,20 +438,20 @@ class WebsocketTest < ActiveSupport::TestCase
   test "should allow more upvotes than max on diff retros" do
     retro = create(:retro, key: 'eeeee2', max_votes: 2)
     retro2 = create(:retro, key: 'eeeee3', max_votes: 2)
-    delta = create(:delta, retro: retro)
-    delta2 = create(:delta, retro: retro2)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
-    delta_vote2 = create(:delta_vote, delta: delta2, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    group2 = create(:delta_group_one_delta, retro: retro2)
+    vote = create(:delta_group_vote, delta_group: group, user: '1')
+    vote2 = create(:delta_group_vote, delta_group: group2, user: '1')
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    assert_difference('DeltaVote.count', 1) do
+    assert_difference('DeltaGroupVote.count', 1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -460,20 +460,20 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should allow more upvotes than max on diff deltas with diff people" do
     retro = create(:retro, key: 'eeeee2', max_votes: 2)
-    delta = create(:delta, retro: retro)
-    delta2 = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
-    delta_vote2 = create(:delta_vote, delta: delta2, user: '2')
+    group = create(:delta_group_one_delta, retro: retro)
+    group2 = create(:delta_group_one_delta, retro: retro)
+    vote = create(:delta_group_vote, delta_group: group, user: '1')
+    vote2 = create(:delta_group_vote, delta_group: group2, user: '2')
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    assert_difference('DeltaVote.count', 1) do
+    assert_difference('DeltaGroupVote.count', 1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -482,18 +482,18 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should allow more upvotes than max from a diff user" do
     retro = create(:retro, key: 'eeeee2', max_votes: 1)
-    delta = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    vote = create(:delta_group_vote, delta_group: group, user: '1')
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '2',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    assert_difference('DeltaVote.count', 1) do
+    assert_difference('DeltaGroupVote.count', 1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -502,16 +502,16 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not upvote delta when locked" do
     retro = create(:retro, key: 'eeeee2', status: 'locked')
-    delta = create(:delta, retro: retro)
+    group = create(:delta_group_one_delta, retro: retro)
     data = {
       'type' => 'upvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
-    assert_no_difference('DeltaVote.count') do
+    assert_no_difference('DeltaGroupVote.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -520,18 +520,18 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should downvote delta" do
     retro = create(:retro, key: 'eeeee2')
-    delta = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    delta_vote = create(:delta_group_vote, delta_group: group, user: '1')
     data = {
       'type' => 'downvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [data]
-    assert_difference('DeltaVote.count', -1) do
+    assert_difference('DeltaGroupVote.count', -1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -540,18 +540,18 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not downvote delta if vote doesnt exist" do
     retro = create(:retro, key: 'eeeee2')
-    delta = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '2')
+    group = create(:delta_group_one_delta, retro: retro)
+    delta_vote = create(:delta_group_vote, delta_group: delta, user: '2')
     data = {
       'type' => 'downvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     notification_callback.expect :call, nil, [{"error"=>"You can't downvote something you haven't voted for"}]
-    assert_no_difference('DeltaVote.count') do
+    assert_no_difference('DeltaGroupVote.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -560,17 +560,17 @@ class WebsocketTest < ActiveSupport::TestCase
 
   test "should not downvote delta when locked" do
     retro = create(:retro, key: 'eeeee2', status: 'locked')
-    delta = create(:delta, retro: retro)
-    delta_vote = create(:delta_vote, delta: delta, user: '1')
+    group = create(:delta_group_one_delta, retro: retro)
+    delta_vote = create(:delta_group_vote, delta_group: group, user: '1')
     data = {
       'type' => 'downvote',
-      'itemType' => 'delta',
-      'itemId' => delta.id,
+      'itemType' => 'deltaGroup',
+      'itemId' => group.id,
       'userId' => '1',
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
-    assert_no_difference('DeltaVote.count') do
+    assert_no_difference('DeltaGroupVote.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     callback.verify
@@ -702,10 +702,11 @@ class WebsocketTest < ActiveSupport::TestCase
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
     callback.expect :call, nil, [Object]
-    assert_no_difference('DeltaGroup.count') do
+    assert_difference('DeltaGroup.count', 1) do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     assert_equal DeltaGroup.first().deltas.map { |d| d.id }, [delta2.id, delta3.id]
+    assert_equal DeltaGroup.last().deltas.map { |d| d.id }, [delta1.id]
     callback.verify
     notification_callback.verify
   end

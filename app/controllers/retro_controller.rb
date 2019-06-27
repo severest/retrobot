@@ -9,14 +9,14 @@ class RetroController < ApplicationController
                       .where.not(id: @retro.id)
                       .order('created_at desc').first()
     if !prev_retro.nil?
-      deltas = prev_retro.deltas.select{ |delta| delta.notes.nil? || delta.notes == "" }
-      delta_groups = DeltaGroup.includes(:deltas).where(retro: prev_retro)
-      delta_groups.each do |group|
-        if group.deltas.any? { |delta| !delta.notes.nil? && delta.notes != "" }
-          deltas = deltas.select{ |delta| !group.deltas.include?(delta) }
-        end
-      end
-      @prev_retro_deltas_without_notes = deltas
+      delta_groups = prev_retro.delta_groups.select{ |group| group.notes.nil? || group.notes == "" }
+      # delta_groups = DeltaGroup.includes(:deltas).where(retro: prev_retro)
+      # delta_groups.each do |group|
+      #   if group.deltas.any? { |delta| !delta.notes.nil? && delta.notes != "" }
+      #     deltas = deltas.select{ |delta| !group.deltas.include?(delta) }
+      #   end
+      # end
+      @prev_retro_delta_groups_without_notes = delta_groups
     end
     render 'retro/show.json.jbuilder'
   end

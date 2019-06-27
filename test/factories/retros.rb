@@ -11,7 +11,11 @@ FactoryBot.define do
     end
 
     after(:create) do |retro, evaluator|
-      create_list(:delta, evaluator.delta_count, retro: retro)
+      deltas = create_list(:delta, evaluator.delta_count, retro: retro)
+      deltas.each do |d|
+        g = create(:delta_group, retro: retro)
+        g.add_deltas([d.id])
+      end
       create_list(:plus, evaluator.pluses_count, retro: retro)
     end
   end

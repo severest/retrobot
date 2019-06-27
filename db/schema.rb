@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_05_082453) do
+ActiveRecord::Schema.define(version: 2018_12_30_204443) do
 
   create_table "delta_group_items", force: :cascade do |t|
     t.integer "delta_group_id"
@@ -22,10 +22,19 @@ ActiveRecord::Schema.define(version: 2018_11_05_082453) do
     t.index ["delta_id"], name: "index_delta_group_items_on_delta_id"
   end
 
+  create_table "delta_group_votes", force: :cascade do |t|
+    t.string "user"
+    t.bigint "delta_group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["delta_group_id"], name: "index_delta_group_votes_on_delta_group_id"
+  end
+
   create_table "delta_groups", force: :cascade do |t|
     t.integer "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "notes"
     t.index ["retro_id"], name: "index_delta_groups_on_retro_id"
   end
 

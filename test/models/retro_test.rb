@@ -38,21 +38,4 @@ class RetroTest < ActiveSupport::TestCase
       Retro.prune_old_retros
     end
   end
-
-  test "print delta groups" do
-    retro = create(:retro, key: 'eeeee2')
-    delta1 = create(:delta, retro: retro)
-    delta2 = create(:delta, retro: retro)
-    delta3 = create(:delta, retro: retro)
-    delta_group1 = create(:delta_group, retro: retro)
-    delta_group1.add_deltas([delta1.id, delta2.id])
-    delta_group2 = create(:delta_group, retro: retro)
-    delta_group2.add_deltas([delta3.id])
-
-    expected = [
-      {'id' => delta_group1.id, 'deltas' => [delta1.id, delta2.id]},
-      {'id' => delta_group2.id, 'deltas' => [delta3.id]},
-    ]
-    assert_equal retro.delta_group_array, expected
-  end
 end

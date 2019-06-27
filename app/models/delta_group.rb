@@ -1,7 +1,8 @@
 class DeltaGroup < ApplicationRecord
   belongs_to :retro
   has_many :delta_group_items, dependent: :destroy
-  has_many :deltas, through: :delta_group_items
+  has_many :deltas, through: :delta_group_items, dependent: :destroy
+  has_many :delta_group_votes, dependent: :destroy
 
   def add_deltas(deltas)
     deltas.each do |d|
