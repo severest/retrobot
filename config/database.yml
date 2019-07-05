@@ -3,8 +3,16 @@ development:
   encoding: utf8mb4
   database: retrobot
   username: root
-  password: 
+  password:
   host: 127.0.0.1
+
+production:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOSTNAME'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

@@ -1,0 +1,9 @@
+.git
+node_modules
+tmp/
+log/
+test/
+.travis.yml
+.gitignore
+setupJest.js
+__mocks__/

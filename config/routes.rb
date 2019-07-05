@@ -5,9 +5,10 @@ Rails.application.routes.draw do
     post 'team/summary', to: 'team#summary'
   end
 
-  if Rails.env.test?
-    root 'home#index'
-    get 'retro/*key', to: 'home#index'
-    get 'summary/*team', to: 'home#index'
-  end
+  get 'amialive', to: 'healthcheck#amialive'
+
+  root 'home#index'
+  get '*path', to: 'home#index', constraints: lambda { |req|
+    req.path.exclude? 'cable'
+  }
 end
