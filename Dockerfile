@@ -1,4 +1,4 @@
-FROM starefossen/ruby-node:2-8
+FROM starefossen/ruby-node:2-10
 
 RUN apt-get update && apt-get install -y mysql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
