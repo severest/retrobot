@@ -117,7 +117,7 @@ class StartRetroApp extends React.Component {
                 autoComplete="current-password"
               />
               {this.state.error !== '' && (
-                <p className="help-block">{this.state.error}</p>
+                <p className="help-block help-block--error">{this.state.error}</p>
               )}
             </div>
             <div className="form-group">

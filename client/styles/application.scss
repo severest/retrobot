@@ -26,41 +26,41 @@ $fa-font-path: "~font-awesome/fonts";
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:200,400,700');
 
- body {
+body {
   height: 100%;
   padding: 0;
   margin: 0;
   font-family: 'Open Sans', sans-serif;
- }
+}
 
- input[type="text"],
- input[type="password"],
- select:focus,
- textarea {
-   font-size: 16px;
- }
+input[type="text"],
+input[type="password"],
+select:focus,
+textarea {
+  font-size: 16px;
+}
 
- .btn-link {
-   &:active,
-   &:focus {
-     outline: none;
-   }
- }
+.btn-link {
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
 
- .rc-tooltip {
-   .rc-tooltip-inner {
-     text-align: center;
-   }
- }
+.rc-tooltip {
+  .rc-tooltip-inner {
+    text-align: center;
+  }
+}
 
- .notification-bar {
-   z-index: $zIndex-notifications;
-   .notification-bar-message {
-     font-size: 18px;
-   }
- }
+.notification-bar {
+  z-index: $zIndex-notifications;
+  .notification-bar-message {
+    font-size: 18px;
+  }
+}
 
- .control-panel {
+.control-panel {
   font-weight: 200;
   position: fixed;
   bottom: 0;
@@ -130,18 +130,22 @@ $fa-font-path: "~font-awesome/fonts";
     position: relative;
     top: 2px;
   }
- }
+}
 
- .retro-overlay {
-   position: absolute;
-   top: 0;
-   bottom: 0;
-   left: 0;
-   right: 0;
-   background: rgba(0, 0, 0, 0.3);
-   z-index: $zIndex-retro-overlay;
- }
+.retro-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: $zIndex-retro-overlay;
+}
 
- .modal {
-   overflow-y: auto;
- }
+.modal {
+  overflow-y: auto;
+}
+
+.help-block--error {
+  color: $brand-danger;
+}

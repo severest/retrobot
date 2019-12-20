@@ -87,7 +87,7 @@ class TeamSummaryApp extends React.Component {
                       placeholder="Password"
                     />
                     {this.state.error !== '' && (
-                      <p className="help-block">{this.state.error}</p>
+                      <p className="help-block help-block--error">{this.state.error}</p>
                     )}
                   </div>
                   <button
