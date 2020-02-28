@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import {
+  stringIsOnlyEmoji,
+} from '../../utils/string.js';
+import {
   deletePlus,
 } from '../../ws/index.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
@@ -32,6 +35,9 @@ class Plus extends React.Component {
       'card',
       'plus-card',
       'js-test-plus',
+      {
+        'card--large': stringIsOnlyEmoji(this.props.content),
+      },
     );
     const deleteClass = classNames(
       'btn',

@@ -137,6 +137,12 @@ $mobile-breakpoint: 600px;
       }
     }
   }
+
+  &--large {
+    .card__content {
+      font-size: 48px;
+    }
+  }
 }
 
 .delta-card {

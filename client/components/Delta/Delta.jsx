@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import {
+  stringIsOnlyEmoji,
+} from '../../utils/string.js';
+import {
   deleteDelta,
 } from '../../ws/index.js';
 import {
@@ -67,6 +70,7 @@ class Delta extends React.Component {
       'delta-card',
       'js-test-delta',
       {
+        'card--large': stringIsOnlyEmoji(this.props.content),
         'delta-card--selected': this.props.selected,
       },
     );
