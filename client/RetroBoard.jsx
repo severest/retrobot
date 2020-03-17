@@ -4,6 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import Delta from './components/Delta/Delta.jsx';
 import Plus from './components/Plus/Plus.jsx';
+import Clock from './components/ControlPanels/Clock.jsx';
 
 class RetroBoard extends React.Component {
   static propTypes = {
@@ -15,11 +16,14 @@ class RetroBoard extends React.Component {
     retroKey: PropTypes.string.isRequired,
     showOpenNotesBtn: PropTypes.bool.isRequired,
     state: PropTypes.string.isRequired,
+    timer: PropTypes.object.isRequired,
   }
 
   render() {
     return (
       <div className="retro-container">
+        <Clock {...this.props.timer} />
+
         <TransitionGroup className="retro-container--plus">
           {this.props.pluses.filter(p => !p.hide).map((p) =>
             <CSSTransition

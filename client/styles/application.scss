@@ -9,11 +9,18 @@ $delta: #CC2936;
 $vote-tally: #3c2105;
 $my-vote-tally: $brand-primary;
 
+$greyTransparent: rgba(82, 82, 82, 0.88);
+$darkerGrey: rgba(69, 69, 69, 1);
+
 // z-indexes
 $zIndex-group-badge: 10;
 $zIndex-retro-overlay: 15;
-$zIndex-controls: 20;
+$zIndex-clock: 50;
 $zIndex-notifications: 1000;
+
+$baseBorderRadius: 4px;
+
+$mobile-breakpoint: 600px;
 
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
@@ -22,7 +29,11 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 @import "~rc-tooltip/assets/bootstrap.css";
+@import "animations";
 @import "retro";
+@import "cards";
+@import "sidebar";
+@import "clock";
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:200,400,700');
 
@@ -47,6 +58,12 @@ textarea {
   }
 }
 
+button {
+  i.fa {
+    margin-right: 4px;
+  }
+}
+
 .rc-tooltip {
   .rc-tooltip-inner {
     text-align: center;
@@ -60,20 +77,53 @@ textarea {
   }
 }
 
-.control-panel {
-  font-weight: 200;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  color: darken($bg, 15%);
+.retro {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .clock {
+    left: 200px;
+  }
+
+  &--compact {
+    .clock {
+      left: 75px;
+    }
+  }
+}
+
+.retro-left {
+  background: $darkerGrey;
+  color: white;
+  padding: 20px;
+  width: 200px;
+  transition: width 200ms ease-in;
+
+  &--compact {
+    width: 75px;
+  }
+}
+
+.retro-right {
+  height: 100vh;
+  flex: 2;
+  display: grid;
+  grid-template-rows: auto 75px;
+}
+
+.retro-right-bottom {
+  background: $greyTransparent;
+  color: white;
   display: flex;
   align-items: center;
-  justify-content: space-around;
   padding: 10px;
-  background: rgba(82, 82, 82, 0.88);
+}
+
+.control-panel {
+  display: flex;
+  align-items: center;
   width: 100%;
-  z-index: $zIndex-controls;
-  height: 71px;
 
   &--selection {
     justify-content: space-between;
@@ -86,49 +136,33 @@ textarea {
     }
   }
 
-  .title {
-    font-size: 19px;
-    a {
-      color: darken($bg, 15%);
-
-      &:hover {
-        text-decoration: none;
-        color: darken($bg, 20%);
-      }
-    }
-  }
-
-  .admin-star {
-    color: gold;
-    margin-left: 5px;
-    display: inline-block;
-  }
-
-  .actions {
-    display: flex;
-    align-items: center;
-    font-size: 21px;
-
-    .vote-tally {
-      margin-left: 20px;
-      font-size: 14px;
-    }
-  }
-
   .inputs {
-    width: 60%;
     font-size: 12px;
-    position: relative;
-    top: 7px;
+    width: 100%;
 
     .btn {
       padding-top: 7px;
     }
   }
+}
 
-  .create-items {
-    position: relative;
-    top: 2px;
+@media (max-width: $mobile-breakpoint) {
+  .retro {
+    display: block;
+
+    .clock {
+      left: 0;
+    }
+  }
+
+  .retro-left {
+    display: none;
+  }
+
+  .control-panel {
+    .input-tip {
+      display: none;
+    }
   }
 }
 

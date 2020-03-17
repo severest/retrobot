@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
 
 import RetroBoard from './RetroBoard.jsx';
-import ControlPanel from './components/ControlPanels/ControlPanel.jsx';
+import SideMenu from './components/ControlPanels/SideMenu.jsx';
+import RetroInput from './components/ControlPanels/RetroInput.jsx';
 import SelectionControlPanel from './components/ControlPanels/SelectionControlPanel.jsx';
 import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
 import Loader from './components/Loader/Loader.jsx';
@@ -115,7 +117,12 @@ class RetroBoardApp extends React.Component {
     }
 
     return (
-      <div>
+      <div className={classNames(
+        'retro',
+        {
+          'retro--compact': !this.state.retro.creator,
+        },
+      )}>
         {this.state.isOffline && <OfflineIndicatorModal />}
         {deltaForNotes && (
           <NotesModal
@@ -140,36 +147,6 @@ class RetroBoardApp extends React.Component {
             onClose={() => this.setState({ showTemperatureCheckModal: false })}
           />
         )}
-
-        <TransitionGroup className="retro-container--controls">
-          {this.state.retro.selectedDeltas.length === 0 ? (
-            <CSSTransition
-              key="normal-controls"
-              timeout={200}
-              classNames="fade"
-            >
-              <ControlPanel
-                {...this.state.retro}
-                userCount={this.state.users.length}
-                voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
-              />
-            </CSSTransition>
-          ) : (
-            <CSSTransition
-              key="selection-controls"
-              timeout={200}
-              classNames="fade"
-            >
-              <SelectionControlPanel
-                isCreator={this.state.retro.creator}
-                selectedDeltas={this.state.retro.selectedDeltas}
-              />
-            </CSSTransition>
-          )}
-        </TransitionGroup>
-
-        <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
-
         {this.state.deltaGroupDisplay && (
           <DeltaGroupDisplay
             retroState={this.state.retro.state}
@@ -187,6 +164,45 @@ class RetroBoardApp extends React.Component {
             isCreator={this.state.retro.creator}
           />
         )}
+
+        <div className={classNames(
+          'retro-left',
+          {
+            'retro-left--compact': !this.state.retro.creator,
+          },
+        )}>
+          <SideMenu
+            {...this.state.retro}
+            compact={!this.state.retro.creator}
+            userCount={this.state.users.length}
+            voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
+          />
+        </div>
+        <div className="retro-right">
+          <RetroBoard retroKey={this.retroKey} showOpenNotesBtn={this.state.notesLock === null} {...this.state.retro} />
+          <TransitionGroup className="retro-right-bottom">
+            {this.state.retro.selectedDeltas.length === 0 ? (
+              <CSSTransition
+                key="normal-controls"
+                timeout={200}
+                classNames="fade"
+              >
+                <RetroInput state={this.state.retro.state} />
+              </CSSTransition>
+            ) : (
+              <CSSTransition
+                key="selection-controls"
+                timeout={200}
+                classNames="fade"
+              >
+                <SelectionControlPanel
+                  isCreator={this.state.retro.creator}
+                  selectedDeltas={this.state.retro.selectedDeltas}
+                />
+              </CSSTransition>
+            )}
+          </TransitionGroup>
+        </div>
 
         <Notifications />
       </div>
