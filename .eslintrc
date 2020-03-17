@@ -30,5 +30,10 @@
   },
   "rules": {
     "react/no-unused-prop-types": [2]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
