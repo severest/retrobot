@@ -1,5 +1,6 @@
 json.(@retro, :id, :key, :status, :creator, :max_votes, :include_temperature_check)
 json.time_limit @retro.time_limit_minutes
+json.team @retro.team ? @retro.team.name : nil
 
 json.deltas do
   json.array! @retro.deltas, partial: 'retro/delta', as: :delta

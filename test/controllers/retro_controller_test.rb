@@ -84,6 +84,7 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, json_response['delta_groups'].count
     assert_equal 5, json_response['pluses'].count
     assert !json_response['include_temperature_check']
+    assert_nil json_response['team']
   end
 
   test "should show include temperature check" do
@@ -157,6 +158,15 @@ class RetroControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     json_response = JSON.parse(@response.body)
     assert_equal 1, json_response['prev_deltas'].count
+  end
+
+  test "should have team name in response" do
+    team = create(:team)
+    retro = create(:retro, key: 'eeeee2', team: team)
+    get "/api/retro/#{retro.key}"
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal team.name, json_response['team']
   end
 
   test "should show retro temperature_checks" do

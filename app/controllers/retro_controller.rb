@@ -1,6 +1,6 @@
 class RetroController < ApplicationController
   def show
-    @retro = Retro.find_by_key!(params[:key])
+    @retro = Retro.includes(:team).find_by_key!(params[:key])
     @prev_retro_deltas_without_notes = []
     prev_retro = Retro.includes(:deltas)
                       .where(team: @retro.team)
