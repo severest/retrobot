@@ -20,18 +20,18 @@ $zIndex-notifications: 1000;
 
 $baseBorderRadius: 4px;
 
-$mobile-breakpoint: 600px;
+$mobile-breakpoint: 750px;
 
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
 $fa-font-path: "~font-awesome/fonts";
 $icon-font-path: "../assets/";
-// $bootstrap-sass-asset-helper: false;
-// @import "~bootstrap-sass/assets/stylesheets/_bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 @import "~rc-tooltip/assets/bootstrap.css";
 @import "animations";
+@import "buttons";
+@import "notifications";
 @import "retro";
 @import "cards";
 @import "sidebar";
@@ -53,29 +53,9 @@ textarea {
   font-size: 16px;
 }
 
-.btn-link {
-  &:active,
-  &:focus {
-    outline: none;
-  }
-}
-
-button {
-  i.fa {
-    margin-right: 4px;
-  }
-}
-
 .rc-tooltip {
   .rc-tooltip-inner {
     text-align: center;
-  }
-}
-
-.notification-bar {
-  z-index: $zIndex-notifications;
-  .notification-bar-message {
-    font-size: 18px;
   }
 }
 

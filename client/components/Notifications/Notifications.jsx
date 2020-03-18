@@ -33,8 +33,9 @@ class Notifications extends React.Component {
             background: 'white',
             borderLeft: '5px solid orange',
             borderRadius: '0 4px 4px 0',
-            padding: '15px 30px',
+            padding: '8px 12px',
             boxShadow: '0 0 10px black',
+            maxWidth: '375px',
           },
         }))}
         onDismiss={notification => removeNotification(notification.key)}

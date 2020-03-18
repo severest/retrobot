@@ -1,0 +1,22 @@
+.btn-link {
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.btn-dark {
+  background-color: darken($darkerGrey, 10%);
+  color: white;
+
+  &:hover,
+  &:focus {
+    color: darken(white, 20%);
+  }
+}
+
+button {
+  i.fa {
+    margin-right: 4px;
+  }
+}

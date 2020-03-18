@@ -95,7 +95,7 @@ class SideMenu extends React.Component {
 
         {this.props.state === RETRO_STATUS.VOTING && this.props.creator && (
           <div className="sidebar-menu--group">
-            <button className="btn btn-default js-test-lock" onClick={this.handleLock}>
+            <button className="btn btn-dark js-test-lock" onClick={this.handleLock}>
               <i className="fa fa-lock" aria-hidden="true" />
               {!this.props.compact && 'Lock Retro'}
             </button>
@@ -103,7 +103,7 @@ class SideMenu extends React.Component {
         )}
         {this.props.state === RETRO_STATUS.LOCKED && this.props.creator && (
           <div className="sidebar-menu--group">
-            <button className="btn btn-default" onClick={this.handleUnlock}>
+            <button className="btn btn-dark" onClick={this.handleUnlock}>
               <i className="fa fa-unlock" aria-hidden="true" />
               {!this.props.compact && 'Unlock Retro'}
             </button>
@@ -111,7 +111,7 @@ class SideMenu extends React.Component {
         )}
         {this.props.state === RETRO_STATUS.LOCKED && (
           <div className="sidebar-menu--group">
-            <button className="btn btn-default" onClick={this.handleSortDeltas}>
+            <button className="btn btn-dark" onClick={this.handleSortDeltas}>
               <i className="fa fa-sort-amount-desc" aria-hidden="true" />
               {!this.props.compact && 'Sort Deltas'}
             </button>

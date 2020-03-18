@@ -1,0 +1,7 @@
+.notification-bar {
+  z-index: $zIndex-notifications;
+
+  .notification-bar-message {
+    font-size: 14px;
+  }
+}
