@@ -81,7 +81,8 @@ button {
 
 .retro {
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
 
   .clock {
@@ -108,7 +109,8 @@ button {
 }
 
 .retro-right {
-  height: 100vh;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   flex: 2;
   display: grid;
   grid-template-rows: auto 75px;
