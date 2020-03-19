@@ -1,5 +1,4 @@
 import ActionCable from 'actioncable';
-import uuid from 'uuid/v4';
 
 import {
   addPlus,
@@ -169,8 +168,7 @@ export default (room) => {
   }, (notification) => {
     addNotification({
       message: notification.error,
-      key: uuid(),
       dismissAfter: 3000,
-    })
+    });
   });
 }
