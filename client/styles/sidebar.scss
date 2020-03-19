@@ -1,12 +1,37 @@
 .sidebar-menu {
-  img {
-    width: 35px;
-    height: 35px;
-  }
+  background: $grey10;
+  color: white;
+  width: 200px;
+  height: 100%;
 
   &--title {
     text-align: center;
     margin-bottom: 15px;
+
+    a {
+      background: $grey20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 21px 16px 16px;
+      color: $bg;
+      font-size: 21px;
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+
+      img {
+        width: 26px;
+        height: 26px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &--content {
+    padding: 20px;
   }
 
   .admin-star {
@@ -33,9 +58,42 @@
     }
   }
 
-  &--compact {
-    .btn {
-      padding: 6px 10px;
+  &--retrokey {
+    @include fontMonospace();
+    font-size: 27px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &--close {
+    display: none;
+  }
+}
+
+.sidebar-menu-open {
+  width: 52px;
+  height: 52px;
+  background: $grey-transparent;
+  padding: 10px;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-left: 20px;
+  margin-top: 20px;
+  z-index: $zIndex-sidebar-open-btn;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .sidebar-menu {
+    &--close {
+      display: inherit;
     }
   }
 }

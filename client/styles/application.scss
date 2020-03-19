@@ -9,13 +9,16 @@ $delta: #CC2936;
 $vote-tally: #3c2105;
 $my-vote-tally: $brand-primary;
 
-$greyTransparent: rgba(82, 82, 82, 0.88);
-$darkerGrey: rgba(69, 69, 69, 1);
+$grey: rgba(90, 90, 90, 1);
+$grey-transparent: fade-out($grey, 0.12);
+$grey10: darken($grey, 10%);
+$grey20: darken($grey, 20%);
 
 // z-indexes
 $zIndex-group-badge: 10;
-$zIndex-retro-overlay: 15;
 $zIndex-clock: 50;
+$zIndex-sidebar-open-btn: 55;
+$zIndex-sidebar: 60;
 $zIndex-notifications: 1000;
 
 $baseBorderRadius: 4px;
@@ -29,6 +32,7 @@ $icon-font-path: "../assets/";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~font-awesome/scss/font-awesome";
 @import "~rc-tooltip/assets/bootstrap.css";
+@import "mixins";
 @import "animations";
 @import "buttons";
 @import "notifications";
@@ -40,10 +44,10 @@ $icon-font-path: "../assets/";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:200,400,700');
 
 body {
+  @include fontRegular();
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
 }
 
 input[type="text"],
@@ -68,28 +72,16 @@ textarea {
   .clock {
     left: 200px;
   }
-
-  &--compact {
-    .clock {
-      left: 75px;
-    }
-  }
 }
 
 .retro-left {
-  background: $darkerGrey;
-  color: white;
-  padding: 20px;
-  width: 200px;
-  transition: width 200ms ease-in;
-
-  &--compact {
-    width: 75px;
-  }
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  z-index: $zIndex-sidebar;
 }
 
 .retro-right {
-  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
   flex: 2;
   display: grid;
@@ -97,7 +89,7 @@ textarea {
 }
 
 .retro-right-bottom {
-  background: $greyTransparent;
+  background: $grey;
   color: white;
   display: flex;
   align-items: center;
@@ -135,12 +127,19 @@ textarea {
     display: block;
 
     .clock {
-      left: 0;
+      left: unset;
+      right: 0;
     }
   }
 
   .retro-left {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    &--hidden {
+      display: none;
+    }
   }
 
   .control-panel {
@@ -148,16 +147,6 @@ textarea {
       display: none;
     }
   }
-}
-
-.retro-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: $zIndex-retro-overlay;
 }
 
 .modal {

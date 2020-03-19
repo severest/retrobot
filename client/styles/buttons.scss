@@ -6,7 +6,7 @@
 }
 
 .btn-dark {
-  background-color: darken($darkerGrey, 10%);
+  background-color: $grey20;
   color: white;
 
   &:hover,

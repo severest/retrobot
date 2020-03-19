@@ -1,0 +1,7 @@
+@mixin fontRegular() {
+  font-family: 'Open Sans', sans-serif;
+}
+
+@mixin fontMonospace() {
+  font-family: monospace;
+}

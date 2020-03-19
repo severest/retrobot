@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import copy from 'copy-to-clipboard';
+
+import SideMenu from './SideMenu.jsx';
 
 import {
   lockRetro,
@@ -13,14 +14,15 @@ import {
 import {
   sortDeltas,
 } from '../../flux/retro/actions.js';
+import {
+  addNotification,
+} from '../../flux/notifications/actions.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
 
-import retroBotInsetLogo from '../../assets/logo-dropshadow.png';
-
-class SideMenu extends React.Component {
+class RetroSideMenu extends React.Component {
   static propTypes = {
-    compact: PropTypes.bool.isRequired,
     creator: PropTypes.bool.isRequired,
+    retroKey: PropTypes.string.isRequired,
     state: PropTypes.oneOf(['in_progress', 'voting', 'locked']).isRequired,
     timer: PropTypes.shape({
       show: PropTypes.bool.isRequired,
@@ -28,6 +30,7 @@ class SideMenu extends React.Component {
     timeLimitMinutes: PropTypes.number.isRequired,
     userCount: PropTypes.number.isRequired,
     voteCount: PropTypes.number.isRequired,
+    onCloseMenu: PropTypes.func.isRequired,
   }
 
   handleStartTimer = () => {
@@ -44,6 +47,14 @@ class SideMenu extends React.Component {
 
   handleUnlock = () => {
     unlockRetro();
+  }
+
+  handleCopyRetroKeyToClipboard = () => {
+    copy(window.location.href);
+    addNotification({
+      message: 'Retro URL copied to clipboard!',
+      dismissAfter: 3000,
+    });
   }
 
   renderCreatorInfo() {
@@ -68,18 +79,18 @@ class SideMenu extends React.Component {
 
   render() {
     return (
-      <div className={classNames(
-        'sidebar-menu',
-        {
-          'sidebar-menu--compact': this.props.compact,
-        },
-      )}>
-        <div className="sidebar-menu--title">
-          <Link to="/">
-            <img
-              src={retroBotInsetLogo}
-            />
-          </Link>
+      <SideMenu
+        onCloseMenu={this.props.onCloseMenu}
+      >
+        <div className="sidebar-menu--group sidebar-menu--retrokey">
+          {this.props.retroKey}
+          <button
+            className="btn btn-dark"
+            onClick={this.handleCopyRetroKeyToClipboard}
+            aria-label="Copy to clipboard"
+          >
+            <i className="fa fa-clipboard" aria-hidden="true" />
+          </button>
         </div>
 
         {this.props.creator && this.renderCreatorInfo()}
@@ -88,7 +99,7 @@ class SideMenu extends React.Component {
           <div className="sidebar-menu--group">
             <button className="btn btn-primary" onClick={this.handleStartTimer}>
               <i className="fa fa-clock-o" aria-hidden="true" />
-              {!this.props.compact && 'Start timer'}
+              Start timer
             </button>
           </div>
         )}
@@ -97,7 +108,7 @@ class SideMenu extends React.Component {
           <div className="sidebar-menu--group">
             <button className="btn btn-dark js-test-lock" onClick={this.handleLock}>
               <i className="fa fa-lock" aria-hidden="true" />
-              {!this.props.compact && 'Lock Retro'}
+              Lock Retro
             </button>
           </div>
         )}
@@ -105,7 +116,7 @@ class SideMenu extends React.Component {
           <div className="sidebar-menu--group">
             <button className="btn btn-dark" onClick={this.handleUnlock}>
               <i className="fa fa-unlock" aria-hidden="true" />
-              {!this.props.compact && 'Unlock Retro'}
+              Unlock Retro
             </button>
           </div>
         )}
@@ -113,13 +124,13 @@ class SideMenu extends React.Component {
           <div className="sidebar-menu--group">
             <button className="btn btn-dark" onClick={this.handleSortDeltas}>
               <i className="fa fa-sort-amount-desc" aria-hidden="true" />
-              {!this.props.compact && 'Sort Deltas'}
+              Sort Deltas
             </button>
           </div>
         )}
-      </div>
+      </SideMenu>
     );
   }
 }
 
-export default SideMenu;
+export default RetroSideMenu;

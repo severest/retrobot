@@ -1,12 +1,11 @@
 .clock {
   padding: 8px 10px;
   border-radius: $baseBorderRadius;
-  background: $greyTransparent;
+  background: $grey-transparent;
   color: white;
   font-size: 21px;
   position: fixed;
   bottom: 75px;
-  margin-bottom: 15px;
-  margin-left: 15px;
+  margin: 15px;
   z-index: $zIndex-clock;
 }

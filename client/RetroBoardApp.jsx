@@ -4,7 +4,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
 import RetroBoard from './RetroBoard.jsx';
-import SideMenu from './components/ControlPanels/SideMenu.jsx';
+import RetroSideMenu from './components/SideMenu/RetroSideMenu.jsx';
+import OpenSideMenuButton from './components/SideMenu/OpenSideMenuButton.jsx';
 import RetroInput from './components/ControlPanels/RetroInput.jsx';
 import SelectionControlPanel from './components/ControlPanels/SelectionControlPanel.jsx';
 import OfflineIndicatorModal from './components/OfflineIndicatorModal/OfflineIndicatorModal.jsx';
@@ -59,6 +60,7 @@ class RetroBoardApp extends React.Component {
       showPrevDeltasModal: false,
       showTemperatureCheckModal: false,
       deltaGroupDisplay: null,
+      sideMenuOpen: false,
     };
   }
 
@@ -106,6 +108,13 @@ class RetroBoardApp extends React.Component {
     }
   }
 
+  handleOpenSideMenu = () => {
+    this.setState({ sideMenuOpen: true });
+  }
+  handleCloseSideMenu = () => {
+    this.setState({ sideMenuOpen: false });
+  }
+
   render() {
     if (this.state.isLoading) {
       return <Loader />;
@@ -117,12 +126,7 @@ class RetroBoardApp extends React.Component {
     }
 
     return (
-      <div className={classNames(
-        'retro',
-        {
-          'retro--compact': !this.state.retro.creator,
-        },
-      )}>
+      <div className="retro">
         {this.state.isOffline && <OfflineIndicatorModal />}
         {deltaForNotes && (
           <NotesModal
@@ -165,17 +169,20 @@ class RetroBoardApp extends React.Component {
           />
         )}
 
+        <OpenSideMenuButton onClick={this.handleOpenSideMenu} />
+
         <div className={classNames(
           'retro-left',
           {
-            'retro-left--compact': !this.state.retro.creator,
+            'retro-left--hidden': !this.state.sideMenuOpen,
           },
         )}>
-          <SideMenu
+          <RetroSideMenu
             {...this.state.retro}
-            compact={!this.state.retro.creator}
+            retroKey={this.retroKey}
             userCount={this.state.users.length}
             voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
+            onCloseMenu={this.handleCloseSideMenu}
           />
         </div>
         <div className="retro-right">
