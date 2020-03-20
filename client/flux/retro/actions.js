@@ -138,7 +138,7 @@ export const retroBoardInit = (retroKey, history) => {
     setIncludeTemperatureCheck(retro.include_temperature_check);
     setRetroCreator(retro.creator === window.myID);
     updateDeltaGroups(retro.delta_groups);
-    retro.deltas.sort((a,b) => b.votes.length - a.votes.length).forEach((delta) => {
+    retro.deltas.forEach((delta) => {
       const parseDelta = {
         ...delta,
         content: decodeURIComponent(escape(atob(delta.content))),
@@ -168,6 +168,7 @@ export const retroBoardInit = (retroKey, history) => {
         updateMyTemperatureCheck(check);
       }
     });
+    sortDeltas();
   });
 };
 
