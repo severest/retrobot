@@ -118,7 +118,7 @@ class TemperatureCheckModal extends React.Component {
               </div>
               <div className={css(styles.description)}>
                 Use the slider below to submit your overall happiness since the
-                last retrospective. Use the optional notes field to elaborate
+                last retrospective (10 is happy, 0 is not so happy). Use the optional notes field to elaborate
                 if you wish.
               </div>
 

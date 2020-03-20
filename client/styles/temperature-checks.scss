@@ -1,19 +1,17 @@
-$temp4: #204d88;
-$temp5: $grey;
-$temp6: #883520;
+$temp4: #93dafa;
 
 $temperatures: (
-  "0": lighten($temp4, 40%),
-  "1": lighten($temp4, 30%),
-  "2": lighten($temp4, 20%),
-  "3": lighten($temp4, 10%),
+  "0": darken($temp4, 40%),
+  "1": darken($temp4, 30%),
+  "2": darken($temp4, 20%),
+  "3": darken($temp4, 10%),
   "4": $temp4,
-  "5": $grey,
-  "6": $temp6,
-  "7": lighten($temp6, 10%),
-  "8": lighten($temp6, 20%),
-  "9": lighten($temp6, 30%),
-  "10": lighten($temp6, 40%),
+  "5": #acacac,
+  "6": #f5ec3d,
+  "7": #fee402,
+  "8": #f1a901,
+  "9": #e27414,
+  "10": #d42022,
 );
 
 @each $temp, $color in $temperatures {
