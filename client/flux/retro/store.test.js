@@ -433,4 +433,18 @@ describe('the store', () => {
     expect(newState.temperatureChecks).toHaveLength(1);
     expect(newState.temperatureChecks[0].temperature).toBe(7);
   });
+
+  it('updates my temperature check', () => {
+    const init = {
+      ...initState,
+    };
+    let newState = reducer(init, {});
+    expect(newState.myTemperatureCheck).toBeNull();
+    let action = {
+      type: actionTypes.updateMyTemperatureCheck,
+      payload: { userId: '1', temperature: 3, notes: 'hello' },
+    };
+    newState = reducer(init, action);
+    expect(newState.myTemperatureCheck).toEqual(action.payload);
+  });
 });

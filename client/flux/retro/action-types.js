@@ -32,3 +32,4 @@ export const setTimeLimitMinutes = 'SET_TIME_LIMIT';
 export const setMaxVotes = 'SET_MAX_VOTES';
 export const setIncludeTemperatureCheck = 'SET_INCLUDE_TEMP_CHECK';
 export const addTemperatureCheck = 'ADD_TEMP_CHECK';
+export const updateMyTemperatureCheck = 'UPDATE_MY_TEMP_CHECK';

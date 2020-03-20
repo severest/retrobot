@@ -53,16 +53,41 @@ import {
 
 class TemperatureCheckModal extends React.Component {
   static propTypes = {
+    disabled: PropTypes.bool.isRequired,
+    temperatureCheck: PropTypes.shape({
+      notes: PropTypes.string.isRequired,
+      temperature: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]).isRequired,
+    }),
     onClose: PropTypes.func.isRequired,
   }
 
-  state = {
-    temperature: 5,
-    notes: '',
+  static defaultProps = {
+    temperatureCheck: null,
   }
 
-  handleSkip = () => {
-    this.props.onClose();
+  constructor(props) {
+    super(props);
+    if (props.temperatureCheck) {
+      this.state = {
+        ...props.temperatureCheck
+      };
+    } else {
+      this.state = {
+        temperature: 5,
+        notes: '',
+      };
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.temperatureCheck && this.props.temperatureCheck) {
+      this.setState({
+        ...this.props.temperatureCheck,
+      });
+    }
   }
 
   handleConfirm = () => {
@@ -97,7 +122,7 @@ class TemperatureCheckModal extends React.Component {
                 if you wish.
               </div>
 
-              <div className={css(styles.sliderValue)}>
+              <div className={`${css(styles.sliderValue)} temperature-${this.state.temperature}`}>
                 {this.state.temperature}
               </div>
 
@@ -125,7 +150,7 @@ class TemperatureCheckModal extends React.Component {
               <button
                 type="button"
                 className="btn btn-link"
-                onClick={this.handleSkip}
+                onClick={this.props.onClose}
               >
                 Skip
               </button>
@@ -133,6 +158,7 @@ class TemperatureCheckModal extends React.Component {
                 type="button"
                 className="btn btn-primary"
                 onClick={this.handleConfirm}
+                disabled={this.props.disabled}
               >
                 Submit temperature check
               </button>

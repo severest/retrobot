@@ -18,6 +18,7 @@ export const initState = {
   deltaGroups: [],
   deltaGroupDisplay: null,
   prevDeltas: [],
+  myTemperatureCheck: null,
   temperatureChecks: [],
   timer: {
     show: false,
@@ -297,6 +298,12 @@ const actionMap = {
     return {
       ...state,
       includeTemperatureCheck: action.payload,
+    };
+  },
+  [actionTypes.updateMyTemperatureCheck]: (state, action) => {
+    return {
+      ...state,
+      myTemperatureCheck: action.payload,
     };
   },
   [actionTypes.addTemperatureCheck]: (state, action) => {

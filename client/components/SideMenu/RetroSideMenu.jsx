@@ -22,6 +22,7 @@ import { RETRO_STATUS } from '../../utils/constants.js';
 class RetroSideMenu extends React.Component {
   static propTypes = {
     creator: PropTypes.bool.isRequired,
+    includeTemperatureCheck: PropTypes.bool.isRequired,
     retroKey: PropTypes.string.isRequired,
     state: PropTypes.oneOf(['in_progress', 'voting', 'locked']).isRequired,
     timer: PropTypes.shape({
@@ -31,6 +32,8 @@ class RetroSideMenu extends React.Component {
     userCount: PropTypes.number.isRequired,
     voteCount: PropTypes.number.isRequired,
     onCloseMenu: PropTypes.func.isRequired,
+    onShowMyTempCheck: PropTypes.func.isRequired,
+    onShowTempCheckSummary: PropTypes.func.isRequired,
   }
 
   handleStartTimer = () => {
@@ -93,6 +96,19 @@ class RetroSideMenu extends React.Component {
           </button>
         </div>
 
+        {this.props.includeTemperatureCheck && (
+          <div className="sidebar-menu--group">
+            <button
+              className="btn btn-dark"
+              onClick={this.props.onShowMyTempCheck}
+              disabled={this.props.state === RETRO_STATUS.LOCKED}
+            >
+              <i className="fa fa-thermometer-empty" aria-hidden="true" />
+              My temp check
+            </button>
+          </div>
+        )}
+
         {this.props.creator && this.renderCreatorInfo()}
 
         {!this.props.timer.show && this.props.creator && this.props.state === RETRO_STATUS.IN_PROGRESS && (
@@ -100,6 +116,15 @@ class RetroSideMenu extends React.Component {
             <button className="btn btn-primary" onClick={this.handleStartTimer}>
               <i className="fa fa-clock-o" aria-hidden="true" />
               Start timer
+            </button>
+          </div>
+        )}
+
+        {this.props.includeTemperatureCheck && this.props.creator && (
+          <div className="sidebar-menu--group">
+            <button className="btn btn-primary" onClick={this.props.onShowTempCheckSummary}>
+              <i className="fa fa-thermometer-empty" aria-hidden="true" />
+              Temp checks
             </button>
           </div>
         )}

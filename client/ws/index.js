@@ -16,6 +16,7 @@ import {
   setRetroStatus,
   updateDeltaGroups,
   addTemperatureCheck,
+  updateMyTemperatureCheck,
 } from '../flux/retro/actions.js';
 import {
   addNotification,
@@ -163,6 +164,9 @@ export default (room) => {
       return updateDeltaGroups(data.groups);
     }
     if (data.type === 'temperature') {
+      if (data.userId === window.myID) {
+        updateMyTemperatureCheck(data);
+      }
       return addTemperatureCheck(data);
     }
   }, (notification) => {

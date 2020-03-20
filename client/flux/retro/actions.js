@@ -106,6 +106,11 @@ export const addTemperatureCheck = actionDispatcher((payload) => ({
   payload,
 }));
 
+export const updateMyTemperatureCheck = actionDispatcher((payload) => ({
+  type: actionTypes.updateMyTemperatureCheck,
+  payload,
+}));
+
 export const retroBoardInit = (retroKey, history) => {
   isLoading();
   fetch(`/api/retro/${retroKey}`, {
@@ -156,8 +161,12 @@ export const retroBoardInit = (retroKey, history) => {
       };
       addPrevDelta(parseDelta);
     });
+
     retro.temperature_checks.forEach((check) => {
       addTemperatureCheck(check);
+      if (check.userId === window.myID) {
+        updateMyTemperatureCheck(check);
+      }
     });
   });
 };

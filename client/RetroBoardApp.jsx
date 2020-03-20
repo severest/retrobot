@@ -14,7 +14,8 @@ import NotesModal from './components/NotesModal/NotesModal.jsx';
 import PrevDeltasModal from './components/PrevDeltasModal/PrevDeltasModal.jsx';
 import Notifications from './components/Notifications/Notifications.jsx';
 import DeltaGroupDisplay from './components/Delta/DeltaGroupDisplay.jsx';
-import TemperatureCheckModal from './components/TemperatureCheckModal/TemperatureCheckModal.jsx';
+import TemperatureCheckModal from './components/TemperatureCheck/TemperatureCheckModal.jsx';
+import TemperatureCheckSummary from './components/TemperatureCheck/TemperatureCheckSummary.jsx';
 import { RETRO_STATUS } from './utils/constants.js';
 
 import {
@@ -42,6 +43,8 @@ class RetroBoardApp extends React.Component {
         selectedDeltas: [],
         deltaGroups: [],
         prevDeltas: [],
+        myTemperatureCheck: null,
+        temperatureChecks: [],
         timer: {
           show: false,
           minutes: 0,
@@ -59,6 +62,7 @@ class RetroBoardApp extends React.Component {
       users: [],
       showPrevDeltasModal: false,
       showTemperatureCheckModal: false,
+      showTemperatureCheckSummary: false,
       deltaGroupDisplay: null,
       sideMenuOpen: false,
     };
@@ -74,6 +78,8 @@ class RetroBoardApp extends React.Component {
           selectedDeltas: state.selectedDeltas,
           deltaGroups: state.deltaGroups,
           prevDeltas: state.prevDeltas,
+          myTemperatureCheck: state.myTemperatureCheck,
+          temperatureChecks: state.temperatureChecks,
           timer: state.timer,
           state: state.retroStatus,
           creator: state.creator,
@@ -115,6 +121,24 @@ class RetroBoardApp extends React.Component {
     this.setState({ sideMenuOpen: false });
   }
 
+  handleClosePrevDeltasModal = () => {
+    this.setState({ showPrevDeltasModal: false });
+  }
+
+  handleOpenMyTempCheckModal = () => {
+    this.setState({ showTemperatureCheckModal: true });
+  }
+  handleCloseMyTempCheckModal = () => {
+    this.setState({ showTemperatureCheckModal: false });
+  }
+
+  handleOpenTempCheckSummaryModal = () => {
+    this.setState({ showTemperatureCheckSummary: true });
+  }
+  handleCloseTempCheckSummaryModal = () => {
+    this.setState({ showTemperatureCheckSummary: false });
+  }
+
   render() {
     if (this.state.isLoading) {
       return <Loader />;
@@ -133,22 +157,26 @@ class RetroBoardApp extends React.Component {
             itemId={this.state.notes}
             title={deltaForNotes.content}
             notes={deltaForNotes.notes ? deltaForNotes.notes : ''}
-            onClose={() => closeNotesModal()}
+            onClose={closeNotesModal}
           />
         )}
         {this.state.showPrevDeltasModal && (
           <PrevDeltasModal
             prevDeltas={this.state.retro.prevDeltas}
-            onClose={() => {
-              this.setState({
-                showPrevDeltasModal: false,
-              });
-            }}
+            onClose={this.handleClosePrevDeltasModal}
           />
         )}
-        {this.state.showTemperatureCheckModal && !this.state.showPrevDeltasModal && (
+        {this.state.showTemperatureCheckModal && (
           <TemperatureCheckModal
-            onClose={() => this.setState({ showTemperatureCheckModal: false })}
+            disabled={this.state.retro.state === RETRO_STATUS.LOCKED}
+            temperatureCheck={this.state.retro.myTemperatureCheck}
+            onClose={this.handleCloseMyTempCheckModal}
+          />
+        )}
+        {this.state.showTemperatureCheckSummary && (
+          <TemperatureCheckSummary
+            temperatureChecks={this.state.retro.temperatureChecks}
+            onClose={this.handleCloseTempCheckSummaryModal}
           />
         )}
         {this.state.deltaGroupDisplay && (
@@ -183,6 +211,8 @@ class RetroBoardApp extends React.Component {
             userCount={this.state.users.length}
             voteCount={this.state.retro.deltas.reduce((sum, item) => sum + item.votes.length, 0)}
             onCloseMenu={this.handleCloseSideMenu}
+            onShowMyTempCheck={this.handleOpenMyTempCheckModal}
+            onShowTempCheckSummary={this.handleOpenTempCheckSummaryModal}
           />
         </div>
         <div className="retro-right">
