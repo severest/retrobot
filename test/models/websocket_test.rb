@@ -728,6 +728,22 @@ class WebsocketTest < ActiveSupport::TestCase
     notification_callback.verify
   end
 
+  test "should not add temperature check when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+      'temperature' => 3,
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    assert_no_difference('TemperatureCheck.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    callback.verify
+    notification_callback.verify
+  end
+
   test "should update temperature check" do
     retro = create(:retro, key: 'eeeee2', creator: '1')
     check = create(:temperature_check, retro: retro, user: '10', temperature: 3)
@@ -743,6 +759,24 @@ class WebsocketTest < ActiveSupport::TestCase
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
     assert_equal TemperatureCheck.where(retro: retro, user: '10').first.temperature, 8
+    callback.verify
+    notification_callback.verify
+  end
+
+  test "should not update temperature check when locked" do
+    retro = create(:retro, key: 'eeeee2', status: 'locked')
+    check = create(:temperature_check, retro: retro, user: '10', temperature: 3)
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+      'temperature' => 8,
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    assert_no_difference('TemperatureCheck.count') do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    assert_equal TemperatureCheck.where(retro: retro, user: '10').first.temperature, 3
     callback.verify
     notification_callback.verify
   end
