@@ -1,36 +1,54 @@
 class TeamController < ApplicationController
   def summary
+    @team = get_team
+    if !@team.nil?
+      page = params[:page].try(&:to_i) || 1
+      limit = 10
+      offset = (page - 1) * limit
+      @retros = @team.retros.includes(:deltas, :temperature_checks).where('status' => :locked).order('created_at desc').limit(limit).offset(offset)
+      @total_retros = @team.retros.where('status' => :locked).count
+      render 'team/summary.json.jbuilder'
+    end
+  end
+
+  def temperature_checks
+    @team = get_team
+    if !@team.nil?
+      begin
+        fromDate = Date.strptime(params[:from], '%Y-%m-%d')
+      rescue
+        fromDate = Date.today - 6.months
+      end
+
+      @temperature_checks = TemperatureCheck.joins(:retro).where('retros.created_at > ?', fromDate).where('retros.team_id = ?', @team.id)
+      render 'team/temperature_checks.json.jbuilder'
+    end
+  end
+
+  private
+
+  def get_team
     if session[:team_id]
-      @team = Team.find(session[:team_id])
-      if @team.name == team_params[:name]
-        return render_summary
+      team = Team.find(session[:team_id])
+      if team.name == team_params[:name]
+        return team
       end
       session[:team_id] = nil
     end
 
     begin
-      @team = Team.find_with_password(team_params)
+      team = Team.find_with_password(team_params)
+      session[:team_id] = team.id
+      return team
     rescue TeamNotFound
-      return render json: { error: 'Team not found' }, :status => :not_found
+      render json: { error: 'Team not found' }, :status => :not_found
     rescue RetroNotAuthorized
-      return render json: { error: 'No access to that team' }, :status => :unauthorized
+      render json: { error: 'No access to that team' }, :status => :unauthorized
     end
-    session[:team_id] = @team.id
-    render_summary
+    return nil
   end
-
-  private
 
   def team_params
     params.fetch(:team, {}).permit(:name, :password)
-  end
-
-  def render_summary
-    page = params[:page].try(&:to_i) || 1
-    limit = 25
-    offset = (page - 1) * limit
-    @retros = @team.retros.where('status' => :locked).order('created_at desc').limit(limit).offset(offset)
-    @total_retros = @team.retros.where('status' => :locked).count
-    render 'team/summary.json.jbuilder'
   end
 end

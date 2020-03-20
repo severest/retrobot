@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     get 'retro/:key', to: 'retro#show', constraints: { key: /[A-Za-z0-9]{6}/ }
     post 'retro/new', to: 'retro#new'
     post 'team/summary', to: 'team#summary'
+    post 'team/temperaturechecks', to: 'team#temperature_checks'
   end
 
   get 'amialive', to: 'healthcheck#amialive'
