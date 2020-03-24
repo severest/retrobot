@@ -34,11 +34,11 @@ yarn run test:ci
 ### Ruby
 
 ```
-rake
+bin/rails test
 ```
 
 ### Running selenium tests locally
 
 1. Ensure you Chrome selenium driver is update to date
 2. `yarn run dev`
-3. `LOCAL_TESTING=1 rake test:system`
+3. `LOCAL_TESTING=1 bin/rails test:system`
