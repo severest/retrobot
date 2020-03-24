@@ -48,7 +48,7 @@ class RetrosTest < RetrobotSystemTestCase
     find('.form-control', wait: 10)
     fill_in "Password", with: "testpassword"
     click_on "Get summary"
-    assert_selector ".js-test-delta-summary-content", text: "this my delta, so COOL!"
+    assert_selector ".js-test-delta-summary-content", text: "delta2"
     assert_selector ".js-test-delta-summary-votes", text: "1 vote"
   end
 
