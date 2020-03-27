@@ -1,6 +1,3 @@
-json.temperature_checks do
-  json.array! @temperature_checks do |check|
-    json.(check, :id, :temperature, :notes)
-    json.userId check.user
-  end
+json.temperatureChecks do
+  json.array! @temperature_checks, partial: 'retro/temperature_check', as: :temperature_check
 end

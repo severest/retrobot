@@ -38,9 +38,9 @@ class TeamControllerTest < ActionDispatch::IntegrationTest
     post '/api/team/summary', params: { team: { name: 'team1' } }
     assert_response :success
     json_response = JSON.parse(@response.body)
-    assert_equal 1, json_response['retros'][0]['temperature_checks'].count
-    assert_equal 4, json_response['retros'][0]['temperature_checks'][0]['temperature']
-    assert_equal 'hi', json_response['retros'][0]['temperature_checks'][0]['notes']
+    assert_equal 1, json_response['retros'][0]['temperatureChecks'].count
+    assert_equal 4, json_response['retros'][0]['temperatureChecks'][0]['temperature']
+    assert_equal 'hi', json_response['retros'][0]['temperatureChecks'][0]['notes']
   end
 
   test "get team temperature check summary" do
@@ -52,7 +52,19 @@ class TeamControllerTest < ActionDispatch::IntegrationTest
     post '/api/team/temperaturechecks', params: { team: { name: 'team1' } }
     assert_response :success
     json_response = JSON.parse(@response.body)
-    assert_equal 2, json_response['temperature_checks'].count
+    assert_equal 2, json_response['temperatureChecks'].count
+  end
+
+  test "get team temperature doesnt get temp checks from inprogress retros" do
+    team = create(:team, name: 'team1')
+    create(:retro_with_temp_check, status: 'in_progress', team: team)
+    create(:retro_with_temp_check, status: 'voting', team: team)
+    create(:retro_with_temp_check, status: 'locked', team: team)
+    create(:retro_with_temp_check, status: 'locked', team: team)
+    post '/api/team/temperaturechecks', params: { team: { name: 'team1' } }
+    assert_response :success
+    json_response = JSON.parse(@response.body)
+    assert_equal 2, json_response['temperatureChecks'].count
   end
 
   test "get team temperature check summary handles garbage from" do
@@ -64,7 +76,7 @@ class TeamControllerTest < ActionDispatch::IntegrationTest
     post '/api/team/temperaturechecks', params: { team: { name: 'team1' }, from: 'not a date' }
     assert_response :success
     json_response = JSON.parse(@response.body)
-    assert_equal 2, json_response['temperature_checks'].count
+    assert_equal 2, json_response['temperatureChecks'].count
   end
 
   test "get team temperature check summary with from date" do
@@ -77,11 +89,11 @@ class TeamControllerTest < ActionDispatch::IntegrationTest
     post '/api/team/temperaturechecks', params: { team: { name: 'team1' }, from: (Date.today - 3.months).strftime('%Y-%m-%d') }
     assert_response :success
     json_response = JSON.parse(@response.body)
-    assert_equal 1, json_response['temperature_checks'].count
-    assert_equal temp_check.id, json_response['temperature_checks'][0]['id']
-    assert_equal temp_check.temperature, json_response['temperature_checks'][0]['temperature']
-    assert_equal temp_check.notes, json_response['temperature_checks'][0]['notes']
-    assert_equal temp_check.user, json_response['temperature_checks'][0]['userId']
+    assert_equal 1, json_response['temperatureChecks'].count
+    assert_equal temp_check.id, json_response['temperatureChecks'][0]['id']
+    assert_equal temp_check.temperature, json_response['temperatureChecks'][0]['temperature']
+    assert_equal temp_check.notes, json_response['temperatureChecks'][0]['notes']
+    assert_equal temp_check.user, json_response['temperatureChecks'][0]['userId']
   end
 
   test "summary should not show in progess or voting retros" do

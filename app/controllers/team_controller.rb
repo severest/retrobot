@@ -5,7 +5,11 @@ class TeamController < ApplicationController
       page = params[:page].try(&:to_i) || 1
       limit = 10
       offset = (page - 1) * limit
-      @retros = @team.retros.includes(:deltas, :temperature_checks).where('status' => :locked).order('created_at desc').limit(limit).offset(offset)
+      @retros = @team.retros.includes({deltas: :delta_votes}, :temperature_checks, :delta_groups)
+        .where('status' => :locked)
+        .order('created_at desc')
+        .limit(limit)
+        .offset(offset)
       @total_retros = @team.retros.where('status' => :locked).count
       render 'team/summary.json.jbuilder'
     end
@@ -20,7 +24,10 @@ class TeamController < ApplicationController
         fromDate = Date.today - 6.months
       end
 
-      @temperature_checks = TemperatureCheck.joins(:retro).where('retros.created_at > ?', fromDate).where('retros.team_id = ?', @team.id)
+      @temperature_checks = TemperatureCheck.joins(:retro)
+        .where('retros.created_at > ?', fromDate)
+        .where('retros.team_id = ?', @team.id)
+        .where('retros.status' => :locked)
       render 'team/temperature_checks.json.jbuilder'
     end
   end
