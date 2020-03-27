@@ -36,8 +36,13 @@ const SideMenu = ({
 };
 
 SideMenu.propTypes = {
-  children: PropTypes.node.isRequired,
-  onCloseMenu: PropTypes.func.isRequired,
+  children: PropTypes.node,
+  onCloseMenu: PropTypes.func,
+};
+
+SideMenu.defaultProps = {
+  children: null,
+  onCloseMenu: () => {},
 };
 
 export default SideMenu;

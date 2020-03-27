@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid darken(white, 20%);
+    border-bottom: $border-color;
 
     &:last-child {
       border-bottom: none;

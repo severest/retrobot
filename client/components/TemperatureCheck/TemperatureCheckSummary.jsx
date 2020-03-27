@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import sumBy from 'lodash/sumBy';
-import isNumber from 'lodash/isNumber';
 import Linkify from 'linkifyjs/react';
+
+import { getAvgTemperature } from '../../utils/temperature-checks.js';
 
 class TemperatureCheckSummary extends React.Component {
   static propTypes = {
@@ -19,16 +19,7 @@ class TemperatureCheckSummary extends React.Component {
   }
 
   get averageTemp() {
-    if (this.props.temperatureChecks.length === 0) {
-      return 0;
-    }
-    const sum = sumBy(this.props.temperatureChecks, ({ temperature }) => {
-      if (isNumber(temperature)) {
-        return temperature;
-      }
-      return parseInt(temperature);
-    });
-    return Math.round(sum/this.props.temperatureChecks.length);
+    return getAvgTemperature(this.props.temperatureChecks);
   }
 
   render() {

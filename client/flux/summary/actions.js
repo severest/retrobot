@@ -1,5 +1,6 @@
 import action$ from './stream.js';
 import * as actionTypes from './action-types.js';
+import moment from 'moment';
 
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));
@@ -12,9 +13,16 @@ export const doneLoading = actionDispatcher(() => ({
   type: actionTypes.doneLoading,
 }));
 
-export const getTeamSummary = (team, page=1) => {
+export const getTeamSummary = (team) => {
   isLoading();
-  fetch(`/api/team/summary`, {
+  Promise.all([
+    getRetros(team),
+    getTemperatureCheckSummary(team),
+  ]).then(() => doneLoading());
+};
+
+export const getRetros = (team, page=1) => {
+  return fetch(`/api/team/summary`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -47,11 +55,37 @@ export const getTeamSummary = (team, page=1) => {
   })
   .then((team) => {
     receiveTeamSummary(team);
-    doneLoading();
   })
   .catch(() => {
     getTeamSummaryError();
-    doneLoading();
+  });
+};
+
+export const getTemperatureCheckSummary = (team, from=moment().subtract(1, 'month').format('YYYY-MM-DD')) => {
+  return fetch(`/api/team/temperaturechecks`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      team,
+      from,
+    }),
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw new Error();
+    }
+  })
+  .then(({ temperatureChecks }) => {
+    receiveTemperatureChecks(temperatureChecks);
+  })
+  .catch(() => {
+    getTemperatureCheckSummaryError();
   });
 };
 
@@ -60,5 +94,13 @@ export const getTeamSummaryError = actionDispatcher(() => ({
 }));
 export const receiveTeamSummary = actionDispatcher((payload) => ({
   type: actionTypes.receiveTeamSummary,
+  payload,
+}));
+
+export const getTemperatureCheckSummaryError = actionDispatcher(() => ({
+  type: actionTypes.getTemperatureCheckSummaryError,
+}));
+export const receiveTemperatureChecks = actionDispatcher((payload) => ({
+  type: actionTypes.receiveTemperatureChecks,
   payload,
 }));

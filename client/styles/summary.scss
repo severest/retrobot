@@ -1,0 +1,71 @@
+.team-summary {
+  width: 100vw;
+  display: flex;
+}
+
+.team-summary-left {
+  z-index: $zIndex-sidebar;
+}
+
+.team-summary-right {
+  flex: 2;
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .team-summary-left {
+    display: none;
+  }
+}
+
+.team-summary__container {
+  padding: 30px 15px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.retro-summary {
+  margin-top: 25px;
+  background: $grey;
+  border-radius: $baseBorderRadius;
+  padding: 15px;
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+
+    a {
+      color: inherit;
+      font-weight: bold;
+      margin-right: 20px;
+    }
+  }
+
+  &__delta {
+    border-radius: $baseBorderRadius;
+    background: #f9f9f9;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  &__delta-content {
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  &__votes {
+    background: $delta;
+    color: white;
+    border-radius: 15px;
+    padding: 5px 8px;
+    display: inline-block;
+    margin: 3px 0;
+  }
+
+  &__notes {
+    white-space: pre-line;
+    margin-top: 10px;
+    word-break: break-word;
+  }
+}

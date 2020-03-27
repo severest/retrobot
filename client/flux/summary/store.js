@@ -7,10 +7,12 @@ import * as actionTypes from './action-types.js';
 // Initial State
 export const initState = {
   getTeamSummaryError: '',
+  getTemperatureCheckSummaryError: '',
   isLoading: false,
   teamSummary: {
     totalRetros: 0,
     retros: [],
+    temperatureChecks: [],
   },
 };
 
@@ -42,6 +44,21 @@ const actionMap = {
     return {
       ...state,
       getTeamSummaryError: 'No access to team',
+    };
+  },
+  [actionTypes.receiveTemperatureChecks]: (state, action) => {
+    return {
+      ...state,
+      teamSummary: {
+        ...state.teamSummary,
+        temperatureChecks: action.payload,
+      },
+    };
+  },
+  [actionTypes.getTemperatureCheckSummaryError]: (state) => {
+    return {
+      ...state,
+      getTemperatureCheckSummaryError: 'No access to team',
     };
   },
 };
