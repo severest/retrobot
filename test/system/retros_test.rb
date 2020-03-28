@@ -4,6 +4,7 @@ class RetrosTest < RetrobotSystemTestCase
 
     fill_in "Team name (optional)", with: "test team"
     fill_in "Password (optional)", with: "testpassword"
+    Percy.snapshot(page, { name: 'Create new retro', widths: [414, 1280] })
     click_on "Start"
     assert_selector ".js-test-send-delta-btn", text: "Delta"
 
@@ -16,6 +17,8 @@ class RetrosTest < RetrobotSystemTestCase
     add_delta("delta2")
     add_plus("plus2")
 
+    Percy.snapshot(page, { name: 'During a retro - admin', widths: [414, 1280] })
+
     r = Retro.last
     r.status = 'voting'
     r.save
@@ -27,6 +30,7 @@ class RetrosTest < RetrobotSystemTestCase
 
     first('.js-test-delta-notes').click()
     fill_in "Enter notes, action items...", with: "some notes are good"
+    Percy.snapshot(page, { name: 'Adding notes to a delta', widths: [414, 1280] })
     sleep(1)
     find('.js-test-save-notes').click()
     first('.js-test-delta-notes').click()
@@ -39,6 +43,7 @@ class RetrosTest < RetrobotSystemTestCase
     click_on "Start"
 
     assert_selector '.js-test-prev-deltas-modal'
+    Percy.snapshot(page, { name: 'Previous deltas modal', widths: [414, 1280] })
     first('.js-test-prev-delta-check').click()
     click_on "Add these deltas"
     assert_selector ".js-test-delta"
@@ -50,6 +55,7 @@ class RetrosTest < RetrobotSystemTestCase
     click_on "Get summary"
     assert_selector ".js-test-delta-summary-content", text: "delta2"
     assert_selector ".js-test-delta-summary-votes", text: "1 vote"
+    Percy.snapshot(page, { name: 'Team summary', widths: [414, 1280] })
   end
 
   test "temperature check" do
@@ -57,6 +63,7 @@ class RetrosTest < RetrobotSystemTestCase
     check 'Include temperature check'
     click_on 'Start'
     assert_selector '.js-test-temp-check-modal'
+    Percy.snapshot(page, { name: 'Temperatur check modal', widths: [414, 1280] })
   end
 
   def add_delta(text)

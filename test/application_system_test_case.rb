@@ -1,4 +1,5 @@
 require "test_helper"
+require "percy"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   if !ENV['LOCAL_TESTING'].nil?

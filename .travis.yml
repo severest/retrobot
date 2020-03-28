@@ -18,7 +18,7 @@ script:
 - yarn install --pure-lockfile
 - yarn run test:ci
 - yarn run build
-- bundle exec rails test:system
+- npx percy exec -- bin/rails test:system
 after_success:
 - bundle exec codeclimate-test-reporter
 dist: trusty
