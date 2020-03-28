@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
 import {
   sendTemperatureCheck,
 } from '../../ws/index.js';
+import { getTemperatureIcon } from '../../utils/temperature-checks.js';
 
 
 class TemperatureCheckModal extends React.Component {
@@ -123,7 +124,7 @@ class TemperatureCheckModal extends React.Component {
               </div>
 
               <div className={`${css(styles.sliderValue)} temperature-${Math.round(this.state.temperature)}`}>
-                {this.state.temperature}
+              <i className={`fa fa-${getTemperatureIcon(this.state.temperature)}`} aria-hidden="true" /> {this.state.temperature}
               </div>
 
               <div className={css(styles.sliderContainer)}>

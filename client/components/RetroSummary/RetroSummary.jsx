@@ -6,7 +6,8 @@ import _reverse from 'lodash/reverse';
 import _sortBy from 'lodash/sortBy';
 import _every from 'lodash/every';
 import Linkify from 'linkifyjs/react';
-import { getAvgTemperature } from '../../utils/temperature-checks';
+
+import { getAvgTemperature, getTemperatureIcon } from '../../utils/temperature-checks';
 
 class RetroSummary extends React.Component {
   static propTypes = {
@@ -24,16 +25,17 @@ class RetroSummary extends React.Component {
 
   render() {
     const { retro } = this.props;
+    const avgTemperature = getAvgTemperature(retro.temperatureChecks);
     return (
       <div className="retro-summary">
         <div className="retro-summary__heading">
           <Link to={`/retro/${retro.key}`}>
             {moment(retro.createdAt).format('MMMM D, YYYY')}
           </Link>
-          {retro.includeTemperatureCheck && `${getAvgTemperature(retro.temperatureChecks)}`}
+          {retro.includeTemperatureCheck && `${avgTemperature}`}
           <div>
             <span className="fa-stack">
-              <i className="fa fa-thermometer-3 fa-stack-2x"></i>
+              <i className={`fa fa-${getTemperatureIcon(avgTemperature)} fa-stack-2x`}></i>
               {!retro.includeTemperatureCheck && <i className="fa fa-ban fa-stack-2x text-danger"></i>}
             </span>
           </div>
