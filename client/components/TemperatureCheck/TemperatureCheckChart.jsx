@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import sumBy from 'lodash/sumBy';
 import groupBy from 'lodash/groupBy';
 import { Line } from 'react-chartjs-2';
+
+import { getAvgTemperature } from '../../utils/temperature-checks.js';
 
 class TemperatureCheckChart extends React.Component {
   static propTypes = {
@@ -41,7 +42,7 @@ class TemperatureCheckChart extends React.Component {
       if (!groupedByDay[date]) {
         return NaN;
       }
-      return sumBy(groupedByDay[date], 'temperature')/groupedByDay[date].length;
+      return getAvgTemperature(groupedByDay[date]);
     });
   }
 

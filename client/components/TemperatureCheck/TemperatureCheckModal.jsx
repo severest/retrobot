@@ -122,7 +122,7 @@ class TemperatureCheckModal extends React.Component {
                 if you wish.
               </div>
 
-              <div className={`${css(styles.sliderValue)} temperature-${this.state.temperature}`}>
+              <div className={`${css(styles.sliderValue)} temperature-${Math.round(this.state.temperature)}`}>
                 {this.state.temperature}
               </div>
 
@@ -133,6 +133,7 @@ class TemperatureCheckModal extends React.Component {
                   type="range"
                   min="0"
                   max="10"
+                  step="0.1"
                   value={this.state.temperature}
                   onChange={this.handleChangeTemperature}
                 />

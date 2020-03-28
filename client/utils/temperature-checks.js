@@ -1,5 +1,6 @@
 import sumBy from 'lodash/sumBy';
 import isNumber from 'lodash/isNumber';
+import round from 'lodash/round';
 
 export const getAvgTemperature = (temperatureChecks) => {
   if (temperatureChecks.length === 0) {
@@ -11,5 +12,5 @@ export const getAvgTemperature = (temperatureChecks) => {
     }
     return parseInt(temperature);
   });
-  return Math.round(sum/temperatureChecks.length);
+  return round(sum/temperatureChecks.length, 1);
 };
