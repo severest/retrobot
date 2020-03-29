@@ -2,9 +2,9 @@ import action$ from './stream.js';
 import * as actionTypes from './action-types.js';
 import moment from 'moment';
 
+
 const actionDispatcher = (func) => (...args) =>
   action$.next(func(...args));
-
 
 export const isLoading = actionDispatcher(() => ({
   type: actionTypes.loading,
@@ -61,7 +61,9 @@ export const getRetros = (team, page=1) => {
   });
 };
 
-export const getTemperatureCheckSummary = (team, from=moment().subtract(1, 'month').format('YYYY-MM-DD')) => {
+export const defaultTemperaturCheckMonths = 1;
+const defaultFrom = moment().subtract(defaultTemperaturCheckMonths, 'month').format('YYYY-MM-DD');
+export const getTemperatureCheckSummary = (team, from=defaultFrom) => {
   return fetch(`/api/team/temperaturechecks`, {
     method: 'POST',
     credentials: 'include',

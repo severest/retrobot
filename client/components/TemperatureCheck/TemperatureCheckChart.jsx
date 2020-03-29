@@ -5,9 +5,11 @@ import groupBy from 'lodash/groupBy';
 import { Line } from 'react-chartjs-2';
 
 import { getAvgTemperature } from '../../utils/temperature-checks.js';
+import { getTemperatureCheckSummary, defaultTemperaturCheckMonths } from '../../flux/summary/actions.js';
 
 class TemperatureCheckChart extends React.Component {
   static propTypes = {
+    teamName: PropTypes.string.isRequired,
     temperatureChecks: PropTypes.arrayOf(PropTypes.shape({
       createdAt: PropTypes.string.isRequired,
       userId: PropTypes.string.isRequired,
@@ -17,6 +19,11 @@ class TemperatureCheckChart extends React.Component {
     })).isRequired,
   }
 
+  constructor(props) {
+    super(props);
+    this.timeRangeDropdown = React.createRef();
+  }
+
   get checksGroupedByDay() {
     return groupBy(this.props.temperatureChecks, (check) => {
       return moment(check.createdAt).format('YYYY-MM-DD');
@@ -24,7 +31,8 @@ class TemperatureCheckChart extends React.Component {
   }
 
   get YLabels() {
-    const start = moment().subtract(1, 'months');
+    const months = this.timeRangeDropdown.current ? this.timeRangeDropdown.current.value : defaultTemperaturCheckMonths;
+    const start = moment().subtract(months, 'months');
     const labels = [];
     while (moment().isAfter(start)) {
       labels.push(start.format('YYYY-MM-DD'));
@@ -46,9 +54,30 @@ class TemperatureCheckChart extends React.Component {
     });
   }
 
+  handleTimeRangeChange = () => {
+    const from = moment().subtract(this.timeRangeDropdown.current.value, 'month').format('YYYY-MM-DD')
+    getTemperatureCheckSummary({name: this.props.teamName}, from);
+  }
+
   render() {
     return (
       <div className="temperature-check-chart">
+        <form role="form" className="form-inline">
+           <div className="form-group">
+              <select
+                className="form-control"
+                id="timeRange"
+                ref={this.timeRangeDropdown}
+                defaultValue={`${defaultTemperaturCheckMonths}`}
+                onChange={this.handleTimeRangeChange}
+              >
+                <option value="1">1M</option>
+                <option value="3">3M</option>
+                <option value="6">6M</option>
+                <option value="12">1Y</option>
+              </select>
+            </div>
+        </form>
         <Line
           data={{
             labels: this.YLabels,

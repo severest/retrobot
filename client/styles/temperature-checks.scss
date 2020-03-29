@@ -56,4 +56,10 @@ $temperatures: (
 .temperature-check-chart {
   width: 100%;
   position: relative;
+
+  form {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }

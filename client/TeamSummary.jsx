@@ -30,7 +30,10 @@ class TeamSummary extends React.Component {
       <div className="team-summary__container">
         <div className={css(styles.header)}>{this.props.name}</div>
 
-        <TemperatureCheckChart temperatureChecks={this.props.temperatureChecks} />
+        <TemperatureCheckChart
+          teamName={this.props.name}
+          temperatureChecks={this.props.temperatureChecks}
+        />
 
         {this.props.retros.map((retro) => (
           <RetroSummary
