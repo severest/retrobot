@@ -2,8 +2,8 @@
 
 ## Installation
 
-1. Install ruby 2.4.1
-2. Install node 9.11.2
+1. Install ruby 2.4.1 ([RVM](http://rvm.io/rvm/install) is a good way to manage Ruby)
+2. Install node 9.11.2 ([NVM](https://github.com/nvm-sh/nvm#installing-and-updating) is a good way to manager node versions)
 3. Install yarn
 
 ## Development
