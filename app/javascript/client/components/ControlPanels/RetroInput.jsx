@@ -65,7 +65,7 @@ class RetroInput extends React.Component {
               </button>
             </span>
           </div>
-          <div className="input-tip">Enter: <i className="fa fa-plus" aria-hidden="true" />&nbsp;&nbsp;&nbsp;ShiftEnter: <i className="fa fa-exclamation-triangle" aria-hidden="true" /></div>
+          <div className="input-tip">Enter: <i className="fa fa-plus" aria-hidden="true" />&nbsp;&nbsp;&nbsp;Shift-Enter: <i className="fa fa-exclamation-triangle" aria-hidden="true" /></div>
         </div>
       </div>
     );

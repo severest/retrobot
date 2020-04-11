@@ -1,4 +1,4 @@
-import ActionCable from 'actioncable';
+import { createConsumer } from '@rails/actioncable';
 
 import {
   addPlus,
@@ -23,7 +23,7 @@ import {
 } from '../flux/notifications/actions.js';
 
 let retroChannel;
-const cable = ActionCable.createConsumer();
+const cable = createConsumer();
 
 const prepMessage = (msg) => {
   return {data: btoa(unescape(encodeURIComponent(JSON.stringify(msg))))};

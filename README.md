@@ -11,17 +11,15 @@
 ```
 gem install bundler
 bundle install
-rake db:create # config/database.yml assumes local db has no root password
-rake db:migrate
+bin/rails db:create # config/database.yml assumes local db has no root password
+bin/rails db:migrate
 yarn install --pure-lockfile
 
 # start rails backend
-rails s
-# in another shell
-yarn run dev
+bin/rails s
 ```
 
-Navigate to <http://localhost:8080>
+Navigate to <http://localhost:3000>
 
 ## Running tests
 
@@ -40,5 +38,4 @@ bin/rails test
 ### Running selenium tests locally
 
 1. Ensure you Chrome selenium driver is update to date
-2. `yarn run dev`
-3. `LOCAL_TESTING=1 bin/rails test:system`
+3. `HEADLESS=1 bin/rails test:system`

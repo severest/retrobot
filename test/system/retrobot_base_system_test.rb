@@ -12,12 +12,4 @@ class RetrobotSystemTestCase < ApplicationSystemTestCase
     end
     assert !error_msg_array.present?
   end
-
-  def visit(url)
-    if !ENV['LOCAL_TESTING'].nil?
-      super 'http://localhost:8080' + url
-    else
-      super url
-    end
-  end
 end

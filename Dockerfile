@@ -77,6 +77,6 @@ RUN yarn install --pure-lockfile
 
 COPY . .
 
-RUN yarn run build
+RUN bin/rails webpacker:compile
 
 EXPOSE 3000

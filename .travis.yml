@@ -1,6 +1,10 @@
 language: ruby
 rvm:
-- 2.4.1
+- 2.7.1
+services:
+  - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE retrobot_test;'
 install:
 - nvm install
 - nvm use
@@ -17,7 +21,6 @@ script:
 - bin/rails test
 - yarn install --pure-lockfile
 - yarn run test:ci
-- yarn run build
 - npx percy exec -- bin/rails test:system
 after_success:
 - bundle exec codeclimate-test-reporter

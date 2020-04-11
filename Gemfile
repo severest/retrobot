@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails'
+gem 'rails', '~> 6.0'
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma'
@@ -20,6 +20,7 @@ gem 'jbuilder'
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+gem 'webpacker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -28,7 +29,6 @@ group :development, :test do
   gem 'capybara'
   gem 'percy-capybara'
   gem 'selenium-webdriver'
-  gem 'sqlite3'
   gem 'factory_bot_rails'
 end
 
