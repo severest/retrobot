@@ -1,5 +1,18 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+const webpack = require('webpack');
 
-const environment = require('./environment')
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
-module.exports = environment.toWebpackConfig()
+const environment = require('./environment');
+
+environment.plugins.prepend(
+    'Define',
+    new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: '"production"'
+        }
+    })
+);
+
+environment.config.merge({ devtool: 'none' });
+
+module.exports = environment.toWebpackConfig();
