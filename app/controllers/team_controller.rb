@@ -3,6 +3,7 @@ class TeamController < ApplicationController
     @team = get_team
     if !@team.nil?
       page = params[:page].try(&:to_i) || 1
+      page = page == 0 ? 1 : page
       limit = 10
       offset = (page - 1) * limit
       @retros = @team.retros.includes({deltas: :delta_votes}, :temperature_checks, :delta_groups)
