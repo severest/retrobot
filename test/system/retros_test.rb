@@ -85,7 +85,6 @@ class RetrosTest < RetrobotSystemTestCase
   end
 
   def add_plus(text)
-    # find('.form-control').set(text)
     page.execute_script("var elm = arguments[0]; var txt = arguments[1]; elm.value += txt; elm.dispatchEvent(new Event('change'));", find('.form-control'), text)
     click_on "Plus"
     assert_selector ".js-test-plus", text: text
