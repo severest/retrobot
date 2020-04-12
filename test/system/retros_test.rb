@@ -1,11 +1,21 @@
 class RetrosTest < RetrobotSystemTestCase
+  setup do
+    Timecop.travel(Time.utc(2020, 1, 15))
+  end
+
   test "creating a retro and looking at summary" do
+    team = create(:team, name: 'SeleniumTeam', password: 'testpassword')
+
     visit '/'
 
-    fill_in "Team name (optional)", with: "test team"
+    fill_in "Team name (optional)", with: team.name
     fill_in "Password (optional)", with: "testpassword"
     Percy.snapshot(page, { name: 'Create new retro', widths: [414, 1280] })
     click_on "Start"
+    assert_selector ".js-test-send-delta-btn", text: "Delta"
+
+    r = create(:retro, key: 'q7we89', team: team, creator: '11111-abcdefg')
+    visit "/retro/#{r.key}"
     assert_selector ".js-test-send-delta-btn", text: "Delta"
 
     add_delta("this my delta, so COOL!")
@@ -19,7 +29,6 @@ class RetrosTest < RetrobotSystemTestCase
 
     Percy.snapshot(page, { name: 'During a retro - admin', widths: [414, 1280] })
 
-    r = Retro.last
     r.status = 'voting'
     r.save
 
@@ -37,10 +46,8 @@ class RetrosTest < RetrobotSystemTestCase
     assert_selector ".js-test-notes-input", text: "some notes are good"
 
     # test the prev delta dialog
-    visit '/'
-    fill_in "Team name (optional)", with: "test team"
-    fill_in "Password (optional)", with: "testpassword"
-    click_on "Start"
+    r = create(:retro, key: 'bvb6tr', team: team)
+    visit "/retro/#{r.key}"
 
     assert_selector '.js-test-prev-deltas-modal'
     Percy.snapshot(page, { name: 'Previous deltas modal', widths: [414, 1280] })
@@ -49,7 +56,7 @@ class RetrosTest < RetrobotSystemTestCase
     assert_selector ".js-test-delta"
 
     # test summary
-    visit '/summary/test team'
+    visit "/summary/#{team.name}"
     find('.form-control', wait: 10)
     fill_in "Password", with: "testpassword"
     click_on "Get summary"
@@ -63,6 +70,8 @@ class RetrosTest < RetrobotSystemTestCase
     check 'Include temperature check'
     click_on 'Start'
     assert_selector '.js-test-temp-check-modal'
+    r = create(:retro, key: '444bcb', include_temperature_check: true)
+    visit "/retro/#{r.key}"
     Percy.snapshot(page, { name: 'Temperatur check modal', widths: [414, 1280] })
   end
 

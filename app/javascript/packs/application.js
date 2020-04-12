@@ -17,13 +17,22 @@ import StartRetroApp from '../client/StartRetroApp-Loadable.jsx';
 import RetroBoardApp from '../client/RetroBoardApp-Loadable.jsx';
 import TeamSummaryApp from '../client/TeamSummaryApp-Loadable.jsx';
 import Particles from '../client/components/Particles/Particles.jsx';
-// User ID generator
-let userId = localStorage.getItem('retrobotID');
-if (!userId) {
-    userId = uuid();
-    localStorage.setItem('retrobotID', userId);
+
+if (TESTING) {
+    // time travel for testing
+    const tk = require('timekeeper');
+    tk.travel(new Date('2020-01-16'));
+
+    window.myID = '11111-abcdefg';
+} else {
+    // User ID generator
+    let userId = localStorage.getItem('retrobotID');
+    if (!userId) {
+        userId = uuid();
+        localStorage.setItem('retrobotID', userId);
+    }
+    window.myID = userId;
 }
-window.myID = userId;
 
 // Online/Offline indicators
 window.addEventListener('online', () => isOnline());

@@ -12,7 +12,8 @@
     "WS": true,
     "App": true,
     "$": true,
-    "ActionCable": true
+    "ActionCable": true,
+    "TESTING": true
   },
   "extends": [ "eslint:recommended", "plugin:react/recommended" ],
   "plugins": [

@@ -30,6 +30,7 @@ group :development, :test do
   gem 'percy-capybara'
   gem 'selenium-webdriver'
   gem 'factory_bot_rails'
+  gem 'timecop'
 end
 
 group :development do

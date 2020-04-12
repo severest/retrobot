@@ -25,7 +25,13 @@ environment.plugins.prepend(
             windows: false
         }
     })
-)
+);
+environment.plugins.prepend(
+    'Define',
+    new webpack.DefinePlugin({
+        TESTING: JSON.stringify(false),
+    })
+);
 
 environment.splitChunks((config) => Object.assign({}, config, {
     optimization: {

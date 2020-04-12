@@ -22,7 +22,7 @@ script:
 - bin/rails test
 - yarn install --pure-lockfile
 - yarn run test:ci
-- npx percy exec -- bin/rails test:system
+- npx percy exec -- NODE_ENV=test bin/rails test:system
 after_success:
 - bundle exec codeclimate-test-reporter
 dist: trusty
