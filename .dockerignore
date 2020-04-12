@@ -7,3 +7,6 @@ test/
 .gitignore
 setupJest.js
 __mocks__/
+public/packs/
+public/packs-test/
+.byebug_history
