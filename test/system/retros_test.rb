@@ -26,6 +26,9 @@ class RetrosTest < RetrobotSystemTestCase
 
     add_delta("delta2")
     add_plus("plus2")
+    add_plus("😁️")
+    add_plus("🤩️😁️")
+    add_plus("🤩️😁️🤩️")
 
     Percy.snapshot(page, { name: 'During a retro - admin', widths: [414, 1280] })
 
