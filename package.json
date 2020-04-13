@@ -10,6 +10,7 @@
     "lint": "eslint --ext .jsx --ext .js app/javascript/"
   },
   "dependencies": {
+    "@loadable/component": "^5.12.0",
     "@rails/actioncable": "^6.0.2-2",
     "@rails/webpacker": "5.0.1",
     "aphrodite": "2.4.0",
@@ -31,7 +32,6 @@
     "react": "^16.10.2",
     "react-chartjs-2": "2.9.0",
     "react-dom": "^16.10.2",
-    "react-loadable": "^5.5.0",
     "react-notification": "^6.8.4",
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.3.0",

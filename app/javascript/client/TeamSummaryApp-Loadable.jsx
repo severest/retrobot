@@ -1,14 +1,18 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import { lazy } from '@loadable/component';
+import { Suspense } from 'react';
+
 import Loader from './components/Loader/Loader.jsx';
 
-const LoadableComponent = Loadable({
-  loader: () => import('./TeamSummaryApp.jsx'),
-  loading: Loader,
-})
+const Loadable = lazy(() => import('./TeamSummaryApp.jsx'));
 
-export default class LoadableTeamSummaryApp extends React.Component {
-  render() {
-    return <LoadableComponent {...this.props} />;
-  }
-}
+const TeamSummaryAppLoadable = (props) => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <Loadable {...props} />
+    </Suspense>
+  );
+};
+
+export default TeamSummaryAppLoadable;
+

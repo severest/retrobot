@@ -1,14 +1,18 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import { lazy } from '@loadable/component';
+import { Suspense } from 'react';
+
 import Loader from './components/Loader/Loader.jsx';
 
-const LoadableComponent = Loadable({
-  loader: () => import('./StartRetroApp.jsx'),
-  loading: Loader,
-})
+const Loadable = lazy(() => import('./StartRetroApp.jsx'));
 
-export default class LoadableStartRetroApp extends React.Component {
-  render() {
-    return <LoadableComponent {...this.props} />;
-  }
-}
+const StartRetroAppLoadable = (props) => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <Loadable {...props} />
+    </Suspense>
+  );
+};
+
+export default StartRetroAppLoadable;
+
