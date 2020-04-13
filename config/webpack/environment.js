@@ -12,17 +12,20 @@ environment.plugins.prepend(
     new FaviconsWebpackPlugin({
         logo: path.resolve(__dirname, '../../logo.png'),
         inject: false,
-        icons: {
-            android: false,
-            appleIcon: false,
-            appleStartup: false,
-            coast: false,
-            favicons: true,
-            firefox: false,
-            opengraph: false,
-            twitter: false,
-            yandex: false,
-            windows: false
+        cache: false,
+        favicons: {
+            icons: {
+                android: false,
+                appleIcon: false,
+                appleStartup: false,
+                coast: false,
+                favicons: true,
+                firefox: false,
+                opengraph: false,
+                twitter: false,
+                yandex: false,
+                windows: false
+            }
         }
     })
 );
