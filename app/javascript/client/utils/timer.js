@@ -23,3 +23,7 @@ export const startTimer = (timerMinutes) => {
     sendTime(minutes, seconds);
   }, 1000);
 };
+
+export const clearTimer = () => {
+  clearInterval(timer);
+};

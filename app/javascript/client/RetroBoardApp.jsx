@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
+import { Prompt } from 'react-router-dom';
 
 import RetroBoard from './RetroBoard.jsx';
 import RetroSideMenu from './components/SideMenu/RetroSideMenu.jsx';
@@ -25,6 +26,7 @@ import {
 
 import socketInit from './ws/index.js';
 import retroStore$ from './flux/retro/store.js';
+import { clearTimer } from './utils/timer.js';
 
 class RetroBoardApp extends React.Component {
   static propTypes = {
@@ -101,6 +103,7 @@ class RetroBoardApp extends React.Component {
 
   componentWillUnmount() {
     this.storeSubscription.unsubscribe();
+    clearTimer();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -151,6 +154,11 @@ class RetroBoardApp extends React.Component {
 
     return (
       <div className="retro">
+        <Prompt
+          when={this.state.retro.timer.show}
+          message="You are in the middle of a retro. Do you still want to leave?"
+        />
+
         {this.state.isOffline && <OfflineIndicatorModal />}
         {deltaForNotes && (
           <NotesModal
