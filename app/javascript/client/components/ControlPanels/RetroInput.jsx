@@ -56,7 +56,7 @@ class RetroInput extends React.Component {
                 Plus
               </button>
               <button
-                className="btn btn-default js-test-send-delta-btn"
+                className="btn btn-default"
                 type="button"
                 onClick={this.handleSendDelta}
                 disabled={this.props.state === RETRO_STATUS.LOCKED}

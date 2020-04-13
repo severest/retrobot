@@ -11,12 +11,9 @@ class RetrosTest < RetrobotSystemTestCase
     fill_in "Team name (optional)", with: team.name
     fill_in "Password (optional)", with: "testpassword"
     Percy.snapshot(page, { name: 'Create new retro', widths: [414, 1280] })
-    click_on "Start"
-    assert_selector ".js-test-send-delta-btn", text: "Delta"
 
     r = create(:retro, key: 'q7we89', team: team, creator: '11111-abcdefg')
     visit "/retro/#{r.key}"
-    assert_selector ".js-test-send-delta-btn", text: "Delta"
 
     add_delta("this my delta, so COOL!")
     add_plus("this my plus, WOW")
@@ -79,13 +76,15 @@ class RetrosTest < RetrobotSystemTestCase
   end
 
   def add_delta(text)
-    input_with_emoji(find('.form-control'), text)
+    input_field = find('.form-control')
+    input_with_emoji(input_field, text)
     click_on "Delta"
     assert_selector ".js-test-delta", text: text
   end
 
   def add_plus(text)
-    input_with_emoji(find('.form-control'), text)
+    input_field = find('.form-control')
+    input_with_emoji(input_field, text)
     click_on "Plus"
     assert_selector ".js-test-plus", text: text
   end
