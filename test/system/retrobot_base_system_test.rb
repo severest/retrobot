@@ -12,4 +12,8 @@ class RetrobotSystemTestCase < ApplicationSystemTestCase
     end
     assert !error_msg_array.present?
   end
+
+  def input_with_emoji(element, text)
+    page.execute_script("var elm = arguments[0]; var txt = arguments[1]; elm.value += txt; elm.dispatchEvent(new Event('change'));", element, text)
+  end
 end
