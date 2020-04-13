@@ -120,7 +120,7 @@ class RetroSideMenu extends React.Component {
           </div>
         )}
 
-        {this.props.includeTemperatureCheck && this.props.creator && (
+        {this.props.includeTemperatureCheck && (
           <div className="sidebar-menu--group">
             <button className="btn btn-primary" onClick={this.props.onShowTempCheckSummary}>
               <i className="fa fa-thermometer-empty" aria-hidden="true" />
