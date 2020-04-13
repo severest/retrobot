@@ -30,10 +30,21 @@ $mobile-breakpoint: 750px;
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
 $fa-font-path: "~font-awesome/fonts";
-$icon-font-path: "../assets/";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/component-animations";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
+
 @import "~font-awesome/scss/font-awesome";
 @import "~rc-tooltip/assets/bootstrap";
+
 @import "mixins";
 @import "animations";
 @import "buttons";
