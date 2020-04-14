@@ -14,7 +14,8 @@ $grey-transparent: fade-out($grey, 0.12);
 $grey10: darken($grey, 10%);
 $grey20: darken($grey, 20%);
 
-$border-color: 1px solid darken(white, 20%);
+$border-color: #e5e5e5;
+$border-base: 1px solid $border-color;
 
 // z-indexes
 $zIndex-group-badge: 10;
@@ -70,6 +71,17 @@ input[type="password"],
 select:focus,
 textarea {
   font-size: 16px;
+}
+
+textarea {
+  border-radius: $baseBorderRadius;
+  border-color: $border-color;
+  padding: 3px 6px;
+  resize: none;
+  width: 100%;
+  &:focus {
+    outline: none;
+  }
 }
 
 .rc-tooltip {

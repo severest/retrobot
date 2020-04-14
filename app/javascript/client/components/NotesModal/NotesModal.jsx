@@ -5,13 +5,7 @@ import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   input: {
-    resize: 'none',
-    width: '100%',
     height: '150px',
-    border: 'none',
-    ':focus': {
-      outline: 'none',
-    }
   },
   title: {
     fontWeight: 'bold',

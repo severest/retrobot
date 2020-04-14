@@ -13,15 +13,11 @@ const styles = StyleSheet.create({
     fontSize: '12px',
     marginBottom: '10px',
   },
+  inputContainer: {
+    marginTop: '15px',
+  },
   input: {
-    resize: 'none',
-    width: '100%',
-    height: '50px',
-    border: 'none',
-    ':focus': {
-      outline: 'none',
-    },
-    marginTop: '10px',
+    height: '60px',
   },
   sliderValue: {
     textAlign: 'center',
@@ -141,12 +137,15 @@ class TemperatureCheckModal extends React.Component {
                 <div className={css(styles.sliderLabel, styles.sliderLabelRight)}>10</div>
               </div>
 
-              <textarea
-                className={css(styles.input) + ' js-test-temperature-notes-input'}
-                placeholder="Optional notes"
-                value={this.state.notes}
-                onChange={this.handleChangeTemperatureNotes}
-              />
+              <div className={css(styles.inputContainer)}>
+                <label htmlFor="optionalNotes">Notes (optional)</label>
+                <textarea
+                  id="optionalNotes"
+                  className={css(styles.input) + ' js-test-temperature-notes-input'}
+                  value={this.state.notes}
+                  onChange={this.handleChangeTemperatureNotes}
+                />
+              </div>
             </div>
             <div className="modal-footer">
               <button

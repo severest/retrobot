@@ -34,7 +34,7 @@ class TemperatureCheckChart extends React.Component {
     const months = this.timeRangeDropdown.current ? this.timeRangeDropdown.current.value : defaultTemperaturCheckMonths;
     const start = moment().subtract(months, 'months');
     const labels = [];
-    while (moment().isAfter(start)) {
+    while (moment().isSameOrAfter(start, 'day')) {
       labels.push(start.format('YYYY-MM-DD'));
       start.add(1, 'day');
     }
