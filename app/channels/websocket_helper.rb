@@ -89,21 +89,20 @@ class WebsocketHelper
         plus.destroy
         callback.call(data)
       elsif data['type'] == 'temperature'
-        temperature_check = TemperatureCheck.where(retro: retro, user: data['userId']).first
-        if temperature_check.nil?
-          if TemperatureCheck.create(retro: retro, user: data['userId'], temperature: data['temperature'], notes: data['notes']).id.nil?
-            notification_callback.call({'error' => 'Unable to create new temperature check'})
+        begin
+          temperature_check = TemperatureCheck.where(retro: retro, user: data['userId']).first
+          temp = data['temperature'].round(1)
+          if temperature_check.nil?
+            TemperatureCheck.create!(retro: retro, user: data['userId'], temperature: temp, notes: data['notes'])
+            callback.call(data)
           else
+            temperature_check.temperature = temp
+            temperature_check.notes = data['notes']
+            temperature_check.save!
             callback.call(data)
           end
-        else
-          temperature_check.temperature = data['temperature']
-          temperature_check.notes = data['notes']
-          if !temperature_check.save
-            notification_callback.call({'error' => 'Unable to update temperature check'})
-          else
-            callback.call(data)
-          end
+        rescue
+          notification_callback.call({'error' => 'Unable to update temperature check'})
         end
       end
     end

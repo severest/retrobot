@@ -728,6 +728,26 @@ class WebsocketTest < ActiveSupport::TestCase
     notification_callback.verify
   end
 
+  test "should round temperature check" do
+    retro = create(:retro, key: 'eeeee2', creator: '1')
+    data = {
+      'type' => 'temperature',
+      'userId' => '10',
+      'temperature' => 3.123456,
+    }
+    callback = MiniTest::Mock.new
+    notification_callback = MiniTest::Mock.new
+    callback.expect :call, nil, [Object]
+    assert_difference('TemperatureCheck.count', 1) do
+      WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
+    end
+    t = TemperatureCheck.where(retro: retro, user: '10')
+    assert t.exists?
+    assert_equal 3.1, t.first.temperature
+    callback.verify
+    notification_callback.verify
+  end
+
   test "should not add temperature check when locked" do
     retro = create(:retro, key: 'eeeee2', status: 'locked')
     data = {
@@ -789,7 +809,7 @@ class WebsocketTest < ActiveSupport::TestCase
     }
     callback = MiniTest::Mock.new
     notification_callback = MiniTest::Mock.new
-    notification_callback.expect :call, nil, [{"error"=>"Unable to create new temperature check"}]
+    notification_callback.expect :call, nil, [{"error"=>"Unable to update temperature check"}]
     assert_no_difference('TemperatureCheck.count') do
       WebsocketHelper.handle('eeeee2', data, callback, notification_callback)
     end
