@@ -1,8 +1,8 @@
 class Retro < ApplicationRecord
-  has_many :pluses, class_name: 'Plus'
-  has_many :deltas, class_name: 'Delta'
-  has_many :delta_groups
-  has_many :temperature_checks
+  has_many :pluses, class_name: 'Plus', dependent: :destroy
+  has_many :deltas, class_name: 'Delta', dependent: :destroy
+  has_many :delta_groups, dependent: :destroy
+  has_many :temperature_checks, dependent: :destroy
   belongs_to :team, optional: true
   enum status: [ :in_progress, :voting, :locked ]
 

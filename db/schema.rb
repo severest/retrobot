@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2020_03_28_195433) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "delta_group_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delta_group_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "delta_group_id"
     t.bigint "delta_id"
     t.datetime "created_at", null: false
@@ -37,14 +37,14 @@ ActiveRecord::Schema.define(version: 2020_03_28_195433) do
     t.index ["delta_id"], name: "index_delta_group_items_on_delta_id"
   end
 
-  create_table "delta_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delta_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["retro_id"], name: "index_delta_groups_on_retro_id"
   end
 
-  create_table "delta_votes", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delta_votes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "user"
     t.bigint "delta_id"
     t.datetime "created_at", null: false
@@ -52,18 +52,18 @@ ActiveRecord::Schema.define(version: 2020_03_28_195433) do
     t.index ["delta_id"], name: "index_delta_votes_on_delta_id"
   end
 
-  create_table "deltas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.text "content", collation: "utf8mb4_general_ci"
+  create_table "deltas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "content"
     t.bigint "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "user"
-    t.text "notes", collation: "utf8mb4_general_ci"
+    t.text "notes"
     t.index ["retro_id"], name: "index_deltas_on_retro_id"
   end
 
-  create_table "pluses", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.text "content", collation: "utf8mb4_general_ci"
+  create_table "pluses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "content"
     t.bigint "retro_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 2020_03_28_195433) do
     t.index ["retro_id"], name: "index_pluses_on_retro_id"
   end
 
-  create_table "retros", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "retros", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "key", limit: 191
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -85,8 +85,8 @@ ActiveRecord::Schema.define(version: 2020_03_28_195433) do
     t.index ["team_id"], name: "index_retros_on_team_id"
   end
 
-  create_table "teams", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.string "name", collation: "utf8mb4_general_ci"
+  create_table "teams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name"
     t.string "password_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
