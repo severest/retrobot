@@ -91,7 +91,7 @@ class WebsocketHelper
       elsif data['type'] == 'temperature'
         begin
           temperature_check = TemperatureCheck.where(retro: retro, user: data['userId']).first
-          temp = data['temperature'].round(1)
+          temp = data['temperature'].to_f.round(1) unless data['temperature'].nil?
           if temperature_check.nil?
             TemperatureCheck.create!(retro: retro, user: data['userId'], temperature: temp, notes: data['notes'])
             callback.call(data)
