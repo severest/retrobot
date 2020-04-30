@@ -39,6 +39,9 @@ group :development do
   gem 'listen'
 end
 
-gem 'codeclimate-test-reporter'
+group :test do
+  gem 'codeclimate-test-reporter'
+end
+
 gem 'delayed_job_active_record'
 gem 'delayed_job_recurring'
