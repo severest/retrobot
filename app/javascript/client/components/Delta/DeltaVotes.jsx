@@ -40,8 +40,19 @@ class DeltaVotes extends React.Component {
 
   render() {
     if (this.props.retroState === RETRO_STATUS.LOCKED) return null;
+
+    let voteCountDisplay;
+    const voteCount = this.props.votes.filter(v => v === window.myID).length;
+    if (voteCount > 1) {
+      voteCountDisplay = (
+        <div className="upvote-count">
+          {voteCount}
+        </div>
+      );
+    }
     return (
       <React.Fragment>
+        {voteCountDisplay}
         <button
           onClick={this.handleUpVote}
           className={this.upVoteClass}

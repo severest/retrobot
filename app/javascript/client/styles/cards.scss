@@ -37,7 +37,7 @@
       padding: 10px;
 
       &.mine {
-        background: $my-vote-tally;
+        background: $myVoteTally;
       }
     }
 
@@ -45,6 +45,18 @@
       i {
         color: gray;
       }
+    }
+
+    .upvote-count {
+      position: absolute;
+      padding: 3px 7px;
+      top: -5px;
+      right: -10px;
+      color: white;
+      background: lighten($myVoteTally, 20%);
+      border-radius: 8px;
+      z-index: $zIndex-groupBadge;
+      font-size: 0.8em;
     }
   }
 
@@ -63,7 +75,7 @@
     text-align: center;
     bottom: 0;
     left: 0;
-    background: $vote-tally;
+    background: $voteTally;
     padding: 10px 0;
     border-bottom-left-radius: 4px;
   }
@@ -99,7 +111,7 @@
     left: -5px;
     background: lighten($delta, 20%);
     border-radius: 8px;
-    z-index: $zIndex-group-badge;
+    z-index: $zIndex-groupBadge;
 
     &:hover {
       background: lighten($delta, 10%);

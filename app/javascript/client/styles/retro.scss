@@ -78,6 +78,7 @@
     &__actions {
       display: flex;
       align-items: center;
+      position: relative;
 
       .upvote .fa,
       .downvote .fa {
@@ -85,7 +86,19 @@
       }
 
       .upvote.mine .fa {
-        color: $my-vote-tally;
+        color: $myVoteTally;
+      }
+
+      .upvote-count {
+        position: absolute;
+        padding: 3px 7px;
+        top: -5px;
+        left: -10px;
+        color: white;
+        background: lighten($myVoteTally, 20%);
+        border-radius: 8px;
+        z-index: $zIndex-groupBadge;
+        font-size: 0.8em;
       }
     }
   }
