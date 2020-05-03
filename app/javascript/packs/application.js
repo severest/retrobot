@@ -18,6 +18,8 @@ import RetroBoardApp from '../client/RetroBoardApp-Loadable.jsx';
 import TeamSummaryApp from '../client/TeamSummaryApp-Loadable.jsx';
 import Particles from '../client/components/Particles/Particles.jsx';
 
+import '../client/assets/favicon.png';
+
 if (TESTING) {
     // time travel for testing
     const tk = require('timekeeper');
