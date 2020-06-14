@@ -4,7 +4,7 @@ rvm:
 services:
   - mysql
 before_install:
-  - mysql -e "CREATE DATABASE retrobot_test; CREATE USER 'retrobotuser'@'%'; GRANT ALL PRIVILEDGES ON retrobot_test.* TO 'retrobotuser'@'%';"
+  - mysql -e "CREATE DATABASE retrobot_test; CREATE USER 'retrobotuser'@'%'; GRANT ALL PRIVILEGES ON retrobot_test.* TO 'retrobotuser'@'%';"
 install:
 - nvm install
 - nvm use
