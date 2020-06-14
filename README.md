@@ -37,5 +37,5 @@ bin/rails test
 
 ### Running selenium tests locally
 
-1. Ensure you Chrome selenium driver is update to date
-3. `HEADLESS=0 NODE_ENV=test bin/rails test:system`
+1. Ensure you Firefox geckodriver selenium driver is update to date
+3. `NODE_ENV=test bin/rails test:system`
