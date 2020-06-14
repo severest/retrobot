@@ -9,14 +9,14 @@ before_install:
 install:
 - nvm install
 - nvm use
-- wget -N http://chromedriver.storage.googleapis.com/80.0.3987.16/chromedriver_linux64.zip
+- wget -N http://chromedriver.storage.googleapis.com/81.0.4044.69/chromedriver_linux64.zip
   -P ~/
 - unzip ~/chromedriver_linux64.zip -d ~/
 - rm ~/chromedriver_linux64.zip
 - sudo mv -f ~/chromedriver /usr/local/share/
 - sudo chmod +x /usr/local/share/chromedriver
 - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-- chromedriver --verison
+- chromedriver --version
 - gem install bundler -v 1.17.3
 - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
 script:
