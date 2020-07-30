@@ -39,7 +39,7 @@
     "font-awesome": "^4.7.0",
     "fresh": "^0.5.2",
     "linkifyjs": "^2.1.8",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.25.1",
     "node-sass": "^4.14.0",
     "particlesjs": "2.2.3",
