@@ -106,6 +106,7 @@ class StartRetroApp extends React.Component {
                 className="form-control"
                 placeholder="Team name (optional)"
                 autoComplete="team-name"
+                autoFocus
               />
             </div>
             <div className={passwordClasses}>

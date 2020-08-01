@@ -87,6 +87,7 @@ class TeamSummaryApp extends React.Component {
                       ref={c => this.password = c}
                       className="form-control"
                       placeholder="Password"
+                      autoFocus
                     />
                     {this.state.error !== '' && (
                       <p className="help-block help-block--error">{this.state.error}</p>
