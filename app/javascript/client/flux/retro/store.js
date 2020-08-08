@@ -38,6 +38,7 @@ export const initState = {
   timeLimitMinutes: 0,
   maxVotes: 0,
   includeTemperatureCheck: false,
+  team: null,
 };
 
 // Redux reducer
@@ -280,6 +281,12 @@ const actionMap = {
     return {
       ...state,
       creator: action.payload,
+    };
+  },
+  [actionTypes.setRetroTeam]: (state, action) => {
+    return {
+      ...state,
+      team: action.payload,
     };
   },
   [actionTypes.setTimeLimitMinutes]: (state, action) => {

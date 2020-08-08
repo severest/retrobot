@@ -88,6 +88,7 @@ class RetroBoardApp extends React.Component {
           timeLimitMinutes: state.timeLimitMinutes,
           maxVotes: state.maxVotes,
           includeTemperatureCheck: state.includeTemperatureCheck,
+          team: state.team,
         },
         isOffline: state.isOffline,
         notes: state.notes,

@@ -86,6 +86,11 @@ export const setRetroCreator = actionDispatcher((payload) => ({
   payload,
 }));
 
+export const setRetroTeam = actionDispatcher((payload) => ({
+  type: actionTypes.setRetroTeam,
+  payload,
+}));
+
 export const setTimeLimitMinutes = actionDispatcher((payload) => ({
   type: actionTypes.setTimeLimitMinutes,
   payload,
@@ -137,6 +142,7 @@ export const retroBoardInit = (retroKey, history) => {
     setMaxVotes(retro.max_votes);
     setIncludeTemperatureCheck(retro.include_temperature_check);
     setRetroCreator(retro.creator === window.myID);
+    setRetroTeam(retro.team);
     updateDeltaGroups(retro.delta_groups);
     retro.deltas.forEach((delta) => {
       const parseDelta = {

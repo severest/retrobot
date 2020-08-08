@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
+import { Link } from 'react-router-dom';
 
 import SideMenu from './SideMenu.jsx';
 
@@ -19,12 +20,13 @@ import {
 } from '../../flux/notifications/actions.js';
 import { RETRO_STATUS } from '../../utils/constants.js';
 
-class RetroSideMenu extends React.Component {
+class RetroSideMenu extends React.PureComponent {
   static propTypes = {
     creator: PropTypes.bool.isRequired,
     includeTemperatureCheck: PropTypes.bool.isRequired,
     retroKey: PropTypes.string.isRequired,
     state: PropTypes.oneOf(['in_progress', 'voting', 'locked']).isRequired,
+    team: PropTypes.string,
     timer: PropTypes.shape({
       show: PropTypes.bool.isRequired,
     }).isRequired,
@@ -34,6 +36,10 @@ class RetroSideMenu extends React.Component {
     onCloseMenu: PropTypes.func.isRequired,
     onShowMyTempCheck: PropTypes.func.isRequired,
     onShowTempCheckSummary: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    team: null,
   }
 
   handleStartTimer = () => {
@@ -95,6 +101,13 @@ class RetroSideMenu extends React.Component {
             <i className="fa fa-clipboard" aria-hidden="true" />
           </button>
         </div>
+
+        {this.props.team && (
+          <div className="alert alert-info">
+            This retro belongs to the team <strong>{this.props.team}</strong>.<br />
+            <Link to={`/summary/${this.props.team}`}>Go to summary</Link>
+          </div>
+        )}
 
         {this.props.includeTemperatureCheck && (
           <div className="sidebar-menu--group">
