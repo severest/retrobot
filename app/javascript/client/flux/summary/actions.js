@@ -61,7 +61,7 @@ export const getRetros = (team, page=1) => {
   });
 };
 
-export const defaultTemperaturCheckMonths = 1;
+export const defaultTemperaturCheckMonths = 12;
 const defaultFrom = moment().subtract(defaultTemperaturCheckMonths, 'month').format('YYYY-MM-DD');
 export const getTemperatureCheckSummary = (team, from=defaultFrom) => {
   return fetch(`/api/team/temperaturechecks`, {

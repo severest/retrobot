@@ -26,13 +26,11 @@ export const initState = {
     seconds: 0,
   },
   createRetroError: '',
-  getTeamSummaryError: '',
   isLoading: false,
   users: [],
   isOffline: false,
   notes: null,
   notesLock: null,
-  teamSummary: null,
   retroStatus: RETRO_STATUS.IN_PROGRESS,
   creator: false,
   timeLimitMinutes: 0,
@@ -257,18 +255,6 @@ const actionMap = {
     return {
       ...state,
       notesLock: null,
-    };
-  },
-  [actionTypes.receiveTeamSummary]: (state, action) => {
-    return {
-      ...state,
-      teamSummary: action.payload,
-    };
-  },
-  [actionTypes.getTeamSummaryError]: (state) => {
-    return {
-      ...state,
-      getTeamSummaryError: 'No access to team',
     };
   },
   [actionTypes.setRetroStatus]: (state, action) => {
