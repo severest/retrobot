@@ -29,8 +29,9 @@ class RetroSummary extends React.Component {
     return (
       <div className="retro-summary">
         <div className="retro-summary__heading">
-          <Link to={`/retro/${retro.key}`}>
-            {moment(retro.createdAt).format('MMMM D, YYYY')}
+          {moment(retro.createdAt).format('MMMM D, YYYY')}
+          <Link to={`/retro/${retro.key}`} className="btn btn-default">
+            View
           </Link>
           {retro.includeTemperatureCheck && `${avgTemperature}`}
           <div>
