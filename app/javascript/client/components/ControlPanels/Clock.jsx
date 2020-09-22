@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { showClock } from '../../utils/string.js';
+
 const Clock = ({
   minutes,
   seconds,
@@ -11,7 +13,7 @@ const Clock = ({
   }
   return (
     <div className="clock js-test-timer">
-      {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}
+      {showClock(minutes, seconds)}
     </div>
   );
 };

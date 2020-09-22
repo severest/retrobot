@@ -11,8 +11,8 @@ import {
   getTeamSummary,
   getRetros,
 } from './flux/summary/actions.js';
-
 import store$ from './flux/summary/store.js';
+import { setDocumentTitle } from './utils/viewport.js';
 
 class TeamSummaryApp extends React.Component {
   static propTypes = {
@@ -40,7 +40,8 @@ class TeamSummaryApp extends React.Component {
         teamSummary: state.teamSummary,
       });
     });
-    getTeamSummary({name: this.teamName});
+    getTeamSummary({ name: this.teamName });
+    setDocumentTitle(this.teamName);
   }
 
   componentWillUnmount() {

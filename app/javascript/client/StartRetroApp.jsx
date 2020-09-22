@@ -9,8 +9,9 @@ import {
   isLoading,
   doneLoading,
 } from './flux/retro/actions.js';
-
 import store$ from './flux/retro/store.js';
+
+import { setDocumentTitle } from './utils/viewport.js';
 
 class StartRetroApp extends React.Component {
   static propTypes = {
@@ -39,6 +40,7 @@ class StartRetroApp extends React.Component {
         isOffline: state.isOffline,
       });
     });
+    setDocumentTitle();
   }
 
   componentWillUnmount() {

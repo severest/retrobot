@@ -27,6 +27,8 @@ import {
 import socketInit from './ws/index.js';
 import retroStore$ from './flux/retro/store.js';
 import { clearTimer } from './utils/timer.js';
+import { setDocumentTitle } from './utils/viewport.js';
+import { showClock } from './utils/string.js';
 
 class RetroBoardApp extends React.Component {
   static propTypes = {
@@ -96,6 +98,11 @@ class RetroBoardApp extends React.Component {
         users: state.users,
         deltaGroupDisplay: state.deltaGroupDisplay,
       });
+      if (state.timer.show) {
+        setDocumentTitle(showClock(state.timer.minutes, state.timer.seconds));
+      } else {
+        setDocumentTitle(this.retroKey);
+      }
     });
 
     socketInit(this.retroKey);

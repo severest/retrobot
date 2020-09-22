@@ -5,3 +5,14 @@ export const setViewportUnits = () => {
   // Then we set the value in the --vh custom property to the root of the document
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
+
+export const setDocumentTitle = (title) => {
+  if (document && document.title != title) {
+    const suffix = '\u2022 Retrobot';
+    if (!title || title.trim() === '') {
+      document.title = 'Retrobot';
+    } else {
+      document.title = `${title} ${suffix}`;
+    }
+  }
+}
