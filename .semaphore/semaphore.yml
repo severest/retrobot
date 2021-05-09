@@ -41,7 +41,7 @@ blocks:
         - name: RAILS_ENV
           value: test
       secrets:
-        - name: percy-token
+        - name: retrobot-percy
       jobs:
         - name: JS tests
           commands:
