@@ -1,9 +1,9 @@
-# Retrobot [![build status](https://travis-ci.org/severest/retrobot.svg?branch=master)](https://travis-ci.org/severest/retrobot)
+# Retrobot [![Build Status](https://sean.semaphoreci.com/badges/retrobot/branches/master.svg?style=shields)](https://sean.semaphoreci.com/projects/retrobot)
 
 ## Installation
 
-1. Install ruby 2.4.1 ([RVM](http://rvm.io/rvm/install) is a good way to manage Ruby)
-2. Install node 9.11.2 ([NVM](https://github.com/nvm-sh/nvm#installing-and-updating) is a good way to manager node versions)
+1. Install ruby 2.7.1
+2. Install node 12.16.3
 3. Install yarn
 
 ## Development
