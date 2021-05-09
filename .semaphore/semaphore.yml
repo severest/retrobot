@@ -22,6 +22,8 @@ blocks:
       env_vars:
         - name: RAILS_ENV
           value: test
+        - name: NODE_ENV
+          value: test
   - name: Tests
     task:
       prologue:
@@ -39,6 +41,8 @@ blocks:
           - 'bin/rails db:migrate'
       env_vars:
         - name: RAILS_ENV
+          value: test
+        - name: NODE_ENV
           value: test
       secrets:
         - name: retrobot-percy
