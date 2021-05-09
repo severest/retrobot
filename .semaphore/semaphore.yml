@@ -52,3 +52,7 @@ blocks:
         - name: Rails selenium tests
           commands:
             - 'npx percy exec -- bin/rails test:system'
+      epilogue:
+        on_fail:
+          commands:
+            - artifact push job --expire-in 2w tmp/screenshots
