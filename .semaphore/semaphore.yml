@@ -1,0 +1,54 @@
+version: v1.0
+name: retrobot
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Setup
+    task:
+      jobs:
+        - name: bundle
+          commands:
+            - checkout
+            - cache restore
+            - sem-version ruby 2.7.1
+            - sem-version node 12.16.3
+            - bundle config set deployment 'true'
+            - bundle config set path 'vendor/bundle'
+            - bundle install
+            - yarn install --pure-lockfile
+            - cache store
+      env_vars:
+        - name: RAILS_ENV
+          value: test
+  - name: Tests
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - sem-version ruby 2.7.1
+          - sem-version node 12.16.3
+          - sem-service start mysql 5.6
+          - bundle config set deployment 'true'
+          - bundle config set path 'vendor/bundle'
+          - bundle install
+          - yarn install --pure-lockfile
+          - mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE DATABASE retrobot_test; CREATE USER 'retrobotuser'@'%'; GRANT ALL PRIVILEGES ON retrobot_test.* TO 'retrobotuser'@'%';"
+          - 'bin/rails db:migrate'
+      env_vars:
+        - name: RAILS_ENV
+          value: test
+      secrets:
+        - name: percy-token
+      jobs:
+        - name: JS tests
+          commands:
+            - 'yarn run test:ci'
+        - name: Rails unit tests
+          commands:
+            - bin/rails test
+        - name: Rails selenium tests
+          commands:
+            - 'npx percy exec -- bin/rails test:system'
