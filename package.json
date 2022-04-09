@@ -40,7 +40,7 @@
     "fresh": "^0.5.2",
     "linkifyjs": "^2.1.8",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "node-sass": "^4.14.1",
     "particlesjs": "2.2.3",
     "prop-types": "^15.7.2",
